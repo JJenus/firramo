@@ -1,0 +1,118 @@
+<script setup>
+	const AppName = import.meta.env.VITE_APP_NAME;
+</script>
+
+<template>
+	<header
+		class="header navbar navbar-expand-lg navbar-primary position-absolute navbar-sticky"
+	>
+		<div class="container px-3">
+			<a href="/" class="navbar-brand pe-3">
+				<img
+					src="/logo/feramo-logo-mini.png"
+					width="60"
+					alt="Silicon"
+				/>
+				{{ AppName }}
+			</a>
+			<div
+				id="navbarNav"
+				class="offcanvas me-auto me-auto offcanvas-end bg-odark"
+			>
+				<div class="offcanvas-header border-bottom border-light">
+					<h5 class="offcanvas-title text-white">
+						<img
+							width="150"
+							src="/logo/feramo-logo.png"
+							alt=""
+							srcset=""
+						/>
+					</h5>
+					<button
+						type="button"
+						class="btn-close btn-close-white"
+						data-bs-dismiss="offcanvas"
+						aria-label="Close"
+					></button>
+				</div>
+				<div class="offcanvas-body">
+					<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+						<li class="nav-item">
+							<a
+								href="#"
+								class="nav-link fs-6"
+								aria-current="page"
+								>FAQs</a
+							>
+						</li>
+
+						<li class="nav-item">
+							<a
+								href="#"
+								class="nav-link fs-6"
+								aria-current="page"
+								>About</a
+							>
+						</li>
+						<li class="nav-item">
+							<a
+								href="#"
+								class="nav-link fs-6"
+								aria-current="page"
+								>Contact Us</a
+							>
+						</li>
+					</ul>
+				</div>
+				<div class="offcanvas-header border-top border-light">
+					<a class="btn btn-primary w-100">
+						<i class="bx bx-log-in-circle fs-4 lh-1 me-1"></i>
+						&nbsp;Login
+					</a>
+				</div>
+			</div>
+			<div class="light-mode d-none pe-lg-1 ms-auto me-4">
+				<div
+					class="form-check form-switch mode-switch"
+					data-bs-toggle="mode"
+				>
+					<input
+						type="checkbox"
+						class="form-check-input"
+						id="theme-mode"
+					/>
+					<label
+						class="form-check-label d-none d-sm-block"
+						for="theme-mode"
+						>Light</label
+					>
+					<label
+						class="form-check-label d-none d-sm-block"
+						for="theme-mode"
+						>Dark</label
+					>
+				</div>
+			</div>
+			<button
+				type="button"
+				class="navbar-toggler"
+				data-bs-toggle="offcanvas"
+				data-bs-target="#navbarNav"
+				aria-controls="navbarNav"
+				aria-expanded="false"
+				aria-label="Toggle navigation"
+			>
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<a
+				href="https://themes.getbootstrap.com/product/silicon-business-technology-template-ui-kit/"
+				class="btn btn-primary btn-sm fs-sm rounded d-none d-lg-inline-flex"
+				target="_blank"
+				rel="noopener"
+			>
+				<i class="bx bx-log-in fs-6 lh-1 me-1"></i>
+				&nbsp;Join now
+			</a>
+		</div>
+	</header>
+</template>
