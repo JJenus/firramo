@@ -12,7 +12,7 @@
 		<section class="container-fluid pt-2">
 			<div class="row p-md-3">
 				<!-- Sidebar (User info + Account menu) -->
-				<aside class="col-lg-3 col-md-4 bordder-end pb-5 mb-3">
+				<aside class="col-lg-3 col-md-4 bordder-end pb-5 mb-3 mb-lg-n5">
 					<SidebarVue />
 				</aside>
 
@@ -22,7 +22,10 @@
 				>
 					<RouterView></RouterView>
 				</div>
-				<div class="col-lg-4 position-absolute overflow-hidden pt-2 position-lg-relative">
+				<div
+					id="quick-trans"
+					class="col-lg-4 vh-fitted th-rounded collapse d-lg-block position-fixed bg-transact bg-lg-white mt-n2 mt-lg-0 pb-2 pt-3 pt-lg-2 position-lg-relative"
+				>
 					<QuickTransactionVue></QuickTransactionVue>
 				</div>
 			</div>
@@ -31,7 +34,29 @@
 </template>
 
 <style scoped>
-	.bg-custom {
-		background-color: rgba(193, 84, 207, 0.05);
+	.bg-transact {
+		background-color: rgb(245, 236, 247);
+	}
+
+	@media (min-width: 768px) {
+		.bg-transact {
+			background-color: rgb(255, 255, 255) !important;
+		}
+	}
+
+	.th-rounded {
+		border-radius: 15px !important;
+	}
+
+	.vh-fitted {
+		height: 100vh !important;
+		/* top: 30px; */
+	}
+
+	@media (min-width: 768px) {
+		.vh-fitted {
+			height: calc(100vh - 80px) !important;
+			top: 30px;
+		}
 	}
 </style>

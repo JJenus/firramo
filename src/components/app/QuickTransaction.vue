@@ -1,7 +1,6 @@
 <template>
 	<div
-		id="quick-trans"
-		class="collapse w-100 overflow-hidden d-lg-block vh-fitted position-sticky p-5 th-rounded bg-white"
+		class="w-100 overflow-hidden h-100 position-sticky p-5 th-rounded bg-white"
 	>
 		<button
 			class="btn-close m-3 top-0 d-lg-none position-absolute"
@@ -86,19 +85,7 @@
 		border-radius: 15px !important;
 	}
 
-	.vh-fitted {
-		height: 100vh !important;
-		/* top: 30px; */
-	}
-
 	.btn-close{
 		right: 0;
-	}
-
-	@media (min-width: 768px) {
-		.vh-fitted {
-			height: calc(100vh - 80px) !important;
-			top: 30px;
-		}
 	}
 </style>
