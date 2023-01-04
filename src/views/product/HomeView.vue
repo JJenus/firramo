@@ -6,6 +6,10 @@
 
 	const email = ref("support@firramo.com");
 	const AppName = import.meta.env.VITE_APP_NAME;
+
+	function signUp() {
+		document.getElementById("sign-up").click();
+	}
 </script>
 
 <template>
@@ -22,14 +26,14 @@
 		<!-- Brands (carousel on screens < 1100px) -->
 		<section class="container border-bottom-lg pt-sm-2">
 			<div class="d-flex align-items-center fs-2 justify-content-center">
-					<img
-						src="/logo/feramo-logo-mini.png"
-						class="d-block my-2 me-2"
-						width="70"
-						alt="Brand"
-					/>
+				<img
+					src="/logo/feramo-logo-mini.png"
+					class="d-block my-2 me-2"
+					width="70"
+					alt="Brand"
+				/>
 
-					{{ AppName }}
+				{{ AppName }}
 			</div>
 		</section>
 
@@ -622,7 +626,9 @@
 								</li>
 							</ul>
 							<a
-								href="/app"
+								@click="signUp()"
+								data-bs-toggle="modal"
+								data-bs-target="#auth-modal"
 								class="btn btn-lg btn-primary shadow-primary w-100 w-sm-auto"
 								>Start now</a
 							>

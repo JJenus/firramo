@@ -4,6 +4,9 @@
 
 	const email = ref("support@firramo.com");
 	const AppName = import.meta.env.VITE_APP_NAME;
+	function signUp() {
+		document.getElementById("sign-up").click();
+	}
 </script>
 
 <template>
@@ -33,6 +36,9 @@
 						class="d-flex justify-content-center justify-content-md-start pb-2 pt-lg-2 pt-xl-0"
 					>
 						<a
+							@click="signUp()"
+							data-bs-toggle="modal"
+							data-bs-target="#auth-modal"
 							class="btn btn-lg btn-primary shadow-primary me-3 me-sm-4"
 							>Join {{ AppName }}</a
 						>

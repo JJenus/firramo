@@ -1,5 +1,6 @@
 <script setup>
 	import { ref } from "vue";
+	import AuthVue from "./Auth.vue";
 
 	const email = ref("support@firramo.com");
 	const AppName = import.meta.env.VITE_APP_NAME;
@@ -7,6 +8,7 @@
 
 <template>
 	<!-- Footer -->
+	<AuthVue />
 	<footer class="footer pt-5 pb-4 pb-lg-5">
 		<div class="container pt-lg-4">
 			<div class="row pb-5">

@@ -14,7 +14,6 @@
 		await router.isReady();
 		path.value = route.name;
 	});
-
 </script>
 
 <template>
@@ -92,7 +91,11 @@
 					</ul>
 				</div>
 				<div class="offcanvas-header border-top border-light">
-					<a class="btn btn-primary w-100">
+					<a
+						data-bs-toggle="modal"
+						data-bs-target="#auth-modal"
+						class="btn btn-primary w-100"
+					>
 						<i class="bx bx-log-in-circle fs-4 lh-1 me-1"></i>
 						&nbsp;Login
 					</a>
@@ -132,10 +135,9 @@
 				<span class="navbar-toggler-icon"></span>
 			</button>
 			<a
-				href="https://themes.getbootstrap.com/product/silicon-business-technology-template-ui-kit/"
+				data-bs-toggle="modal"
+				data-bs-target="#auth-modal"
 				class="btn btn-primary btn-sm fs-sm rounded d-none d-lg-inline-flex"
-				target="_blank"
-				rel="noopener"
 			>
 				<i class="bx bx-log-in fs-6 lh-1 me-1"></i>
 				&nbsp;Join now
