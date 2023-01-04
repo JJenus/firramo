@@ -1,6 +1,5 @@
 <script setup>
 	import Header from "@/components/product/Header.vue";
-	import Intro from "@/components/product/Intro.vue";
 	import Footer from "@/components/Footer.vue";
 	import { ref } from "vue";
 
