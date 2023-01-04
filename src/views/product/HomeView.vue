@@ -2,7 +2,6 @@
 	import Header from "@/components/product/Header.vue";
 	import Intro from "@/components/product/Intro.vue";
 	import Footer from "@/components/Footer.vue"
-	import FirramoCardVue from "../../components/product/FirramoCard.vue";
 </script>
 
 <template>

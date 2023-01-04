@@ -54,7 +54,16 @@
 					<ul class="navbar-nav me-auto mb-2 mb-lg-0">
 						<li class="nav-item">
 							<a
-								href="#"
+								href="/home"
+								:class="path === 'home' ? 'active' : ''"
+								class="nav-link fs-6"
+								aria-current="page"
+								>Home</a
+							>
+						</li>
+						<li class="nav-item">
+							<a
+								href="/faqs"
 								:class="path === 'faqs' ? 'active' : ''"
 								class="nav-link fs-6"
 								aria-current="page"
@@ -64,7 +73,7 @@
 
 						<li class="nav-item">
 							<a
-								href="#"
+								href="/about"
 								:class="path === 'about' ? 'active' : ''"
 								class="nav-link fs-6"
 								aria-current="page"
