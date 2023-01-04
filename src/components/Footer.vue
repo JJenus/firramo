@@ -1,3 +1,12 @@
+<script setup>
+	import Header from "@/components/product/Header.vue";
+	import Footer from "@/components/Footer.vue";
+	import { ref } from "vue";
+
+	const email = ref("support@firramo.com");
+	const AppName = import.meta.env.VITE_APP_NAME;
+</script>
+
 <template>
 	<!-- Footer -->
 	<footer class="footer pt-5 pb-4 pb-lg-5">
@@ -10,11 +19,12 @@
 							width="47"
 							alt="Silicon"
 						/>
-						Feramo
+						{{ AppName }}
 					</div>
 					<p class="fs-sm pb-lg-3 mb-4">
-						If you like to find out more about Feramo services
-						please contact any of our support lines.
+						If you like to find out more about
+						{{ AppName }} services please contact any of our support
+						lines.
 					</p>
 				</div>
 				<div
@@ -94,9 +104,9 @@
 						</div>
 						<div class="col-xl-4 col-lg-5 pt-2 pt-lg-0">
 							<h6 class="mb-2">Contact Us</h6>
-							<a href="mailto:support@feramo.com" class="fw-medium"
-								>support@feramo.com</a
-							>
+							<a :href="'mailto:' + email" class="fw-medium">{{
+								email
+							}}</a>
 						</div>
 					</div>
 				</div>
