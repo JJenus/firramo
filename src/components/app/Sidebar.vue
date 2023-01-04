@@ -34,11 +34,12 @@
 
 			<button
 				type="button"
-				class="btn btn-secondary btn-icon d-lg-none mt-3 mb-3"
+				class="btn btn-outline-secondary border-0 btn-icon d-lg-none mt-3 mb-3 position-relative"
 				data-bs-toggle="collapse"
 				data-bs-target="#quick-trans"
 			>
-				<i class="bx bx-menu-alt-right fs-xl"></i>
+				<i class="bx bx-square-rounded fs-2"></i>
+				<i class="bx bx-transfer-alt position-absolute top-0 fs-sm mt-3 me-1"></i>
 			</button>
 		</div>
 		<div class="text-center pe-3 border-end">
@@ -62,7 +63,7 @@
 						:class="path === 'overview' ? 'bg-faded-primary' : ''"
 						class="list-group-item list-group-item-action d-flex align-items-center text-primaryy"
 					>
-						<i class="bx bx-home fs-xl opacity-60 me-2"></i>
+						<i class="bx bxs-dashboard fs-xl opacity-60 me-2"></i>
 						Overview
 					</a>
 					<a
@@ -76,12 +77,12 @@
 						Cards
 					</a>
 					<a
-						href="payments"
+						href="transactions"
 						:class="path === 'payments' ? 'bg-faded-primary' : ''"
 						class="list-group-item list-group-item-action d-flex align-items-center"
 					>
 						<i class="bx bx-transfer fs-xl opacity-60 me-2"></i>
-						Payments
+						Transactions
 					</a>
 
 					<a

@@ -44,7 +44,7 @@ const router = createRouter({
           component: CardsVue,
         },
         {
-          path: "payments",
+          path: "transactions",
           name: "payments",
           component: PaymentsVue,
         },
