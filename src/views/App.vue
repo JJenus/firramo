@@ -18,11 +18,11 @@
 
 				<!-- Main -->
 				<div
-					class="col-md-8 col-lg-4 px-4 pb-5 mb-2 mb-lg-4 pt-md-5 mt-n5 mt-md-0"
+					class="col-md-8 col-lg-5 px-4 pb-5 mb-2 mb-lg-4 pt-md-5 mt-n5 mt-md-0"
 				>
 					<RouterView></RouterView>
 				</div>
-				<div class="col-lg-5 vh-80">
+				<div class="col-lg-4 position-absolute overflow-hidden pt-2 position-lg-relative">
 					<QuickTransactionVue></QuickTransactionVue>
 				</div>
 			</div>

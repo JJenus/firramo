@@ -1,15 +1,46 @@
 <script setup>
+	import { onMounted, ref } from "vue";
+	import { useRoute, useRouter } from "vue-router";
+
+	const env = import.meta.env;
+	const AppName = import.meta.env.VITE_APP_NAME;
+
+	const router = useRouter();
+	const route = useRoute();
+
+	let path = ref("");
+
 	function signOut() {
 		console.log("signout");
 	}
+
+	onMounted(async () => {
+		await router.isReady();
+		path.value = route.name;
+	});
 </script>
 
 <template>
 	<div class="position-sticky top-0">
-		<a href="/" class="navbar-brand pe-3">
-			<img src="/logo/feramo-logo-mini.png" width="47" alt="Firramo" />
-			Firramo
-		</a>
+		<div class="d-flex justify-content-between">
+			<a href="/" class="navbar-brand pe-3">
+				<img
+					src="/logo/feramo-logo-mini.png"
+					width="47"
+					alt="Firramo"
+				/>
+				{{ AppName }}
+			</a>
+
+			<button
+				type="button"
+				class="btn btn-secondary btn-icon d-lg-none mt-3 mb-3"
+				data-bs-toggle="collapse"
+				data-bs-target="#quick-trans"
+			>
+				<i class="bx bx-menu-alt-right fs-xl"></i>
+			</button>
+		</div>
 		<div class="text-center pe-3 border-end">
 			<button
 				type="button"
@@ -28,13 +59,15 @@
 				<div>
 					<a
 						href="overview"
-						class="list-group-item list-group-item-action d-flex align-items-center bg-faded-primary text-wihite"
+						:class="path === 'overview' ? 'bg-faded-primary' : ''"
+						class="list-group-item list-group-item-action d-flex align-items-center text-primaryy"
 					>
 						<i class="bx bx-home fs-xl opacity-60 me-2"></i>
 						Overview
 					</a>
 					<a
 						href="cards"
+						:class="path === 'cards' ? 'bg-faded-primary' : ''"
 						class="list-group-item list-group-item-action d-flex align-items-center"
 					>
 						<i
@@ -44,6 +77,7 @@
 					</a>
 					<a
 						href="payments"
+						:class="path === 'payments' ? 'bg-faded-primary' : ''"
 						class="list-group-item list-group-item-action d-flex align-items-center"
 					>
 						<i class="bx bx-transfer fs-xl opacity-60 me-2"></i>
@@ -52,6 +86,7 @@
 
 					<a
 						href="account"
+						:class="path === 'account' ? 'bg-faded-primary' : ''"
 						class="list-group-item list-group-item-action d-flex align-items-center"
 					>
 						<i class="bx bx-user-circle fs-xl opacity-60 me-2"></i>
@@ -62,6 +97,7 @@
 				<div>
 					<a
 						href="security"
+						:class="path === 'security' ? 'bg-faded-primary' : ''"
 						class="list-group-item list-group-item-action d-flex align-items-center"
 					>
 						<i class="bx bx-lock-alt fs-xl opacity-60 me-2"></i>
@@ -83,11 +119,17 @@
 
 <style scoped>
 	.side-bar {
-		height: calc(100vh - 160px) !important;
+		min-height: 80vh;
 	}
-	@media (min-width: 768) {
+	@media (min-width: 768px) {
 		.side-bar {
 			height: calc(100vh - 120px) !important;
+		}
+	}
+	
+	@media (min-width: 576px) {
+		.side-bar {
+			height: calc(100vh - 60px) ;
 		}
 	}
 </style>

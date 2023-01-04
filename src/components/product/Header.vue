@@ -1,5 +1,20 @@
 <script setup>
+	import { onMounted, ref } from "vue";
+	import { useRoute, useRouter } from "vue-router";
+
+	const env = import.meta.env;
 	const AppName = import.meta.env.VITE_APP_NAME;
+
+	const router = useRouter();
+	const route = useRoute();
+
+	let path = ref("");
+
+	onMounted(async () => {
+		await router.isReady();
+		path.value = route.name;
+	});
+
 </script>
 
 <template>
@@ -40,6 +55,7 @@
 						<li class="nav-item">
 							<a
 								href="#"
+								:class="path === 'faqs' ? 'active' : ''"
 								class="nav-link fs-6"
 								aria-current="page"
 								>FAQs</a
@@ -49,6 +65,7 @@
 						<li class="nav-item">
 							<a
 								href="#"
+								:class="path === 'about' ? 'active' : ''"
 								class="nav-link fs-6"
 								aria-current="page"
 								>About</a
@@ -57,6 +74,7 @@
 						<li class="nav-item">
 							<a
 								href="#"
+								:class="path === 'contact' ? 'active' : ''"
 								class="nav-link fs-6"
 								aria-current="page"
 								>Contact Us</a

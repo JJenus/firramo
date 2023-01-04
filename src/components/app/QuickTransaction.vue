@@ -1,5 +1,14 @@
 <template>
-	<div class="vh-fitted position-sticky p-5 th-rounded bg-white">
+	<div
+		id="quick-trans"
+		class="collapse w-100 overflow-hidden d-lg-block vh-fitted position-sticky p-5 th-rounded bg-white"
+	>
+		<button
+			class="btn-close m-3 top-0 d-lg-none position-absolute"
+			type="button"
+			data-bs-toggle="collapse"
+			data-bs-target="#quick-trans"
+		></button>
 		<h3 class="fs-6 mb-3">Quick transactions</h3>
 		<div class="d-flex mb-4">
 			<button class="btn th-rounded p-2 btn-outline-secondary">
@@ -77,8 +86,19 @@
 		border-radius: 15px !important;
 	}
 
-	.vh-fitted{
-		height: calc(100vh - 80px) !important;
-		top: 30px;
+	.vh-fitted {
+		height: 100vh !important;
+		/* top: 30px; */
+	}
+
+	.btn-close{
+		right: 0;
+	}
+
+	@media (min-width: 768px) {
+		.vh-fitted {
+			height: calc(100vh - 80px) !important;
+			top: 30px;
+		}
 	}
 </style>
