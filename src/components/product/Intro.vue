@@ -1,5 +1,9 @@
 <script setup>
+	import { ref } from "vue";
 	import FirramoCardVue from "./FirramoCard.vue";
+
+	const email = ref("support@firramo.com");
+	const AppName = import.meta.env.VITE_APP_NAME;
 </script>
 
 <template>
@@ -17,19 +21,20 @@
 				<div
 					class="col-xl-5 col-md-6 pt-lg-5 text-center text-md-start mb-4 mb-md-0"
 				>
-					<h1 class="display-3 pb-2 pb-sm-3">Welcome to Feramo</h1>
+					<h1 class="display-3 pb-2 pb-sm-3">
+						Welcome to {{ AppName }}
+					</h1>
 					<p
 						class="fs-lg d-md-none d-xl-block pb-2 pb-md-0 mb-4 mb-md-5"
 					>
-						Make your currency and crypto transactions even easier.
+						Make your investments and transactions even easier.
 					</p>
 					<div
 						class="d-flex justify-content-center justify-content-md-start pb-2 pt-lg-2 pt-xl-0"
 					>
 						<a
-							href="#"
 							class="btn btn-lg btn-primary shadow-primary me-3 me-sm-4"
-							>Join Feramo</a
+							>Join {{ AppName }}</a
 						>
 					</div>
 					<div
@@ -77,11 +82,8 @@
 				</div>
 
 				<!-- Parallax gfx -->
-				<div class="col-xl-7 col-md-6 d-md-flex justify-content-around"	>
-					<div
-						class="parallax "
-						style="max-width: 675px"
-					>
+				<div class="col-xl-7 col-md-6 d-md-flex justify-content-around">
+					<div class="parallax" style="max-width: 675px">
 						<FirramoCardVue></FirramoCardVue>
 					</div>
 				</div>

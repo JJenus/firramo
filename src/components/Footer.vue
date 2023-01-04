@@ -1,6 +1,4 @@
 <script setup>
-	import Header from "@/components/product/Header.vue";
-	import Footer from "@/components/Footer.vue";
 	import { ref } from "vue";
 
 	const email = ref("support@firramo.com");

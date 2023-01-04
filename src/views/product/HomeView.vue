@@ -1,7 +1,11 @@
 <script setup>
 	import Header from "@/components/product/Header.vue";
 	import Intro from "@/components/product/Intro.vue";
-	import Footer from "@/components/Footer.vue"
+	import Footer from "@/components/Footer.vue";
+	import { ref } from "vue";
+
+	const email = ref("support@firramo.com");
+	const AppName = import.meta.env.VITE_APP_NAME;
 </script>
 
 <template>
@@ -15,101 +19,17 @@
 		<!-- Hero -->
 		<Intro></Intro>
 
-
 		<!-- Brands (carousel on screens < 1100px) -->
 		<section class="container border-bottom-lg pt-sm-2">
-			<div
-				class="swiper mx-n2"
-				data-swiper-options='{
-          "slidesPerView": 2,
-          "pagination": {
-            "el": ".swiper-pagination",
-            "clickable": true
-          },
-          "breakpoints": {
-            "500": {
-              "slidesPerView": 3,
-              "spaceBetween": 8
-            },
-            "650": {
-              "slidesPerView": 4,
-              "spaceBetween": 8
-            },
-            "850": {
-              "slidesPerView": 5,
-              "spaceBetween": 8
-            },
-            "992": {
-              "slidesPerView": 6,
-              "spaceBetween": 8
-            }
-          }
-        }'
-			>
-				<div class="swiper-wrapper">
-					<!-- Item Send -->
-					<div class="swiper-slide py-2">
-						<a href="#" class="px-2 mx-2 opacity-4">
-							<img
-								src="/logo/feramo-logo.png"
-								class="d-block mx-auto my-2"
-								width="155"
-								alt="Brand"
-							/>
-						</a>
-					</div>
+			<div class="d-flex align-items-center fs-2 justify-content-center">
+					<img
+						src="/logo/feramo-logo-mini.png"
+						class="d-block my-2 me-2"
+						width="70"
+						alt="Brand"
+					/>
 
-					<!-- Item Receive-->
-					<div class="swiper-slide py-2">
-						<a href="#" class="px-2 mx-2">
-							<img
-								src="assets/img/brands/02.svg"
-								class="d-block mx-auto my-2"
-								width="155"
-								alt="Brand"
-							/>
-						</a>
-					</div>
-
-					<!-- Item Withdraw-->
-					<div class="swiper-slide py-2">
-						<a href="#" class="px-2 mx-2">
-							<img
-								src="assets/img/brands/03.svg"
-								class="d-block mx-auto my-2"
-								width="155"
-								alt="Brand"
-							/>
-						</a>
-					</div>
-
-					<!-- Item Invest-->
-					<div class="swiper-slide py-2">
-						<a href="#" class="px-2 mx-2">
-							<img
-								src="assets/img/brands/04.svg"
-								class="d-block mx-auto my-2"
-								width="155"
-								alt="Brand"
-							/>
-						</a>
-					</div>
-
-					<!-- Item Spend-->
-					<div class="swiper-slide py-2">
-						<a href="#" class="px-2 mx-2">
-							<img
-								src="assets/img/brands/05.svg"
-								class="d-block mx-auto my-2"
-								width="155"
-								alt="Brand"
-							/>
-						</a>
-					</div>
-				</div>
-
-				<!-- Pagination (bullets) -->
-				<div class="swiper-pagination position-relative pt-3"></div>
+					{{ AppName }}
 			</div>
 		</section>
 
@@ -120,7 +40,7 @@
 				<div
 					class="col-md-6 col-xl-5 text-center text-md-start mb-5 mb-md-0"
 				>
-					<h2 class="h1 pb-2 pb-lg-3">Do more with Feramo</h2>
+					<h2 class="h1 pb-2 pb-lg-3">Do more with {{ AppName }}</h2>
 					<p class="pb-2 mb-4 mb-lg-5">
 						Finance can not be more accessible. Connect in a
 						different level.
@@ -210,10 +130,10 @@
 					class="col-md-5 col-lg-6 col-xl-5 offset-xl-1 order-md-2 text-center text-md-start mb-5 mb-md-0"
 				>
 					<h2 class="h1 pb-2 pb-lg-3">
-						Make Your Life a lot Easier with Our Crypto Bank
+						Make Your Life a lot Easier with Crypto Investments
 					</h2>
 					<p class="pb-2 mb-4 mb-xl-5">
-						Keep your crypto and currencies in one place.
+						Keep your crypto and stocks in one place.
 					</p>
 					<hr />
 					<div
