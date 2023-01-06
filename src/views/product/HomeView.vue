@@ -144,37 +144,37 @@
 						class="d-flex flex-wrap flex-sm-nowrap justify-content-center justify-content-md-between pt-3"
 					>
 						<img
-							src="assets/img/landing/saas-3/feature-3/binance.svg"
+							src="/assets/img/landing/saas-3/feature-3/binance.svg"
 							width="48"
 							class="d-block m-2 mx-md-0"
 							alt="Bitcoin"
 						/>
 						<img
-							src="assets/img/landing/saas-3/feature-3/ens.svg"
+							src="/assets/img/landing/saas-3/feature-3/ens.svg"
 							width="48"
 							class="d-block m-2 mx-md-0"
 							alt="Ens"
 						/>
 						<img
-							src="assets/img/landing/saas-3/feature-3/tether.svg"
+							src="/assets/img/landing/saas-3/feature-3/tether.svg"
 							width="48"
 							class="d-block m-2 mx-md-0"
 							alt="Tether"
 						/>
 						<img
-							src="assets/img/landing/saas-3/feature-3/alqo.svg"
+							src="/assets/img/landing/saas-3/feature-3/alqo.svg"
 							width="48"
 							class="d-block m-2 mx-md-0"
 							alt="Alqo"
 						/>
 						<img
-							src="assets/img/landing/saas-3/feature-3/blockfi.svg"
+							src="/assets/img/landing/saas-3/feature-3/blockfi.svg"
 							width="48"
 							class="d-block m-2 mx-md-0"
 							alt="BlockFi"
 						/>
 						<img
-							src="assets/img/landing/saas-3/feature-3/bitcoin.svg"
+							src="/assets/img/landing/saas-3/feature-3/bitcoin.svg"
 							width="48"
 							class="d-block m-2 mx-md-0"
 							alt="Bitcoin"
@@ -189,7 +189,7 @@
 						style="max-width: 636px"
 					>
 						<img
-							src="assets/img/landing/saas-3/feature-3/popup.png"
+							src="/assets/img/landing/saas-3/feature-3/popup.png"
 							class="rellax position-absolute top-0 mt-n5"
 							alt="Card"
 							data-rellax-percentage="0.5"
@@ -197,7 +197,7 @@
 							data-disable-parallax-down="lg"
 						/>
 						<img
-							src="assets/img/landing/saas-3/feature-3/dashboard.jpg"
+							src="/assets/img/landing/saas-3/feature-3/dashboard.jpg"
 							class="d-block rounded-3 mt-sm-4 mt-md-0 mt-lg-4"
 							alt="Dashboard"
 							style="
@@ -378,7 +378,7 @@
 										class="d-flex align-items-center ps-4 pt-4"
 									>
 										<img
-											src="assets/img/avatar/40.jpg"
+											src="/assets/img/avatar/40.jpg"
 											width="48"
 											class="rounded-circle"
 											alt="Robert Fox"
@@ -441,7 +441,7 @@
 										class="d-flex align-items-center ps-4 pt-4"
 									>
 										<img
-											src="assets/img/avatar/06.jpg"
+											src="/assets/img/avatar/06.jpg"
 											width="48"
 											class="rounded-circle"
 											alt="Annette Black"
@@ -503,7 +503,7 @@
 										class="d-flex align-items-center ps-4 pt-4"
 									>
 										<img
-											src="assets/img/avatar/41.jpg"
+											src="/assets/img/avatar/41.jpg"
 											width="48"
 											class="rounded-circle"
 											alt="Jerome Bell"
@@ -566,7 +566,7 @@
 										class="d-flex align-items-center ps-4 pt-4"
 									>
 										<img
-											src="assets/img/avatar/05.jpg"
+											src="/assets/img/avatar/05.jpg"
 											width="48"
 											class="rounded-circle"
 											alt="Albert Flores"

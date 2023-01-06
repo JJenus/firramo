@@ -65,13 +65,13 @@
 							software.
 						</p>
 						<img
-							src="assets/img/about/clutch-dark.png"
+							src="/assets/img/about/clutch-dark.png"
 							class="d-dark-mode-none d-none"
 							width="175"
 							alt="Clutch"
 						/>
 						<img
-							src="assets/img/about/clutch-light.png"
+							src="/assets/img/about/clutch-light.png"
 							class="d-none d-dark-mode-block d-none"
 							width="175"
 							alt="Clutch"
@@ -213,7 +213,7 @@
 											class="card-footer border-0 d-flex align-items-center w-100 pb-2"
 										>
 											<img
-												src="assets/img/avatar/14.jpg"
+												src="/assets/img/avatar/14.jpg"
 												width="60"
 												class="rounded-circle"
 												alt="Annette Black"
@@ -255,7 +255,7 @@
 											class="card-footer border-0 d-flex align-items-center w-100 pb-2"
 										>
 											<img
-												src="assets/img/avatar/13.jpg"
+												src="/assets/img/avatar/13.jpg"
 												width="60"
 												class="rounded-circle"
 												alt="Ralph Edwards"
@@ -297,7 +297,7 @@
 											class="card-footer border-0 d-flex align-items-center w-100 pb-2"
 										>
 											<img
-												src="assets/img/avatar/11.jpg"
+												src="/assets/img/avatar/11.jpg"
 												width="60"
 												class="rounded-circle"
 												alt="Darrell Steward"

@@ -52,7 +52,7 @@
 								style="width: 52px; height: 52px"
 							>
 								<img
-									src="assets/img/avatar/14.jpg"
+									src="/assets/img/avatar/14.jpg"
 									class="rounded-circle"
 									width="48"
 									alt="Avatar"
@@ -63,7 +63,7 @@
 								style="width: 52px; height: 52px"
 							>
 								<img
-									src="assets/img/avatar/08.jpg"
+									src="/assets/img/avatar/08.jpg"
 									class="rounded-circle"
 									width="48"
 									alt="Avatar"
@@ -74,7 +74,7 @@
 								style="width: 52px; height: 52px"
 							>
 								<img
-									src="assets/img/avatar/15.jpg"
+									src="/assets/img/avatar/15.jpg"
 									class="rounded-circle"
 									width="48"
 									alt="Avatar"
