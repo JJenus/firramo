@@ -1,4 +1,39 @@
-<script setup></script>
+<script setup>
+	import axios from "axios";
+	import { user } from "@/stores/user";
+	import { util } from "@/stores/utility";
+	import { onMounted, ref } from "vue";
+
+	import LoginSession from "../../components/app/security/LoginSession.vue";
+
+	const env = import.meta.env;
+	env.VITE_BE_API = util.backendApi;
+
+	console.log(util.backendApi);
+
+	const sessions = ref([]);
+
+	function loadSessions() {
+		let config = {
+			method: "GET",
+			url: `${env.VITE_BE_API}/users/${user.getUser().id}/sessions`,
+		};
+
+		axios
+			.request(config)
+			.then((response) => {
+				console.log(response.data);
+				sessions.value = response.data;
+			})
+			.catch(function (error) {
+				console.log(error);
+			});
+	}
+
+	onMounted(() => {
+		loadSessions();
+	});
+</script>
 
 <template>
 	<div class="ps-md-3 ps-lg-0 mt-md-2 pt-md-4 pb-md-2">
@@ -113,84 +148,7 @@
 			any sessions that you do not recognize.
 		</p>
 		<ul class="list-unstyled mb-0">
-			<li class="d-flex align-items-center justify-content-between mb-4">
-				<div class="d-flex align-items-start me-3">
-					<div class="bg-secondary rounded-1 p-2">
-						<i class="bx bx-desktop fs-xl text-primary d-block"></i>
-					</div>
-					<div class="ps-3">
-						<div class="fw-medium text-nav mb-1">
-							Mac – New York, USA
-						</div>
-						<span
-							class="d-inline-block fs-sm text-muted border-end pe-2 me-2"
-							>Chrome</span
-						>
-						<span class="badge bg-success shadow-success"
-							>Active now</span
-						>
-					</div>
-				</div>
-				<button
-					type="button"
-					class="btn btn-outline-secondary px-3 px-sm-4"
-				>
-					<i class="bx bx-x fs-xl ms-sm-n1 me-sm-1"></i>
-					<span class="d-none d-sm-inline">Remove</span>
-				</button>
-			</li>
-			<li class="d-flex align-items-center justify-content-between mb-4">
-				<div class="d-flex align-items-start me-3">
-					<div class="bg-secondary rounded-1 p-2">
-						<i class="bx bx-mobile fs-xl text-primary d-block"></i>
-					</div>
-					<div class="ps-3">
-						<div class="fw-medium text-nav mb-1">
-							Iphone 12 – New York, USA
-						</div>
-						<span
-							class="d-inline-block fs-sm text-muted border-end pe-2 me-2"
-							>Silicon App</span
-						>
-						<span class="d-inline-block fs-sm text-muted"
-							>20 hours ago</span
-						>
-					</div>
-				</div>
-				<button
-					type="button"
-					class="btn btn-outline-secondary px-3 px-sm-4"
-				>
-					<i class="bx bx-x fs-xl ms-sm-n1 me-sm-1"></i>
-					<span class="d-none d-sm-inline">Remove</span>
-				</button>
-			</li>
-			<li class="d-flex align-items-center justify-content-between mb-4">
-				<div class="d-flex align-items-start me-3">
-					<div class="bg-secondary rounded-1 p-2">
-						<i class="bx bx-desktop fs-xl text-primary d-block"></i>
-					</div>
-					<div class="ps-3">
-						<div class="fw-medium text-nav mb-1">
-							Windows 10.1 – New York, USA
-						</div>
-						<span
-							class="d-inline-block fs-sm text-muted border-end pe-2 me-2"
-							>Chrome</span
-						>
-						<span class="d-inline-block fs-sm text-muted"
-							>November 15 at 8:42 am</span
-						>
-					</div>
-				</div>
-				<button
-					type="button"
-					class="btn btn-outline-secondary px-3 px-sm-4"
-				>
-					<i class="bx bx-x fs-xl ms-sm-n1 me-sm-1"></i>
-					<span class="d-none d-sm-inline">Remove</span>
-				</button>
-			</li>
+			<LoginSession  v-for="session in sessions" :session="session" :active="user.getSession()" />
 		</ul>
 	</div>
 </template>

@@ -1,6 +1,7 @@
 <script setup>
 	import { onMounted, ref } from "vue";
 	import { useRoute, useRouter } from "vue-router";
+	import { user } from "@/stores/user";
 
 	const env = import.meta.env;
 	const AppName = import.meta.env.VITE_APP_NAME;
@@ -12,6 +13,7 @@
 
 	function signOut() {
 		console.log("signout");
+		user.logout();
 	}
 
 	onMounted(async () => {
@@ -39,7 +41,9 @@
 				data-bs-target="#quick-trans"
 			>
 				<i class="bx bx-square-rounded fs-2"></i>
-				<i class="bx bx-transfer-alt position-absolute top-0 fs-sm mt-3 me-1"></i>
+				<i
+					class="bx bx-transfer-alt position-absolute top-0 fs-sm mt-3 me-1"
+				></i>
 			</button>
 		</div>
 		<div class="text-center pe-3 border-end">
@@ -107,6 +111,7 @@
 
 					<a
 						@click="signOut()"
+						href=""
 						class="list-group-item list-group-item-action d-flex align-items-center"
 					>
 						<i class="bx bx-log-out fs-xl opacity-60 me-2"></i>
@@ -127,10 +132,10 @@
 			height: calc(100vh - 120px) !important;
 		}
 	}
-	
+
 	@media (min-width: 576px) {
 		.side-bar {
-			height: calc(100vh - 60px) ;
+			height: calc(100vh - 60px);
 		}
 	}
 </style>

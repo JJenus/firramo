@@ -1,3 +1,129 @@
+<script setup>
+	import { ref } from "vue";
+	import axios from "axios";
+	import { user } from "@/stores/user";
+	import { util } from "@/stores/utility";
+
+	const env = import.meta.env;
+	env.VITE_BE_API = util.backendApi;
+
+	console.log(env.VITE_BE_API);
+
+	const signIn = ref(true);
+	const loadingReg = ref(false);
+
+	const form = ref({
+		name: null,
+		email: null,
+		password: null,
+		cPassword: null,
+	});
+
+	const regError = ref(null);
+	const loginError = ref(null);
+
+	function register() {
+		regError.value = null;
+
+		if (loadingReg.value) {
+			return;
+		}
+		if (
+			!form.value.email ||
+			!form.value.name ||
+			!form.value.password ||
+			!form.value.cPassword
+		) {
+			regError.value = "Please fill form correctly";
+			return;
+		}
+
+		console.log(regError.value);
+
+		if (form.value.password !== form.value.cPassword) {
+			regError.value = "Passwords don't match";
+			return;
+		}
+
+		loadingReg.value = true;
+
+		const { name, email, password } = form.value;
+		console.log(email);
+
+		let config = {
+			method: "Post",
+			url: `${env.VITE_BE_API}/auth/register`,
+			data: {
+				name,
+				email,
+				password,
+			},
+		};
+
+		axios
+			.request(config)
+			.then((response) => {
+				console.log(response.data);
+				if (response.data.error) {
+					regError.value = response.data.error;
+				} else {
+					user.login(response.data);
+					window.location.href = "/app";
+				}
+			})
+			.catch(function (error) {
+				console.log(error);
+			})
+			.finally(() => {
+				loadingReg.value = false;
+			});
+	}
+
+	function sumitLogin() {
+		if (loadingReg.value) {
+			return;
+		}
+		if (!form.value.email || !form.value.password) {
+			loginError.value = "Please fill form correctly";
+			return;
+		}
+
+		console.log(loginError.value);
+
+		loadingReg.value = true;
+
+		const { email, password } = form.value;
+		console.log(email);
+
+		let config = {
+			method: "Post",
+			url: `${env.VITE_BE_API}/auth/login`,
+			data: {
+				email,
+				password,
+			},
+		};
+
+		axios
+			.request(config)
+			.then((response) => {
+				console.log(response.data);
+				if (response.data.error) {
+					loginError.value = response.data.error;
+				} else {
+					user.login(response.data);
+					window.location.href = "/app";
+				}
+			})
+			.catch(function (error) {
+				console.log(error);
+			})
+			.finally(() => {
+				loadingReg.value = false;
+			});
+	}
+</script>
+
 <template>
 	<!-- Modal with tabs and forms -->
 	<div class="modal" id="auth-modal" tabindex="-1" role="dialog">
@@ -13,7 +139,7 @@
 								data-bs-toggle="tab"
 								role="tab"
 								aria-selected="true"
-                                id="sign-in"
+								id="sign-in"
 							>
 								<i class="bx bx-lock-open fs-base me-2"></i>
 								Sign in
@@ -26,7 +152,7 @@
 								data-bs-toggle="tab"
 								role="tab"
 								aria-selected="false"
-                                id="sign-up"
+								id="sign-up"
 							>
 								<i class="bx bx-user fs-base me-2"></i>
 								Sign up
@@ -49,6 +175,7 @@
 							class="tab-pane fade show active"
 							autocomplete="off"
 							id="signin"
+							@submit.prevent="sumitLogin()"
 						>
 							<div class="mb-3">
 								<label class="form-label" for="email1"
@@ -59,17 +186,19 @@
 									type="email"
 									id="email1"
 									placeholder="johndoe@example.com"
+									v-model="form.email"
 								/>
 							</div>
 							<div class="mb-3">
-								<label class="form-label" for="pass1"
+								<label class="form-label" for="login-pass"
 									>Password</label
 								>
 								<div class="password-toggle">
 									<input
 										class="form-control"
 										type="password"
-										id="pass1"
+										id="login-pass"
+										v-model="form.password"
 									/>
 									<label class="password-toggle-btn">
 										<input
@@ -100,15 +229,24 @@
 								class="btn btn-primary d-block w-100"
 								type="submit"
 							>
-								Sign in
+								<span v-if="!loadingReg"> Sign in </span>
+								<span v-else>
+									<span
+										class="spinner-grow spinner-grow-sm"
+										role="status"
+										aria-hidden="true"
+									></span>
+									Loading...
+								</span>
 							</button>
 						</form>
 
 						<!-- Sign up form -->
 						<form
 							class="tab-pane fade"
-							autocomplete="off"
+							autocomplete="on"
 							id="signup"
+							@submit.prevent="register()"
 						>
 							<div class="mb-3">
 								<label class="form-label" for="name"
@@ -119,6 +257,7 @@
 									type="text"
 									id="name"
 									placeholder="John Doe"
+									v-model="form.name"
 								/>
 							</div>
 							<div class="mb-3">
@@ -130,6 +269,7 @@
 									type="email"
 									id="email2"
 									placeholder="johndoe@example.com"
+									v-model="form.email"
 								/>
 							</div>
 							<div class="mb-3">
@@ -141,6 +281,7 @@
 										class="form-control"
 										type="password"
 										id="pass2"
+										v-model="form.password"
 									/>
 									<label class="password-toggle-btn">
 										<input
@@ -159,6 +300,7 @@
 										class="form-control"
 										type="password"
 										id="pass3"
+										v-model="form.cPassword"
 									/>
 									<label class="password-toggle-btn">
 										<input
@@ -172,7 +314,15 @@
 								class="btn btn-primary d-block"
 								type="submit"
 							>
-								Sign up
+								<span v-if="!loadingReg"> Sign up </span>
+								<span v-else>
+									<span
+										class="spinner-grow spinner-grow-sm"
+										role="status"
+										aria-hidden="true"
+									></span>
+									Loading...
+								</span>
 							</button>
 						</form>
 					</div>

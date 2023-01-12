@@ -1,3 +1,5 @@
-<template>
-    
-</template>
+<script>
+	import { user } from "@/stores/user";
+</script>
+
+<template></template>

@@ -12,6 +12,9 @@ import Security from "../views/app/Security.vue";
 import CardsVue from "../views/app/Cards.vue";
 import PaymentsVue from "../views/app/Payments.vue";
 
+import { user } from "@/stores/user";
+
+
 const router = createRouter({
 	history: createWebHistory(import.meta.env.BASE_URL),
 	routes: [
@@ -20,6 +23,14 @@ const router = createRouter({
 			redirect: "/app/overview",
 			name: "app",
 			component: App,
+			beforeEnter: (to, from, next) => {
+				console.log(user.getUser())
+				if (!user.getUser()) {
+					next({ name: "home" });
+				} else {
+					next();
+				}
+			},
 			children: [
 				{
 					path: "overview",

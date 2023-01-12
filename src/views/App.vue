@@ -1,8 +1,43 @@
 <script setup>
+	import { ref, onMounted } from "vue";
+	import axios from "axios";
+	import { RouterView } from "vue-router";
+
 	import SidebarVue from "@/components/app/Sidebar.vue";
-	import Navbar from "@/components/app/Navbar.vue";
-	import { RouterLink, RouterView } from "vue-router";
 	import QuickTransactionVue from "../components/app/QuickTransaction.vue";
+	import { user } from "@/stores/user";
+
+	const env = import.meta.env;
+	const sessions = ref([]);
+
+	function loadSessions() {
+		let config = {
+			method: "GET",
+			url: `${env.VITE_BE_API}/users/${user.getUser().id}/sessions`,
+		};
+
+		axios
+			.request(config)
+			.then((response) => {
+				const session = user.getSession();
+				sessions.value = response.data;
+
+				const check = sessions.value.find(
+					(e) => e.deviceId == session.deviceId
+				);
+
+				if (!check) {
+					user.logout();
+				}
+			})
+			.catch(function (error) {
+				console.log(error);
+			});
+	}
+
+	onMounted(() => {
+		loadSessions();
+	});
 </script>
 
 <template>

@@ -1,11 +1,22 @@
 <script setup>
+	import { ref } from "vue";
 	import BankCardVue from "../../components/app/BankCard.vue";
+	import { user } from "@/stores/user";
+	import { util } from "@/stores/utility";
+
 	const AppName = import.meta.env.VITE_APP_NAME;
+	const appUser = ref(user.getUser());
+
+	function balance() {
+		return util.format(appUser.value.balance.currency, 2, ".", ",");
+	}
 </script>
 
 <template>
 	<div class="d-flex mb-3 px-2 align-items-center justify-content-between">
-		<span class="fs-4 fw-bold text-dark">$19,000</span>
+		<span class="fs-3 fw-bold text-dark"
+			>{{ appUser.balance.currency }} {{ balance() }}</span
+		>
 		<div class="fw-bold">
 			add
 			<button class="btn btn-outline-secondary ms-2 fw-bold p-1">
@@ -13,7 +24,7 @@
 			</button>
 		</div>
 	</div>
-	<BankCardVue></BankCardVue>
+	<BankCardVue :user="appUser.name"></BankCardVue>
 	<div class="d-flex my-3 justify-content-center">
 		<div class="w-75">
 			<hr />

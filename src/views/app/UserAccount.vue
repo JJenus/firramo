@@ -1,17 +1,84 @@
+<script setup>
+	import { user } from "@/stores/user";
+	import { ref } from "vue";
+
+	const appUser = ref(user.getUser());
+	const tempImg = ref("/assets/img/avatar/default-avatar.png");
+	const changed = ref(false);
+
+	function saveImage() {
+		changed.value = false;
+	}
+
+	function revert() {
+		changed.value = false;
+		appUser.value.imgUrl = user.getUser().imgUrl;
+	}
+
+	function selectImage() {
+		const input = document.querySelector("#select-profile-image");
+		input.click();
+	}
+
+	function newImage(evt) {
+		const input = evt.target;
+
+		if (input.files && input.files[0]) {
+			appUser.value.imgUrl = URL.createObjectURL(input.files[0]);
+			changed.value = true;
+		}
+	}
+
+	function save(){
+		// /axios stuf
+	}
+</script>
+
 <template>
 	<div class="ps-md-3 ps-lg-0 mt-md-2 py-md-4">
 		<!-- Team Style 2: Vertical -->
-		<div class="card card-body mb-4 card-hover bg-light border-0 text-center">
+		<div
+			class="card card-body mb-4 card-hover bg-light border-0 text-center"
+		>
 			<img
-				src="/assets/img/team/11.jpg"
-				class="d-block rounded-circle mx-auto mb-3"
+				:src="appUser.imgUrl !== null ? appUser.imgUrl : tempImg"
+				class="d-block rounded-circle mx-auto mb-2"
 				width="162"
-				alt="Cameron Williamson"
+				:alt="appUser.name"
 			/>
-			<h5 class="fw-medium fs-lg mb-1">Cameron Williamson</h5>
-			<p class="fs-sm mb-2">alakerejenus@gmail.com</p>
+			<h5 class="fw-medium fs-lg mb-1">{{ appUser.name }}</h5>
+			<p class="fs-sm mb-4">{{ appUser.email }}</p>
+
 			<div class="d-flex justify-content-center">
-				<button class="btn btn-outline-secondary btn-sm rounded-pill">Update</button>
+				<input
+					type="file"
+					accept="image/png, image/gif, image/jpeg"
+					@change="newImage($event)"
+					id="select-profile-image"
+					class="d-none"
+				/>
+				<button
+					v-if="changed"
+					@click="revert()"
+					class="btn btn-outline-danger btn-sm rounded-pill"
+				>
+					cancel
+				</button>
+
+				<button
+					@click="selectImage()"
+					class="btn btn-outline-secondary mx-2 btn-sm rounded-pill"
+				>
+					change
+				</button>
+
+				<button
+					v-if="changed"
+					@click="saveImage()"
+					class="btn btn-outline-primary btn-sm rounded-pill"
+				>
+					save
+				</button>
 			</div>
 		</div>
 
@@ -19,36 +86,20 @@
 
 		<!-- Basic info -->
 		<h2 class="h5 text-primary mb-4">Basic info</h2>
-		<form class="needs-validation border-bottom pb-3 pb-lg-4" novalidate>
+		<form @submit.prevent="save()" class="needs-validation border-bottom pb-3 pb-lg-4" novalidate>
 			<div class="row pb-2">
-				<div class="col-sm-6 mb-4">
-					<label for="fn" class="form-label fs-base"
-						>First name</label
-					>
+				<div class="col-sm-12 mb-4">
+					<label for="fn" class="form-label fs-base">Name</label>
 					<input
 						type="text"
 						id="fn"
 						class="form-control form-control-lg"
-						value="John"
+						v-model="appUser.name"
+						name="name"
 						required
 					/>
 					<div class="invalid-feedback">
 						Please enter your first name!
-					</div>
-				</div>
-				<div class="col-sm-6 mb-4">
-					<label for="sn" class="form-label fs-base"
-						>Second name</label
-					>
-					<input
-						type="text"
-						id="sn"
-						class="form-control form-control-lg"
-						value="Doe"
-						required
-					/>
-					<div class="invalid-feedback">
-						Please enter your second name!
 					</div>
 				</div>
 				<div class="col-sm-6 mb-4">
@@ -59,7 +110,7 @@
 						type="email"
 						id="email"
 						class="form-control form-control-lg"
-						value="jonny@email.com"
+						v-model="appUser.email"
 						required
 					/>
 					<div class="invalid-feedback">
@@ -75,12 +126,13 @@
 						type="text"
 						id="phone"
 						class="form-control form-control-lg"
+						v-model="appUser.phone"
 						data-format='{"numericOnly": true, "delimiters": ["+1 ", " ", " "], "blocks": [0, 3, 3, 2]}'
 						placeholder="+1 ___ ___ __"
 					/>
 				</div>
 			</div>
-			<div class="d-flex mb-3">
+			<div class="d-flex mb-3 d-none">
 				<button type="reset" class="btn btn-secondary me-3">
 					Cancel
 				</button>
@@ -88,67 +140,39 @@
 					Save changes
 				</button>
 			</div>
-		</form>
+		<!-- </form> -->
 
 		<!-- Address -->
 		<h2 class="h5 text-primary pt-1 pt-lg-3 my-4">Address</h2>
-		<form class="needs-validation border-bottom pb-2 pb-lg-4" novalidate>
+		<!-- <form class="needs-validation border-bottom pb-2 pb-lg-4" novalidate> -->
 			<div class="row pb-2">
 				<div class="col-sm-6 mb-4">
 					<label for="country" class="form-label fs-base"
 						>Country</label
 					>
-					<select
+					<input
+						type="text"
 						id="country"
-						class="form-select form-select-lg"
+						class="form-control form-control-lg"
+						v-model="appUser.country"
+						name="country"
 						required
-					>
-						<option value="" disabled>Choose country</option>
-						<option value="Australia">Australia</option>
-						<option value="Belgium">Belgium</option>
-						<option value="Canada">Canada</option>
-						<option value="Denmark">Denmark</option>
-						<option value="USA" selected>USA</option>
-					</select>
+					/>
 					<div class="invalid-feedback">
-						Please choose your country!
-					</div>
-				</div>
-				<div class="col-sm-6 mb-4">
-					<label for="state" class="form-label fs-base">State</label>
-					<select
-						id="state"
-						class="form-select form-select-lg"
-						required
-					>
-						<option value="" disabled>Choose state</option>
-						<option value="Arizona">Arizona</option>
-						<option value="California">California</option>
-						<option value="Iowa">Iowa</option>
-						<option value="Florida" selected>Florida</option>
-						<option value="Michigan">Michigan</option>
-						<option value="Texas">Texas</option>
-					</select>
-					<div class="invalid-feedback">
-						Please choose your state!
+						Please enter your country!
 					</div>
 				</div>
 				<div class="col-sm-6 mb-4">
 					<label for="city" class="form-label fs-base">City</label>
-					<select
-						id="city"
-						class="form-select form-select-lg"
+					<input
+						type="text"
+						id="country"
+						class="form-control form-control-lg"
+						v-model="appUser.city"
+						name="country"
 						required
-					>
-						<option value="" disabled>Choose city</option>
-						<option value="Boston">Boston</option>
-						<option value="Chicago">Chicago</option>
-						<option value="Los Angeles">Los Angeles</option>
-						<option value="Miami" selected>Miami</option>
-						<option value="New York">New York</option>
-						<option value="Philadelphia">Philadelphia</option>
-					</select>
-					<div class="invalid-feedback">Please choose your city!</div>
+					/>
+					<div class="invalid-feedback">Please enter your city!</div>
 				</div>
 				<div class="col-sm-6 mb-4">
 					<label for="zip" class="form-label fs-base">ZIP code</label>
@@ -156,35 +180,31 @@
 						type="text"
 						id="zip"
 						class="form-control form-control-lg"
+						v-model="appUser.zip"
+						name="zip"
 						required
 					/>
 					<div class="invalid-feedback">
 						Please enter your ZIP code!
 					</div>
 				</div>
-				<div class="col-12 mb-4">
+				<div class="col-6 mb-4">
 					<label for="address1" class="form-label fs-base"
-						>Address line 1</label
+						>Address line</label
 					>
 					<input
 						id="address1"
 						class="form-control form-control-lg"
+						v-model="appUser.address"
 						required
 					/>
 				</div>
-				<div class="col-12 mb-4">
-					<label for="address2" class="form-label fs-base"
-						>Address line 2
-						<small class="text-muted">(optional)</small></label
-					>
-					<input id="address2" class="form-control form-control-lg" />
-				</div>
 			</div>
 			<div class="d-flex mb-3">
-				<button type="reset" class="btn btn-secondary me-3">
+				<button type="reset" class="btn d-none btn-secondary me-3">
 					Cancel
 				</button>
-				<button type="submit" class="btn btn-primary">
+				<button type="submit" class="btn btn-secondary">
 					Save changes
 				</button>
 			</div>

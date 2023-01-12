@@ -1,10 +1,22 @@
-<script setup></script>
+<script setup>
+	import moment from "moment";
+
+	const props = defineProps({
+		user: {
+			required: false
+		}
+	});
+</script>
 
 <template>
 	<div class="card-group">
 		<div class="card">
 			<div class="logo">
-				<img width="16" src="/logo/feramo-logo-mini.png" alt="Firramo" />
+				<img
+					width="16"
+					src="/logo/feramo-logo-mini.png"
+					alt="Firramo"
+				/>
 			</div>
 			<div class="chip">
 				<img
@@ -13,7 +25,7 @@
 				/>
 			</div>
 			<div class="number">0123 4567 8910 1112</div>
-			<div class="name">Even Better</div>
+			<div class="name">{{user}}</div>
 			<div class="from">12/22</div>
 			<div class="to">01/25</div>
 			<div class="ring"></div>
