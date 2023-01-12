@@ -1,5 +1,3 @@
-import { ref } from "vue";
-
 export const user = {
 	user: null,
 	authKey: "firr@m0@key-auth",

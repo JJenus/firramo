@@ -8,129 +8,139 @@
 		<h2 class="h5 text-primary mb-4">Your saved payment methods</h2>
 
 		<!-- Item -->
-		<div
-			class="card d-sm-flex flex-sm-row align-items-sm-center justify-content-between border-0 shadow-sm p-3 p-md-4 mb-4"
-		>
-			<div class="d-flex align-items-center pe-sm-3">
-				<img
-					src="/assets/img/account/mastercard.svg"
-					width="84"
-					alt="Mastercard"
-				/>
-				<div class="ps-3 ps-sm-4">
-					<h6 class="mb-2">
-						**** **** **** 4298
-						<span class="badge bg-success ms-1">Primary</span>
-					</h6>
-					<div class="fs-sm">Expiration 09/26</div>
+		<div class="d-none">
+			<div
+				class="card d-sm-flex flex-sm-row align-items-sm-center justify-content-between border-0 shadow-sm p-3 p-md-4 mb-4"
+			>
+				<div class="d-flex align-items-center pe-sm-3">
+					<img
+						src="/assets/img/account/mastercard.svg"
+						width="84"
+						alt="Mastercard"
+					/>
+					<div class="ps-3 ps-sm-4">
+						<h6 class="mb-2">
+							**** **** **** 4298
+							<span class="badge bg-success ms-1">Primary</span>
+						</h6>
+						<div class="fs-sm">Expiration 09/26</div>
+					</div>
+				</div>
+				<div class="d-flex justify-content-end pt-3 pt-sm-0">
+					<button
+						type="button"
+						class="btn btn-outline-secondary px-3 px-xl-4 me-3"
+					>
+						<i class="bx bx-edit fs-xl me-lg-1 me-xl-2"></i>
+						<span class="d-none d-lg-inline">Edit</span>
+					</button>
+					<button
+						type="button"
+						class="btn btn-outline-danger px-3 px-xl-4"
+					>
+						<i class="bx bx-trash-alt fs-xl me-lg-1 me-xl-2"></i>
+						<span class="d-none d-lg-inline">Delete</span>
+					</button>
 				</div>
 			</div>
-			<div class="d-flex justify-content-end pt-3 pt-sm-0">
-				<button
-					type="button"
-					class="btn btn-outline-secondary px-3 px-xl-4 me-3"
-				>
-					<i class="bx bx-edit fs-xl me-lg-1 me-xl-2"></i>
-					<span class="d-none d-lg-inline">Edit</span>
-				</button>
-				<button
-					type="button"
-					class="btn btn-outline-danger px-3 px-xl-4"
-				>
-					<i class="bx bx-trash-alt fs-xl me-lg-1 me-xl-2"></i>
-					<span class="d-none d-lg-inline">Delete</span>
-				</button>
-			</div>
-		</div>
 
-		<!-- Item -->
-		<div
-			class="card d-sm-flex flex-sm-row align-items-sm-center justify-content-between border-0 shadow-sm p-3 p-md-4 mb-4"
-		>
-			<div class="d-flex align-items-center pe-sm-3">
-				<img src="/assets/img/account/visa.svg" width="84" alt="Visa" />
-				<div class="ps-3 ps-sm-4">
-					<h6 class="mb-2">**** **** **** 9276</h6>
-					<div class="fs-sm">Expiration 11/25</div>
+			<!-- Item -->
+			<div
+				class="card d-sm-flex flex-sm-row align-items-sm-center justify-content-between border-0 shadow-sm p-3 p-md-4 mb-4"
+			>
+				<div class="d-flex align-items-center pe-sm-3">
+					<img
+						src="/assets/img/account/visa.svg"
+						width="84"
+						alt="Visa"
+					/>
+					<div class="ps-3 ps-sm-4">
+						<h6 class="mb-2">**** **** **** 9276</h6>
+						<div class="fs-sm">Expiration 11/25</div>
+					</div>
+				</div>
+				<div class="d-flex justify-content-end pt-3 pt-sm-0">
+					<button
+						type="button"
+						class="btn btn-outline-secondary px-3 px-xl-4 me-3"
+					>
+						<i class="bx bx-edit fs-xl me-lg-1 me-xl-2"></i>
+						<span class="d-none d-lg-inline">Edit</span>
+					</button>
+					<button
+						type="button"
+						class="btn btn-outline-danger px-3 px-xl-4"
+					>
+						<i class="bx bx-trash-alt fs-xl me-lg-1 me-xl-2"></i>
+						<span class="d-none d-lg-inline">Delete</span>
+					</button>
 				</div>
 			</div>
-			<div class="d-flex justify-content-end pt-3 pt-sm-0">
-				<button
-					type="button"
-					class="btn btn-outline-secondary px-3 px-xl-4 me-3"
-				>
-					<i class="bx bx-edit fs-xl me-lg-1 me-xl-2"></i>
-					<span class="d-none d-lg-inline">Edit</span>
-				</button>
-				<button
-					type="button"
-					class="btn btn-outline-danger px-3 px-xl-4"
-				>
-					<i class="bx bx-trash-alt fs-xl me-lg-1 me-xl-2"></i>
-					<span class="d-none d-lg-inline">Delete</span>
-				</button>
-			</div>
-		</div>
 
-		<!-- Item -->
-		<div
-			class="card d-sm-flex flex-sm-row align-items-sm-center justify-content-between border-0 shadow-sm p-3 p-md-4 mb-4"
-		>
-			<div class="d-flex align-items-center pe-sm-3">
-				<img src="/assets/img/account/amex.svg" width="84" alt="Amex" />
-				<div class="ps-3 ps-sm-4">
-					<h6 class="mb-2">**** **** **** 3854</h6>
-					<div class="fs-sm">Expiration 03/26</div>
+			<!-- Item -->
+			<div
+				class="card d-sm-flex flex-sm-row align-items-sm-center justify-content-between border-0 shadow-sm p-3 p-md-4 mb-4"
+			>
+				<div class="d-flex align-items-center pe-sm-3">
+					<img
+						src="/assets/img/account/amex.svg"
+						width="84"
+						alt="Amex"
+					/>
+					<div class="ps-3 ps-sm-4">
+						<h6 class="mb-2">**** **** **** 3854</h6>
+						<div class="fs-sm">Expiration 03/26</div>
+					</div>
+				</div>
+				<div class="d-flex justify-content-end pt-3 pt-sm-0">
+					<button
+						type="button"
+						class="btn btn-outline-secondary px-3 px-xl-4 me-3"
+					>
+						<i class="bx bx-edit fs-xl me-lg-1 me-xl-2"></i>
+						<span class="d-none d-lg-inline">Edit</span>
+					</button>
+					<button
+						type="button"
+						class="btn btn-outline-danger px-3 px-xl-4"
+					>
+						<i class="bx bx-trash-alt fs-xl me-lg-1 me-xl-2"></i>
+						<span class="d-none d-lg-inline">Delete</span>
+					</button>
 				</div>
 			</div>
-			<div class="d-flex justify-content-end pt-3 pt-sm-0">
-				<button
-					type="button"
-					class="btn btn-outline-secondary px-3 px-xl-4 me-3"
-				>
-					<i class="bx bx-edit fs-xl me-lg-1 me-xl-2"></i>
-					<span class="d-none d-lg-inline">Edit</span>
-				</button>
-				<button
-					type="button"
-					class="btn btn-outline-danger px-3 px-xl-4"
-				>
-					<i class="bx bx-trash-alt fs-xl me-lg-1 me-xl-2"></i>
-					<span class="d-none d-lg-inline">Delete</span>
-				</button>
-			</div>
-		</div>
 
-		<!-- Item -->
-		<div
-			class="card d-sm-flex flex-sm-row align-items-sm-center justify-content-between border-0 shadow-sm p-3 p-md-4 mb-4"
-		>
-			<div class="d-flex align-items-center pe-sm-3">
-				<img
-					src="/assets/img/account/bitcoin.svg"
-					width="84"
-					alt="Bitcoin"
-				/>
-				<div class="ps-3 ps-sm-4">
-					<h6 class="mb-2">Bitcoin (BTC)</h6>
-					<div class="fs-sm">•••••••••• UNky</div>
+			<!-- Item -->
+			<div
+				class="card d-sm-flex flex-sm-row d-sm-none align-items-sm-center d-none justify-content-between border-0 shadow-sm p-3 p-md-4 mb-4"
+			>
+				<div class="d-flex align-items-center pe-sm-3">
+					<img
+						src="/assets/img/account/bitcoin.svg"
+						width="84"
+						alt="Bitcoin"
+					/>
+					<div class="ps-3 ps-sm-4">
+						<h6 class="mb-2">Bitcoin (BTC)</h6>
+						<div class="fs-sm">•••••••••• UNky</div>
+					</div>
 				</div>
-			</div>
-			<div class="d-flex justify-content-end pt-3 pt-sm-0">
-				<button
-					type="button"
-					class="btn btn-outline-secondary px-3 px-xl-4 me-3"
-				>
-					<i class="bx bx-edit fs-xl me-lg-1 me-xl-2"></i>
-					<span class="d-none d-lg-inline">Edit</span>
-				</button>
-				<button
-					type="button"
-					class="btn btn-outline-danger px-3 px-xl-4"
-				>
-					<i class="bx bx-trash-alt fs-xl me-lg-1 me-xl-2"></i>
-					<span class="d-none d-lg-inline">Delete</span>
-				</button>
+				<div class="d-flex justify-content-end pt-3 pt-sm-0">
+					<button
+						type="button"
+						class="btn btn-outline-secondary px-3 px-xl-4 me-3"
+					>
+						<i class="bx bx-edit fs-xl me-lg-1 me-xl-2"></i>
+						<span class="d-none d-lg-inline">Edit</span>
+					</button>
+					<button
+						type="button"
+						class="btn btn-outline-danger px-3 px-xl-4"
+					>
+						<i class="bx bx-trash-alt fs-xl me-lg-1 me-xl-2"></i>
+						<span class="d-none d-lg-inline">Delete</span>
+					</button>
+				</div>
 			</div>
 		</div>
 		<div class="py-2">

@@ -24,5 +24,5 @@ export const util = {
 		);
 	},
 
-	backendApi: location.href.split(":4")[0] + ":8080",
+	backendApi: import.meta.env.VITE_BE_API,
 };

@@ -1,3 +1,49 @@
+<script setup>
+	import axios from "axios";
+	import { user } from "@/stores/user";
+	import { util } from "@/stores/utility";
+	import { onMounted, ref } from "vue";
+	import Beneficiary from "@/components/app/main/Beneficiary.vue"
+
+	const env = import.meta.env;
+	env.VITE_BE_API = util.backendApi;
+
+	const transactions = ref({
+		withdrawals: [],
+		deposits: [],
+		transfers: [],
+	});
+
+	function loadTransactions() {
+		let config = {
+			method: "GET",
+			url: `${env.VITE_BE_API}/users/${user.getUser().id}/transactions`,
+		};
+
+		axios
+			.request(config)
+			.then((response) => {
+				console.log(response.data);
+				transactions.value = response.data;
+			})
+			.catch(function (error) {
+				console.log(error);
+			});
+	}
+
+	function checkTransactions() {
+		return (
+			transactions.value.deposits.length < 1 &&
+			transactions.value.withdrawals.length < 1 &&
+			transactions.value.transfers.length < 1
+		);
+	}
+
+	onMounted(() => {
+		loadTransactions();
+	});
+</script>
+
 <template>
 	<div
 		class="w-100 overflow-hidden h-100 position-sticky p-5 th-rounded bg-white"
@@ -18,17 +64,10 @@
 					Manual
 				</div>
 			</button>
-			<div class="ms-4">
-				<button class="btn th-rounded fs-6 p-2 btn-outline-secondary">
-					<div class="d-flex text-xxs flex-column align-items-center">
-						<span
-							class="btn btn-outline-info mb-2 btn-icon rounded-circle"
-						>
-							AJ
-						</span>
-						Alexander
-					</div>
-				</button>
+			
+			<!-- Beneficiaries -->
+			<div class="d-flex">
+				<Beneficiary></Beneficiary>
 			</div>
 		</div>
 
@@ -40,9 +79,9 @@
 				show all
 			</button>
 		</h3>
-		<small class="fw-bold fs-xs mb-3">Today</small>
+		<small class="fw-bold fs-xs mb-3 d-none">Today</small>
 		<!-- Pricing list view (List group) -->
-		<ul class="list-group list-group-flush">
+		<ul v-if="!checkTransactions()" class="list-group list-group-flush">
 			<!-- Pricing plan -->
 			<li
 				class="list-group-item mb-n2 border-0 d-flex flex-sm-row align-items-center justify-content-between p-3"
@@ -73,6 +112,9 @@
 				<div class="fw-bold fs-sm">+ 120 EUR</div>
 			</li>
 		</ul>
+		<p v-else class="text-center pt-5">
+			No transactions
+		</p>
 	</div>
 </template>
 
@@ -85,7 +127,7 @@
 		border-radius: 15px !important;
 	}
 
-	.btn-close{
+	.btn-close {
 		right: 0;
 	}
 </style>
