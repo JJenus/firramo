@@ -49,7 +49,7 @@
 						aria-label="Close"
 					></button>
 				</div>
-				<div class="offcanvas-body">
+				<div class="offcanvas-body" style="z-index: 3000;">
 					<ul class="navbar-nav me-auto mb-2 mb-lg-0">
 						<li class="nav-item">
 							<a
