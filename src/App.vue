@@ -1,11 +1,23 @@
 <script setup>
 	import { RouterView } from "vue-router";
 	import PerfectScrollbar from "perfect-scrollbar";
+	import { onMounted } from "vue";
 
 	const body = document.querySelector("#body");
 	const ps = new PerfectScrollbar(body);
 
 	ps.update();
+
+	onMounted(() => {
+		const tooltipTriggerList = document.querySelectorAll(
+			'[data-bs-toggle="tooltip"]'
+		);
+
+		console.log(tooltipTriggerList);
+		const tooltipList = [...tooltipTriggerList].map(
+			(tooltipTriggerEl) => new bootstrap.Tooltip(tooltipTriggerEl)
+		);
+	});
 </script>
 
 <template>

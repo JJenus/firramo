@@ -61,13 +61,14 @@
 					class="d-flex text-xxs flex-column fs-xs align-item-center justify-content-center"
 				>
 					<i class="bx bx-transfer fs-2 mb-1"></i>
-					Manual
+					Send
 				</div>
 			</button>
 			
 			<!-- Beneficiaries -->
-			<div class="d-flex">
+			<div class="d-flex align-items-center">
 				<Beneficiary></Beneficiary>
+				<span class="text-muted ms-3 fs-sm">No beneficiaries</span>
 			</div>
 		</div>
 
@@ -112,7 +113,7 @@
 				<div class="fw-bold fs-sm">+ 120 EUR</div>
 			</li>
 		</ul>
-		<p v-else class="text-center pt-5">
+		<p v-else class="text-center pt-5 text-muted">
 			No transactions
 		</p>
 	</div>

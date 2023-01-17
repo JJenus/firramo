@@ -1,11 +1,11 @@
 <template>
-	<div class="ms-4">
+	<div class="ms-4 d-none">
 		<button class="btn th-rounded fs-6 p-2 btn-outline-secondary">
 			<div class="d-flex text-xxs flex-column align-items-center">
 				<span class="btn btn-outline-info mb-2 btn-icon rounded-circle">
 					AJ
 				</span>
-				Alexander
+				<span style="max-width: 44px;" class="d-inline-block text-truncate">Alexander</span>
 			</div>
 		</button>
 	</div>

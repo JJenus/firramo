@@ -3,6 +3,7 @@
 	import BankCardVue from "../../components/app/BankCard.vue";
 	import { user } from "@/stores/user";
 	import { util } from "@/stores/utility";
+	import WithdrawModal from "../../components/app/WithdrawModal.vue";
 
 	const AppName = import.meta.env.VITE_APP_NAME;
 	const appUser = ref(user.getUser());
@@ -27,25 +28,46 @@
 		>
 
 		<div class="d-flex">
-			<div class="fw-bold me-3" @click="withdraw()">
-				<a style="text-decoration: none;" href="#" class="d-none text-dark d-md-inline">
+			<div
+				class="fw-bold me-3"
+				@click="withdraw()"
+				data-bs-toggle="modal"
+				data-bs-target="#withraw-modal"
+			>
+				<a
+					style="text-decoration: none"
+					href="#"
+					class="d-none text-dark d-md-inline"
+				>
 					withraw
 				</a>
-				<button class="btn btn-outline-secondary ms-2 fw-bold p-2 p-md-1">
-					<i class="bx bx-money-withdraw"></i>
+				<button
+					class="btn btn-outline-secondary ms-2 fw-bold p-2 p-md-1"
+				>
+					<i class="bx bx-wallet"></i>
 				</button>
 			</div>
 			<div class="fw-bold" @click="addMoney()">
-				<a style="text-decoration: none;" href="#" class="d-none text-dark d-md-inline">
+				<a
+					style="text-decoration: none"
+					href="#"
+					class="d-none text-dark d-md-inline"
+				>
 					add
 				</a>
-				<button class="btn btn-outline-secondary ms-2 fw-bold p-2 p-md-1">
+				<button
+					class="btn btn-outline-secondary ms-2 fw-bold p-2 p-md-1"
+				>
 					<i class="bx bx-plus"></i>
 				</button>
 			</div>
 		</div>
 	</div>
-	<BankCardVue :user="appUser.name"></BankCardVue>
+	
+	<div class="pe-md-5 px-md-5">
+		<BankCardVue :user="appUser.name"></BankCardVue>
+	</div>
+
 	<div class="d-flex my-3 justify-content-center">
 		<div class="w-75">
 			<hr />
@@ -95,5 +117,7 @@
 
 			<i class="bx bx-chevron-right fs-4"></i>
 		</div>
+
+		<WithdrawModal></WithdrawModal>
 	</div>
 </template>
