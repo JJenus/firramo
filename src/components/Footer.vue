@@ -22,9 +22,10 @@
 						{{ AppName }}
 					</div>
 					<p class="fs-sm pb-lg-3 mb-4">
-						If you like to find out more about
-						{{ AppName }} services please contact any of our support
-						lines.
+						Are you tired of feeling overwhelmed by your finances?
+						{{ AppName }} is here to change that. If you like to
+						find out more about {{ AppName }} services please
+						contact any of our support lines.
 					</p>
 				</div>
 				<div

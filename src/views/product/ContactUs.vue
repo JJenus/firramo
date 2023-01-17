@@ -1,10 +1,26 @@
 <script setup>
 	import Header from "@/components/product/Header.vue";
 	import Footer from "@/components/Footer.vue";
-	import { ref } from "vue";
+	import { onMounted, ref } from "vue";
 
 	const email = ref("support@firramo.com");
 	const AppName = import.meta.env.VITE_APP_NAME;
+	let chat = null;
+
+	function openChat() {
+		if (chat !== null) {
+			chat.click();
+		} else{
+			console.log("Chat is empty", chat);
+			chat = document.querySelector(".cc-dc5e");
+		}
+
+		console.log("Chat clicked");
+	}
+
+	onMounted(() => {
+		chat = document.querySelector(".cc-dc5e");
+	});
 </script>
 
 <template>
@@ -71,7 +87,7 @@
 								</div>
 								<div class="card-footer border-0 p-0">
 									<a
-										href="mailto:email@example.com"
+										href="mailto:support@firramo.com"
 										class="btn btn-lg btn-primary"
 										>Send email</a
 									>
@@ -87,7 +103,9 @@
 									<div
 										class="d-inline-block bg-secondary text-primary rounded-circle fs-3 lh-1 p-3 mb-3"
 									>
-                                    <i class='bx bx-message-square-minus'></i>
+										<i
+											class="bx bx-message-square-minus"
+										></i>
 									</div>
 									<p class="pb-2 pb-sm-3 mb-3">
 										If you need immediate assistance feel
@@ -96,7 +114,8 @@
 								</div>
 								<div class="card-footer border-0 p-0">
 									<a
-										href="tel:4065550120"
+										href="#"
+										@click="openChat()"
 										class="btn btn-lg btn-primary"
 										>Live chat</a
 									>

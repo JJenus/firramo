@@ -30,7 +30,8 @@
 					<p
 						class="fs-lg d-md-none d-xl-block pb-2 pb-md-0 mb-4 mb-md-5"
 					>
-						Make your investments and transactions even easier.
+						An easy-to-use platform and a dedicated team, here to
+						support you every step of the way.
 					</p>
 					<div
 						class="d-flex justify-content-center justify-content-md-start pb-2 pt-lg-2 pt-xl-0"

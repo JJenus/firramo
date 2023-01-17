@@ -46,8 +46,8 @@
 				>
 					<h2 class="h1 pb-2 pb-lg-3">Do more with {{ AppName }}</h2>
 					<p class="pb-2 mb-4 mb-lg-5">
-						Finance can not be more accessible. Connect in a
-						different level.
+						Experience financial freedom with {{ AppName }}, your
+						accessible and easy-to-use solution.
 					</p>
 					<hr />
 					<div
@@ -128,20 +128,20 @@
 
 		<!-- Feature section (Crypto bank) -->
 		<section class="container pt-2 pt-sm-4 pb-5 mb-md-2 mb-lg-4 mb-xl-5">
-			<div class="row align-items-center mb-2 pb-sm-3 pb-md-4">
+			<div class="row align-items-center mb-2 pb-sm-3 pb-md-4 mb-md-5">
 				<!-- Text -->
 				<div
 					class="col-md-5 col-lg-6 col-xl-5 offset-xl-1 order-md-2 text-center text-md-start mb-5 mb-md-0"
 				>
-					<h2 class="h1 pb-2 pb-lg-3">
-						Make Your Life a lot Easier with Crypto Investments
+					<h2 class="h1 pb-1 pb-lg-3 fs-5 mb-0">
+						Make Your Life a Lot Easier with {{ AppName }}
 					</h2>
 					<p class="pb-2 mb-4 mb-xl-5">
-						Keep your crypto and stocks in one place.
+						All in one.
 					</p>
 					<hr />
 					<div
-						class="d-flex flex-wrap flex-sm-nowrap justify-content-center justify-content-md-between pt-3"
+						class="d-flex flex-wrap flex-sm-nowrap justify-content-center justify-content-md-between pt-3 mb-md-5"
 					>
 						<img
 							src="/assets/img/landing/saas-3/feature-3/binance.svg"
@@ -189,7 +189,7 @@
 						style="max-width: 636px"
 					>
 						<img
-							src="/assets/img/landing/saas-3/feature-3/popup.png"
+							src="/assets/img/illustrations/send_money.jpg"
 							class="rellax position-absolute top-0 mt-n5"
 							alt="Card"
 							data-rellax-percentage="0.5"
@@ -210,12 +210,12 @@
 		</section>
 
 		<!-- How it works (Steps + Video) -->
-		<section class="container">
+		<section class="container mt-5">
 			<div
 				class="text-center pb-4 pb-md-0 mb-2 mb-md-5 mx-auto"
 				style="max-width: 530px"
 			>
-				<h2 class="h1">How Does It Work?</h2>
+				<h2 class="h1 mt-md-5">How Does It Work?</h2>
 				<p class="mb-0">Simple steps to get started.</p>
 			</div>
 
@@ -589,7 +589,7 @@
 		</section>
 
 		<!-- CTA -->
-		<section class="container">
+		<section class="container d-none">
 			<div
 				class="dark-mode bg-dairk bg-size-cover bg-position-center bg-repeat-0 position-relative overflow-hidden rounded-3 py-lg-3 py-xl-5 px-4 px-lg-5 px-xl-0"
 				style="

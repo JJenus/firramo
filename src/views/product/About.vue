@@ -57,12 +57,11 @@
 							class="fs-xl pb-4 mb-1 mb-md-2 mb-lg-3"
 							style="max-width: 526px"
 						>
-							We are a dedicated team of passionate product
-							managers, full stack developers, UX/UI designers, QA
-							engineers and marketing experts helping businesses
-							of every size — from new startups to public
-							companies — launch their projects using our
-							software.
+							At Firramo, we prioritize transparency, security,
+							and customer satisfaction. Our platform offers a
+							range of financial tools and resources, and our team
+							is available to assist you. Trust us to help
+							simplify your finances.
 						</p>
 						<img
 							src="/assets/img/about/clutch-dark.png"
@@ -403,7 +402,9 @@
 							</a>
 							<div class="pt-4">
 								<h6 class="mb-1">Facebook</h6>
-								<p class="fs-sm text-muted mb-0">silicon</p>
+								<p class="fs-sm text-muted mb-0">
+									{{ AppName }}
+								</p>
 							</div>
 						</div>
 					</div>
