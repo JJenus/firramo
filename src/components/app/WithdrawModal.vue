@@ -1,17 +1,62 @@
 <script setup>
-	import { onMounted } from "vue";
+	import { onMounted, ref } from "vue";
+	import swal from "sweetalert";
+
 	const env = import.meta.env;
 	const AppName = env.VITE_APP_NAME;
+	const method = ref(null);
 
-	onMounted(() => {
-		const tooltipTriggerList = document.querySelectorAll(
-			'[data-bs-toggle="tooltip"]'
-		);
+	function next() {
+		if (method.value === null) {
+			swal({
+				title: "Payment method",
+				text: "Select preferred method",
+				icon: "error",
+				buttons: {
+					close: {
+						text: "Close",
+						value: false,
+						visible: true,
+						className: "btn btn-outline-primary",
+						closeModal: true,
+					},
+				},
+			});
+		} else {
+			swal({
+				title: "Verify",
+				html: "<p class='text-center'>Click on start verification or come back at your convinience</p>",
+				icon: "warning",
+				buttons: {
+					verification: {
+						text: "Start verification",
+						value: true,
+						visible: true,
+						className: "btn btn-outline-secondary",
+						closeModal: true,
+					},
+					close: {
+						text: "Close",
+						value: false,
+						visible: true,
+						className: "btn btn-outline-primary",
+						closeModal: true,
+					},
+				},
+				dangerMode: false,
+			}).then((next) => {
+				if (next) {
+					// open verification dialogue
+					const button = document.querySelector("#withraw-modal .btn-close");
+					button.click();
+				} else {
+					// do nothing
+				}
+			});
+		}
+	}
 
-		const tooltipList = [...tooltipTriggerList].map(
-			(tooltipTriggerEl) => new bootstrap.Tooltip(tooltipTriggerEl)
-		);
-	});
+	onMounted(() => {});
 </script>
 
 <template>
@@ -50,7 +95,13 @@
 								<h5 class="mb-2 fs-6">Send to</h5>
 								<div class="d-flex">
 									<button
-										class="btn me-2 btn-icon btn-outline-secondary border border-dark rounded-circle"
+										@click="method = AppName"
+										:class="
+											method === AppName
+												? 'btn-outline-primary'
+												: 'btn-outline-secondary'
+										"
+										class="btn me-2 btn-icon rounded-circle"
 										data-bs-toggle="tooltip"
 										data-bs-placement="left"
 										data-bs-custom-class="custom-tooltip"
@@ -60,7 +111,13 @@
 									</button>
 
 									<button
-										class="btn me-2 btn-icon btn-outline-secondary"
+										@click="method = 'paypal'"
+										:class="
+											method === 'paypal'
+												? 'btn-outline-primary'
+												: 'btn-outline-secondary'
+										"
+										class="btn me-2 btn-icon"
 										data-bs-toggle="tooltip"
 										data-bs-placement="top"
 										data-bs-custom-class="custom-tooltip"
@@ -69,7 +126,13 @@
 										<i class="bx bxl-paypal"></i>
 									</button>
 									<button
-										class="btn me-2 btn-icon btn-outline-secondary"
+										@click="method = 'venmo'"
+										:class="
+											method === 'venmo'
+												? 'btn-outline-primary'
+												: 'btn-outline-secondary'
+										"
+										class="btn me-2 btn-icon"
 										data-bs-toggle="tooltip"
 										data-bs-placement="bottom"
 										data-bs-custom-class="custom-tooltip"
@@ -79,7 +142,13 @@
 									</button>
 
 									<button
-										class="btn me-2 btn-icon btn-outline-secondary"
+										@click="method = 'card'"
+										:class="
+											method === 'card'
+												? 'btn-outline-primary'
+												: 'btn-outline-secondary'
+										"
+										class="btn me-2 btn-icon"
 										data-bs-toggle="tooltip"
 										data-bs-placement="right"
 										data-bs-custom-class="custom-tooltip"
@@ -92,6 +161,7 @@
 							<button
 								class="btn btn-secondary d-block w-100"
 								type="submit"
+								@click="next"
 							>
 								Next
 							</button>
