@@ -24,7 +24,7 @@
 			});
 		} else {
 			swal({
-				title: "Verify",
+				title: "Verify account",
 				html: "<p class='text-center'>Click on start verification or come back at your convinience</p>",
 				icon: "warning",
 				buttons: {

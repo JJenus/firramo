@@ -1,5 +1,40 @@
 <script setup>
 	import { user } from "@/stores/user";
+	import swal from "sweetalert";
+
+	function addCard() {
+		swal({
+			title: "Verify account",
+			icon: "warning",
+			buttons: {
+				verification: {
+					text: "Start verification",
+					value: true,
+					visible: true,
+					className: "btn btn-outline-secondary",
+					closeModal: true,
+				},
+				close: {
+					text: "Close",
+					value: false,
+					visible: true,
+					className: "btn btn-outline-primary",
+					closeModal: true,
+				},
+			},
+			dangerMode: false,
+		}).then((next) => {
+			if (next) {
+				// open verification dialogue
+				const button = document.querySelector(
+					"#withraw-modal .btn-close"
+				);
+				button.click();
+			} else {
+				// do nothing
+			}
+		});
+	}
 </script>
 
 <template>
@@ -144,7 +179,7 @@
 			</div>
 		</div>
 		<div class="py-2">
-			<button type="button" class="btn btn-primary ps-4">
+			<button @click="addCard()" type="button" class="btn btn-primary ps-4">
 				<i class="bx bx-plus fs-xl me-2"></i>
 				Add new payment method
 			</button>
