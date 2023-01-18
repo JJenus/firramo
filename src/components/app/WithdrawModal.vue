@@ -1,12 +1,13 @@
 <script setup>
 	import { onMounted } from "vue";
+	const env = import.meta.env;
+	const AppName = env.VITE_APP_NAME;
 
 	onMounted(() => {
 		const tooltipTriggerList = document.querySelectorAll(
 			'[data-bs-toggle="tooltip"]'
 		);
 
-		console.log(tooltipTriggerList);
 		const tooltipList = [...tooltipTriggerList].map(
 			(tooltipTriggerEl) => new bootstrap.Tooltip(tooltipTriggerEl)
 		);
@@ -22,7 +23,7 @@
 						class="d-flex align-items-center justify-content-center w-100 fs-5"
 						id="staticBackdropLabel"
 					>
-						<i class="bx bx-wallet me-2 fs-3"></i> Withdraw
+						<i class="bx bx-transfer-alt me-2 fs-3"></i> Send
 					</div>
 					<button
 						type="button"
@@ -40,17 +41,28 @@
 								>
 								<input
 									class="form-control text-dark text-center fw-bold form-control-lg"
+									data-format='{"numeral": true}'
 									type="text"
 									value="0.0"
 								/>
 							</div>
 							<div class="mb-3">
-								<h5 class="mb-2 fs-6">Withdraw to</h5>
+								<h5 class="mb-2 fs-6">Send to</h5>
 								<div class="d-flex">
+									<button
+										class="btn me-2 btn-icon btn-outline-secondary border border-dark rounded-circle"
+										data-bs-toggle="tooltip"
+										data-bs-placement="left"
+										data-bs-custom-class="custom-tooltip"
+										:data-bs-title="AppName"
+									>
+										<i class="bx bxl-facebook"></i>
+									</button>
+
 									<button
 										class="btn me-2 btn-icon btn-outline-secondary"
 										data-bs-toggle="tooltip"
-										data-bs-placement="left"
+										data-bs-placement="top"
 										data-bs-custom-class="custom-tooltip"
 										data-bs-title="Paypal"
 									>

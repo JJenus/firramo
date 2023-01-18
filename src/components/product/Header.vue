@@ -101,7 +101,7 @@
 					</a>
 				</div>
 			</div>
-			<div class="light-mode d-none pe-lg-1 ms-auto me-4">
+			<div class="light-mode d-noine pe-lg-1 ms-auto me-4">
 				<div
 					class="form-check form-switch mode-switch"
 					data-bs-toggle="mode"

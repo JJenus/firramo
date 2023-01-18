@@ -4,6 +4,7 @@
 	import { user } from "@/stores/user";
 	import { util } from "@/stores/utility";
 	import WithdrawModal from "../../components/app/WithdrawModal.vue";
+	import AddMoneyModal from "../../components/app/AddMoneyModal.vue";
 
 	const AppName = import.meta.env.VITE_APP_NAME;
 	const appUser = ref(user.getUser());
@@ -39,21 +40,26 @@
 					href="#"
 					class="d-none text-dark d-md-inline"
 				>
-					withraw
+					Send
 				</a>
 				<button
 					class="btn btn-outline-secondary ms-2 fw-bold p-2 p-md-1"
 				>
-					<i class="bx bx-wallet"></i>
+					<i class="bx bx-transfer-alt"></i>
 				</button>
 			</div>
-			<div class="fw-bold" @click="addMoney()">
+			<div
+				class="fw-bold"
+				@click="addMoney()"
+				data-bs-toggle="modal"
+				data-bs-target="#add-money-modal"
+			>
 				<a
 					style="text-decoration: none"
 					href="#"
 					class="d-none text-dark d-md-inline"
 				>
-					add
+					Add
 				</a>
 				<button
 					class="btn btn-outline-secondary ms-2 fw-bold p-2 p-md-1"
@@ -63,7 +69,7 @@
 			</div>
 		</div>
 	</div>
-	
+
 	<div class="pe-md-5 px-md-5">
 		<BankCardVue :user="appUser.name"></BankCardVue>
 	</div>

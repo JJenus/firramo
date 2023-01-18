@@ -6,6 +6,7 @@
 	import SidebarVue from "@/components/app/Sidebar.vue";
 	import QuickTransactionVue from "../components/app/QuickTransaction.vue";
 	import { user } from "@/stores/user";
+	import AddMoneyModal from "../components/app/AddMoneyModal.vue";
 
 	const env = import.meta.env;
 	const sessions = ref([]);
@@ -63,6 +64,7 @@
 				>
 					<QuickTransactionVue></QuickTransactionVue>
 				</div>
+				<AddMoneyModal></AddMoneyModal>
 			</div>
 		</section>
 	</main>

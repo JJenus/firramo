@@ -51,7 +51,7 @@
 					role="tab"
 				>
 					<i class="bx bx-money-withdraw opacity-70 me-2"></i>
-					Withdrawal
+					Payments
 				</a>
 			</li>
 			<li class="nav-item">
@@ -89,7 +89,7 @@
 					v-if="transactions.withdrawals.length < 1"
 					class="text-center"
 				>
-					No withdrawals
+					No payments
 				</p>
 			</div>
 			<div class="tab-pane fade" id="deposit-transaction" role="tabpanel">

@@ -3,7 +3,7 @@
 	import { user } from "@/stores/user";
 	import { util } from "@/stores/utility";
 	import { onMounted, ref } from "vue";
-	import Beneficiary from "@/components/app/main/Beneficiary.vue"
+	import Beneficiary from "@/components/app/main/Beneficiary.vue";
 
 	const env = import.meta.env;
 	env.VITE_BE_API = util.backendApi;
@@ -56,7 +56,11 @@
 		></button>
 		<h3 class="fs-6 mb-3">Quick transactions</h3>
 		<div class="d-flex mb-4">
-			<button class="btn th-rounded p-2 btn-outline-secondary">
+			<button
+				class="btn th-rounded p-2 btn-outline-secondary"
+				data-bs-toggle="modal"
+				data-bs-target="#withraw-modal"
+			>
 				<div
 					class="d-flex text-xxs flex-column fs-xs align-item-center justify-content-center"
 				>
@@ -64,7 +68,7 @@
 					Send
 				</div>
 			</button>
-			
+
 			<!-- Beneficiaries -->
 			<div class="d-flex align-items-center">
 				<Beneficiary></Beneficiary>
@@ -76,9 +80,9 @@
 			class="h6 mb-0 mt-3 d-flex align-items-center justify-content-between"
 		>
 			<span> Recent activity </span>
-			<button class="btn btn-sm btn-outline-secondary p-2 py-1">
+			<a href="transactions" class="btn btn-sm btn-outline-secondary p-2 py-1">
 				show all
-			</button>
+			</a>
 		</h3>
 		<small class="fw-bold fs-xs mb-3 d-none">Today</small>
 		<!-- Pricing list view (List group) -->
@@ -113,9 +117,7 @@
 				<div class="fw-bold fs-sm">+ 120 EUR</div>
 			</li>
 		</ul>
-		<p v-else class="text-center pt-5 text-muted">
-			No transactions
-		</p>
+		<p v-else class="text-center pt-5 text-muted">No transactions</p>
 	</div>
 </template>
 
