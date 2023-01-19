@@ -2,9 +2,29 @@
 	import { onMounted, ref } from "vue";
 	import swal from "sweetalert";
 	import Camera from "./Camera.vue";
+	import { util } from "../../stores/utility";
 
 	const env = import.meta.env;
 	const AppName = env.VITE_APP_NAME;
+	const camera = ref();
+	const imgIdUrl = ref("/assets/img/about/hero-bg.svg");
+
+	function selectImage() {
+		const input = document.querySelector("#select-id-image");
+		input.click();
+	}
+
+	function newImage(evt) {
+		const input = evt.target;
+
+		if (input.files && input.files[0]) {
+			imgIdUrl.value = URL.createObjectURL(input.files[0]);
+		}
+	}
+
+	function save(){
+		// get cam file and id file upload to uploadio
+	}
 
 	onMounted(() => {});
 </script>
@@ -20,7 +40,7 @@
 	</button>
 	<div class="modal fade" id="verification-modal" tabindex="-1" role="dialog">
 		<div
-			class="modal-dialog modal-dialog-tcentered modal-fullscreen-sm-down"
+			class="modal-dialog modal-dialog-centered modal-fulolscreen-sm-down"
 			role="document"
 		>
 			<div class="modal-content border-dark border th-rounded">
@@ -40,7 +60,37 @@
 					></button>
 				</div>
 				<div class="modal-body h-100">
-					<Camera></Camera>
+					<Camera
+						v-if="util.capturedVerification.value === false"
+						ref="camera"
+					></Camera>
+					<div
+						v-else
+						@click="selectImage()"
+						class="d-flex flex-column align-items-center justify-content-center"
+					>
+						<h5 class="h6 mb-3">Upload a valid ID</h5>
+						<div class="mb-4">
+							<img
+								:src="imgIdUrl"
+								width="220"
+								class="img-fluid"
+								alt="id"
+							/>
+							<input
+								type="file"
+								accept="image/png, image/gif, image/jpeg"
+								@change="newImage($event)"
+								id="select-id-image"
+								class="d-none"
+							/>
+						</div>
+						<button
+							class="btn btn-outline-secondary"
+						>
+							Select image
+						</button>
+					</div>
 				</div>
 			</div>
 		</div>

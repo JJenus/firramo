@@ -1,3 +1,5 @@
+import { ref } from "vue";
+
 export const util = {
 	format: function (number, decPlaces = 2, decSep = ".", thouSep = ",") {
 		(decPlaces = isNaN((decPlaces = Math.abs(decPlaces))) ? 2 : decPlaces),
@@ -25,4 +27,6 @@ export const util = {
 	},
 
 	backendApi: import.meta.env.VITE_BE_API,
+
+	capturedVerification: ref(false)
 };

@@ -20,7 +20,7 @@
 	}
 
 	onMounted(() => {
-		document.querySelector("#btn-verify-modal").click();
+		// document.querySelector("#btn-verify-modal").click();
 	});
 </script>
 

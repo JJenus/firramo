@@ -1,9 +1,6 @@
 <script setup>
-	// The width and height of the captured photo. We will set the
-	// width to the value defined here, but the height will be
-	// calculated based on the aspect ratio of the input stream.
-
 	import { ref } from "vue";
+	import { util } from "../../stores/utility";
 
 	const width = 150; // We will scale the photo width to this
 	let height = 0; // This will be computed based on the input stream
@@ -20,12 +17,14 @@
 	let video = null;
 	let canvas = null;
 	let photo = ref(null);
-	let startbutton = null;
 
 	function startup() {
 		video = document.getElementById("video");
 		canvas = document.getElementById("canvas");
-		startbutton = document.getElementById("startbutton");
+
+		var ctracker = new clm.tracker();
+		ctracker.init();
+		ctracker.start(video);
 
 		navigator.mediaDevices
 			.getUserMedia({ video: true, audio: false })
@@ -41,49 +40,14 @@
 			"canplay",
 			(ev) => {
 				if (!streaming.value) {
-					height = video.videoHeight / (video.videoWidth / width);
-
-					// Firefox currently has a bug where the height can't be read from
-					// the video, so we will make assumptions if this happens.
-
-					if (isNaN(height)) {
-						height = width / (4 / 3);
-					}
-
 					height = width;
-
-					// video.setAttribute("width", width);
-					// video.setAttribute("height", height);
-					// canvas.setAttribute("width", width);
-					// canvas.setAttribute("height", height);
 					streaming.value = true;
 				}
 			},
 			false
 		);
 
-		startbutton.addEventListener(
-			"click",
-			(ev) => {
-				takepicture();
-				ev.preventDefault();
-			},
-			false
-		);
-
 		clearphoto();
-	}
-
-	// Fill the photo with an indication that none has been
-	// captured.
-
-	function clearphoto() {
-		const context = canvas.getContext("2d");
-		context.fillStyle = "#FFFFFF";
-		context.fillRect(0, 0, canvas.width, canvas.height);
-
-		const data = canvas.toDataURL("image/png");
-		photo.value = data;
 	}
 
 	// Capture a photo by fetching the current contents of the video
@@ -99,13 +63,20 @@
 		if (width && height) {
 			canvas.width = width;
 			canvas.height = height;
-			context.drawImage(video, 0, 0, width, height);
+			context.drawImage(
+				document.getElementById("vidme-id").children[0],
+				0,
+				0,
+				width,
+				height
+			);
 
 			const data = canvas.toDataURL("image/png");
 			photo.value = data;
 
 			setTimeout(() => {
 				stop();
+				util.capturedVerification.value = true;
 			}, 1000);
 		} else {
 			clearphoto();
@@ -129,35 +100,52 @@
 	}
 
 	function stop() {
+		video.pause();
 		video.srcObject.getTracks()[0].stop();
 		streaming.value = false;
+	}
+
+	// Fill the photo with an indication that none has been
+	// captured.
+
+	function clearphoto() {
+		const context = canvas.getContext("2d");
+		context.fillStyle = "#FFFFFF";
+		context.fillRect(0, 0, canvas.width, canvas.height);
+
+		const data = canvas.toDataURL("image/png");
+		photo.value = data;
 	}
 </script>
 
 <template>
 	<div class="d-flex align-items-center h-100 justify-content-center">
-		<canvas id="canvas" class="d-none"></canvas>
-
 		<div class="row align-items-center justify-content-center">
-			<div v-if="!captured" class="col-6 d-flex justify-content-center">
-				<div :style="'width:'+width+'px; height:'+width+'px;'" class="camera d-block border position-relative rounded-circle p-0 overflow-hidden">
+			<canvas id="canvas" class="d-none"></canvas>
+			<div class="col-6 d-flex justify-content-center mb-5">
+				<div
+					id="vidme-id"
+					:style="'width:' + width + 'px; height:' + width + 'px;'"
+					class="camera d-block border border-dark position-relative rounded-circle p-0 overflow-hidden"
+				>
 					<video
-						style="left: 0px; top: -50px; height: 250px; width: 200px; margin-left: -2.8rem !important;"
+						style="
+							left: 0px;
+							top: -50px;
+							height: 250px;
+							width: 200px;
+							margin-left: -2.8rem !important;
+						"
 						id="video"
 						autoplay
-						class=" m-0 p-0 position-absolute d-flex justify-content-center align-items-center"
+						class="m-0 p-0 position-absolute d-flex justify-content-center align-items-center"
 					>
-						<source
-							src="https://mdbcdn.b-cdn.net/img/video/Tropical.mp4"
-							class="rounded-circle"
-							type="video/mp4"
-						/>
 						Video stream not available.
 					</video>
 				</div>
 			</div>
 
-			<div v-else="captured" class="col-6">
+			<div class="col-6 d-none">
 				<div class="output">
 					<img
 						class="img-fluid rounded-circle"
@@ -174,17 +162,20 @@
 						:class="
 							streaming
 								? 'btn-outline-danger'
-								: 'btn-outline-success'
+								: 'btn-outline-primary'
 						"
-						@click="startCamera()"
-						class="btn me-2 mb-2"
+						@click.prevent="startCamera()"
+						class="btn mb-2 me-2"
+						type="button"
 					>
 						<span v-if="!streaming">Start</span>
 						<span v-else>Stop</span>
 					</button>
+
 					<button
-						id="startbutton"
-						class="btn btn-outline-primary mb-2"
+						@click.prevent="takepicture()"
+						class="btn mb-2 btn-outline-secondary"
+						type="button"
 					>
 						Capture
 					</button>
