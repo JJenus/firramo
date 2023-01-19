@@ -7,6 +7,8 @@
 	import QuickTransactionVue from "../components/app/QuickTransaction.vue";
 	import { user } from "@/stores/user";
 	import AddMoneyModal from "../components/app/AddMoneyModal.vue";
+	import WithdrawModal from "../components/app/WithdrawModal.vue";
+	import VerificationModal from "../components/app/VerificationModal.vue";
 
 	const env = import.meta.env;
 	const sessions = ref([]);
@@ -43,9 +45,11 @@
 
 <template>
 	<main class="page-wrapper vh-100 big-custom">
-		<!-- <Navbar></Navbar> -->
 		<!-- Page content -->
 		<section class="container-fluid pt-2">
+			<AddMoneyModal></AddMoneyModal>
+			<WithdrawModal></WithdrawModal>
+			<VerificationModal></VerificationModal>
 			<div class="row p-md-3">
 				<!-- Sidebar (User info + Account menu) -->
 				<aside class="col-lg-3 col-md-4 bordder-end pb-5 mb-3 mb-lg-n5">
@@ -64,7 +68,6 @@
 				>
 					<QuickTransactionVue></QuickTransactionVue>
 				</div>
-				<AddMoneyModal></AddMoneyModal>
 			</div>
 		</section>
 	</main>

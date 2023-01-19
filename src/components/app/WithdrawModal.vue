@@ -46,9 +46,9 @@
 				dangerMode: false,
 			}).then((next) => {
 				if (next) {
+					document.querySelector(".btn-close").click();
 					// open verification dialogue
-					const button = document.querySelector("#withraw-modal .btn-close");
-					button.click();
+					document.querySelector("#btn-verify-modal").click();
 				} else {
 					// do nothing
 				}

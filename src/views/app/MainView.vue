@@ -1,10 +1,8 @@
 <script setup>
-	import { ref } from "vue";
+	import { ref, onMounted } from "vue";
 	import BankCardVue from "../../components/app/BankCard.vue";
 	import { user } from "@/stores/user";
 	import { util } from "@/stores/utility";
-	import WithdrawModal from "../../components/app/WithdrawModal.vue";
-	import AddMoneyModal from "../../components/app/AddMoneyModal.vue";
 
 	const AppName = import.meta.env.VITE_APP_NAME;
 	const appUser = ref(user.getUser());
@@ -20,6 +18,10 @@
 	function withdraw() {
 		console.log("Withdraw");
 	}
+
+	onMounted(() => {
+		document.querySelector("#btn-verify-modal").click();
+	});
 </script>
 
 <template>
@@ -123,7 +125,5 @@
 
 			<i class="bx bx-chevron-right fs-4"></i>
 		</div>
-
-		<WithdrawModal></WithdrawModal>
 	</div>
 </template>

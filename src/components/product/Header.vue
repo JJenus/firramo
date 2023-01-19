@@ -101,28 +101,7 @@
 					</a>
 				</div>
 			</div>
-			<div class="light-mode d-noine pe-lg-1 ms-auto me-4">
-				<div
-					class="form-check form-switch mode-switch"
-					data-bs-toggle="mode"
-				>
-					<input
-						type="checkbox"
-						class="form-check-input"
-						id="theme-mode"
-					/>
-					<label
-						class="form-check-label d-none d-sm-block"
-						for="theme-mode"
-						>Light</label
-					>
-					<label
-						class="form-check-label d-none d-sm-block"
-						for="theme-mode"
-						>Dark</label
-					>
-				</div>
-			</div>
+		
 			<button
 				type="button"
 				class="navbar-toggler"
