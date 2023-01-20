@@ -23,7 +23,7 @@
 		axios
 			.request(config)
 			.then((response) => {
-				console.log(response.data);
+				// console.log(response.data);
 				transactions.value = response.data;
 			})
 			.catch(function (error) {

@@ -1,13 +1,14 @@
 <script setup>
 	import { onMounted, ref } from "vue";
-	import swal from "sweetalert";
 	import Camera from "./Camera.vue";
-	import { util } from "../../stores/utility";
+	import { util, alert } from "../../stores/utility";
+	import axios from "axios";
 
 	const env = import.meta.env;
 	const AppName = env.VITE_APP_NAME;
 	const camera = ref();
 	const imgIdUrl = ref("/assets/img/about/hero-bg.svg");
+	const imageFile = ref(null);
 
 	function selectImage() {
 		const input = document.querySelector("#select-id-image");
@@ -19,11 +20,21 @@
 
 		if (input.files && input.files[0]) {
 			imgIdUrl.value = URL.createObjectURL(input.files[0]);
+			imageFile.value = input.files[0];
 		}
 	}
 
-	function save(){
-		// get cam file and id file upload to uploadio
+	function submit() {
+		if(util.camera.imageFile.value === null){
+			alert.error("Facial Verification Error", "Please go back and capture face properly")
+			return;
+		}
+		if(imageFile.value === null){
+			alert.error("ID Error", "Please select a valid ID")
+			return;
+		}
+		alert.success("Thanks", "You'll notified of verification status.")
+		document.querySelector("#verification-modal .btn-close").click();
 	}
 
 	onMounted(() => {});
@@ -61,22 +72,31 @@
 				</div>
 				<div class="modal-body h-100">
 					<Camera
-						v-if="util.capturedVerification.value === false"
+						v-if="util.camera.captured.value === false"
 						ref="camera"
 					></Camera>
 					<div
 						v-else
-						@click="selectImage()"
 						class="d-flex flex-column align-items-center justify-content-center"
 					>
 						<h5 class="h6 mb-3">Upload a valid ID</h5>
-						<div class="mb-4">
+						<div
+							@click="selectImage()"
+							class="mb-4 position-relative d-flex align-items-center justify-content-center"
+						>
 							<img
 								:src="imgIdUrl"
 								width="220"
 								class="img-fluid"
 								alt="id"
 							/>
+
+							<button
+								v-if="imageFile"
+								class="btn position-absolute opacity-3 btn-outline-dark btn-icon rounded-circle"
+							>
+								<i class="bx bx-plus fs-3"></i>
+							</button>
 							<input
 								type="file"
 								accept="image/png, image/gif, image/jpeg"
@@ -86,9 +106,19 @@
 							/>
 						</div>
 						<button
+							v-if="!imageFile"
+							@click="selectImage()"
 							class="btn btn-outline-secondary"
 						>
 							Select image
+						</button>
+
+						<button
+							v-else
+							@click="submit()"
+							class="btn btn-outline-secondary"
+						>
+							Submit
 						</button>
 					</div>
 				</div>

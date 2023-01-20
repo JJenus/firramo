@@ -22,10 +22,6 @@
 		video = document.getElementById("video");
 		canvas = document.getElementById("canvas");
 
-		var ctracker = new clm.tracker();
-		ctracker.init();
-		ctracker.start(video);
-
 		navigator.mediaDevices
 			.getUserMedia({ video: true, audio: false })
 			.then((stream) => {
@@ -72,11 +68,18 @@
 			);
 
 			const data = canvas.toDataURL("image/png");
+
+			canvas.toBlob((blob) => {
+				util.camera.imageFile.value = new File([blob], "fileName.jpg", {
+					type: "image/jpeg",
+				});
+			}, "image/jpeg");
+
 			photo.value = data;
 
 			setTimeout(() => {
 				stop();
-				util.capturedVerification.value = true;
+				util.camera.captured.value = true;
 			}, 1000);
 		} else {
 			clearphoto();

@@ -1,6 +1,6 @@
 <script setup>
 	import { onMounted, ref } from "vue";
-	import swal from "sweetalert";
+	import { alert } from "../../stores/utility";
 
 	const env = import.meta.env;
 	const AppName = env.VITE_APP_NAME;
@@ -8,51 +8,9 @@
 
 	function next() {
 		if (method.value === null) {
-			swal({
-				title: "Payment method",
-				text: "Select preferred method",
-				icon: "error",
-				buttons: {
-					close: {
-						text: "Close",
-						value: false,
-						visible: true,
-						className: "btn btn-outline-primary",
-						closeModal: true,
-					},
-				},
-			});
+			alert.error("Payment method", "Select preferred method");
 		} else {
-			swal({
-				title: "Verify account",
-				html: "<p class='text-center'>Click on start verification or come back at your convinience</p>",
-				icon: "warning",
-				buttons: {
-					verification: {
-						text: "Start verification",
-						value: true,
-						visible: true,
-						className: "btn btn-outline-secondary",
-						closeModal: true,
-					},
-					close: {
-						text: "Close",
-						value: false,
-						visible: true,
-						className: "btn btn-outline-primary",
-						closeModal: true,
-					},
-				},
-				dangerMode: false,
-			}).then((next) => {
-				if (next) {
-					document.querySelector(".btn-close").click();
-					// open verification dialogue
-					document.querySelector("#btn-verify-modal").click();
-				} else {
-					// do nothing
-				}
-			});
+			alert.verify();
 		}
 	}
 
