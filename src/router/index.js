@@ -23,14 +23,14 @@ const router = createRouter({
 			redirect: "/app/overview",
 			name: "app",
 			component: App,
-			// beforeEnter: (to, from, next) => {
-			// 	console.log(user.getUser())
-			// 	if (!user.getUser()) {
-			// 		next({ name: "home" });
-			// 	} else {
-			// 		next();
-			// 	}
-			// },
+			beforeEnter: (to, from, next) => {
+				console.log(user.getUser())
+				if (!user.getUser()) {
+					next({ name: "home" });
+				} else {
+					next();
+				}
+			},
 			children: [
 				{
 					path: "overview",
