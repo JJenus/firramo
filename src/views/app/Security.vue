@@ -1,10 +1,11 @@
 <script setup>
-	import axios from "axios";
-	import { user } from "@/stores/user";
-	import { util } from "@/stores/utility";
 	import { onMounted, ref } from "vue";
+	import axios from "axios";
 
 	import LoginSession from "../../components/app/security/LoginSession.vue";
+
+	import { user } from "@/stores/user";
+	import { util, alert } from "@/stores/utility";
 
 	const env = import.meta.env;
 	env.VITE_BE_API = util.backendApi;
@@ -12,11 +13,13 @@
 	console.log(util.backendApi);
 
 	const sessions = ref([]);
+	const userForm = ref(user.getUser());
+	const loading = ref(false);
 
 	function loadSessions() {
 		let config = {
 			method: "GET",
-			url: `${env.VITE_BE_API}/users/${user.getUser().id}/sessions`,
+			url: `${env.VITE_BE_API}/userForms/${userForm.id}/sessions`,
 		};
 
 		axios
@@ -136,7 +139,15 @@
 					Cancel
 				</button>
 				<button type="submit" class="btn btn-primary">
-					Save changes
+					<span v-if="!loading"> Save changes </span>
+					<span v-else>
+						<span
+							class="spinner-grow spinner-grow-sm"
+							role="status"
+							aria-hidden="true"
+						></span>
+						Please wait...
+					</span>
 				</button>
 			</div>
 		</form>
@@ -148,7 +159,11 @@
 			any sessions that you do not recognize.
 		</p>
 		<ul class="list-unstyled mb-0">
-			<LoginSession  v-for="session in sessions" :session="session" :active="user.getSession()" />
+			<LoginSession
+				v-for="session in sessions"
+				:session="session"
+				:active="user.getSession()"
+			/>
 		</ul>
 	</div>
 </template>

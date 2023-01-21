@@ -5,6 +5,7 @@
 
 	const env = import.meta.env;
 	const AppName = import.meta.env.VITE_APP_NAME;
+	const tempImg = ref("/assets/img/avatar/default-avatar.png");
 
 	const router = useRouter();
 	const route = useRoute();
@@ -34,17 +35,30 @@
 				{{ AppName }}
 			</a>
 
-			<button
-				type="button"
-				class="btn btn-outline-secondary border-0 btn-icon d-lg-none mt-3 mb-3 position-relative"
-				data-bs-toggle="collapse"
-				data-bs-target="#quick-trans"
-			>
-				<i class="bx bx-square-rounded fs-2"></i>
-				<i
-					class="bx bx-transfer-alt position-absolute top-0 fs-sm mt-3 me-1"
-				></i>
-			</button>
+			<div class="d-flex">
+				<button
+					type="button"
+					class="btn btn-outline-secondary border-0 btn-icon d-lg-none mt-3 mb-3 position-relative"
+					data-bs-toggle="collapse"
+					data-bs-target="#quick-trans"
+				>
+					<i class="bx bx-square-rounded fs-2"></i>
+					<i
+						class="bx bx-transfer-alt position-absolute top-0 fs-sm mt-3 me-1"
+					></i>
+				</button>
+
+				<button
+					type="button"
+					class="btn btn-outline-secondary p-0 ms-2 rounded-circle btn-icon mt-3 mb-3 position-relative"
+				>
+					<img
+						:src="user.getUser().imgUrl || tempImg"
+						class="rounded-circle"
+						alt="profile"
+					/>
+				</button>
+			</div>
 		</div>
 		<div class="text-center pe-3 border-end">
 			<button

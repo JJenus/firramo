@@ -238,6 +238,14 @@
 			crossorigin="anonymous"
 			referrerpolicy="no-referrer"
 		></script>
+		
+		<script
+			src="https://cdnjs.cloudflare.com/ajax/libs/cleave.js/1.6.0/addons/cleave-phone.us.js"
+			integrity="sha512-sYKXH+IAMtg7mVursFAH+Xu1mIvmSqTd8LTEhKdRmvJhtX2IKUFpkZBZ9pigORvIR6Nt5klEF/P+psiJRa6crQ=="
+			crossorigin="anonymous"
+			referrerpolicy="no-referrer"
+		></script>
+
 		<script
 			src="https://cdnjs.cloudflare.com/ajax/libs/parallax/3.1.0/parallax.min.js"
 			integrity="sha512-/6TZODGjYL7M8qb7P6SflJB/nTGE79ed1RfJk3dfm/Ib6JwCT4+tOfrrseEHhxkIhwG8jCl+io6eaiWLS/UX1w=="
@@ -278,6 +286,27 @@
 					preloader.classList.remove("active");
 					setTimeout(function () {
 						preloader.remove();
+						// Fetch all the forms we want to apply custom Bootstrap validation styles to
+						var forms =
+							document.querySelectorAll(".needs-validation");
+
+						// Loop over them and prevent submission
+						Array.prototype.slice
+							.call(forms)
+							.forEach(function (form) {
+								form.addEventListener(
+									"submit",
+									function (event) {
+										if (!form.checkValidity()) {
+											event.preventDefault();
+											event.stopPropagation();
+										}
+
+										form.classList.add("was-validated");
+									},
+									false
+								);
+							});
 					}, 1000);
 				};
 			})();

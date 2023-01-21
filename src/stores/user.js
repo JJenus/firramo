@@ -29,6 +29,10 @@ export const user = {
 		localStorage.setItem(this.authKey, JSON.stringify(userData));
 	},
 
+	getToken() {
+		return this.user;
+	},
+
 	logout() {
 		localStorage.removeItem(this.authKey);
 		window.location.href = "/";

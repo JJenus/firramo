@@ -1,17 +1,44 @@
 <script setup>
 	import { user } from "@/stores/user";
 	import { ref } from "vue";
+	import * as filestack from "filestack-js";
+	import axios from "axios";
+	import { alert } from "../../stores/utility";
+
+	const env = import.meta.env;
 
 	const appUser = ref(user.getUser());
 	const tempImg = ref("/assets/img/avatar/default-avatar.png");
 	const changed = ref(false);
 
+	const apikey = env.VITE_FSHARE_KEY;
+	const client = filestack.init(apikey);
+	const permitDelete = ref(false);
+
+	const loading = ref(false);
+	const imgFile = ref(null);
+	const savedImg = ref(false);
+
 	function saveImage() {
 		changed.value = false;
+		client
+			.upload(imgFile.value)
+			.then((res) => {
+				console.log("success: ", res);
+
+				appUser.value.imgUrl = res.url;
+				save();
+				savedImg.value = true;
+			})
+			.catch((err) => {
+				console.log(err);
+				alert.error("Failed", "Please check your connection.");
+			});
 	}
 
 	function revert() {
 		changed.value = false;
+		savedImg.value = false;
 		appUser.value.imgUrl = user.getUser().imgUrl;
 	}
 
@@ -24,13 +51,80 @@
 		const input = evt.target;
 
 		if (input.files && input.files[0]) {
+			imgFile.value = input.files[0];
 			appUser.value.imgUrl = URL.createObjectURL(input.files[0]);
 			changed.value = true;
 		}
 	}
 
-	function save(){
-		// /axios stuf
+	function submit($evt) {
+		if (!$evt.target.checkValidity()) return;
+		loading.value = true;
+		save();
+	}
+
+	function save() {
+		let config = {
+			method: "PUT",
+			url: `${env.VITE_BE_API}/users`,
+			data: appUser.value,
+		};
+		axios
+			.request(config)
+			.then((res) => {
+				const data = res.data;
+				console.log(data);
+				const old = user.getToken();
+				old.user = data;
+				user.login(old);
+				appUser.value = data;
+
+				alert.success("Success");
+			})
+			.catch((err) => {
+				alert.error("Failed");
+				console.log(err);
+			})
+			.finally(() => {
+				loading.value = false;
+			});
+	}
+
+	function closeAccount() {
+		if (permitDelete.value) {
+			loading.value = true;
+			appUser.value.status = "deleted";
+			let config = {
+				method: "PUT",
+				url: `${env.VITE_BE_API}/users`,
+				data: appUser.value,
+			};
+			axios
+				.request(config)
+				.then((res) => {
+					const data = res.data;
+					console.log(data);
+					const old = user.getToken();
+					old.user = data;
+					user.login(old);
+					appUser.value = data;
+
+					alert.success("Account closed");
+
+					setTimeout(() => {
+						user.logout();
+					}, 2000);
+				})
+				.catch((err) => {
+					alert.error("Failed");
+					console.log(err);
+				})
+				.finally(() => {
+					loading.value = false;
+				});
+		} else {
+			alert.info("Check yes to permit action");
+		}
 	}
 </script>
 
@@ -41,6 +135,7 @@
 			class="card card-body mb-4 card-hover bg-light border-0 text-center"
 		>
 			<img
+				@click="selectImage()"
 				:src="appUser.imgUrl !== null ? appUser.imgUrl : tempImg"
 				class="d-block rounded-circle mx-auto mb-2"
 				width="162"
@@ -60,7 +155,7 @@
 				<button
 					v-if="changed"
 					@click="revert()"
-					class="btn btn-outline-danger btn-sm rounded-pill"
+					class="btn btn-outline-danger d-none btn-sm rounded-pill"
 				>
 					cancel
 				</button>
@@ -73,11 +168,20 @@
 				</button>
 
 				<button
-					v-if="changed"
+					v-if="changed && !savedImg"
 					@click="saveImage()"
+					:class="loading ? 'disabled' : ''"
 					class="btn btn-outline-primary btn-sm rounded-pill"
 				>
-					save
+					<span v-if="!loading"> Save </span>
+					<span v-else>
+						<span
+							class="spinner-grow spinner-grow-sm"
+							role="status"
+							aria-hidden="true"
+						></span>
+						Please wait...
+					</span>
 				</button>
 			</div>
 		</div>
@@ -86,7 +190,11 @@
 
 		<!-- Basic info -->
 		<h2 class="h5 text-primary mb-4">Basic info</h2>
-		<form @submit.prevent="save()" class="needs-validation border-bottom pb-3 pb-lg-4" novalidate>
+		<form
+			@submit.prevent="submit($event)"
+			class="needs-validation border-bottom pb-3 pb-lg-4"
+			novalidate
+		>
 			<div class="row pb-2">
 				<div class="col-sm-12 mb-4">
 					<label for="fn" class="form-label fs-base">Name</label>
@@ -127,7 +235,7 @@
 						id="phone"
 						class="form-control form-control-lg"
 						v-model="appUser.phone"
-						data-format='{"numericOnly": true, "delimiters": ["+1 ", " ", " "], "blocks": [0, 3, 3, 2]}'
+						data-format='{"phone": true, "phoneRegionCode": "us"}'
 						placeholder="+1 ___ ___ __"
 					/>
 				</div>
@@ -136,15 +244,27 @@
 				<button type="reset" class="btn btn-secondary me-3">
 					Cancel
 				</button>
-				<button type="submit" class="btn btn-primary">
-					Save changes
+				<button
+					:class="loading ? 'disabled' : ''"
+					type="submit"
+					class="btn btn-primary"
+				>
+					<span v-if="!loading"> Save changes </span>
+					<span v-else>
+						<span
+							class="spinner-grow spinner-grow-sm"
+							role="status"
+							aria-hidden="true"
+						></span>
+						Please wait...
+					</span>
 				</button>
 			</div>
-		<!-- </form> -->
+			<!-- </form> -->
 
-		<!-- Address -->
-		<h2 class="h5 text-primary pt-1 pt-lg-3 my-4">Address</h2>
-		<!-- <form class="needs-validation border-bottom pb-2 pb-lg-4" novalidate> -->
+			<!-- Address -->
+			<h2 class="h5 text-primary pt-1 pt-lg-3 my-4">Address</h2>
+			<!-- <form class="needs-validation border-bottom pb-2 pb-lg-4" novalidate> -->
 			<div class="row pb-2">
 				<div class="col-sm-6 mb-4">
 					<label for="country" class="form-label fs-base"
@@ -180,7 +300,7 @@
 						type="text"
 						id="zip"
 						class="form-control form-control-lg"
-						v-model="appUser.zip"
+						v-model="appUser.zipcode"
 						name="zip"
 						required
 					/>
@@ -201,7 +321,7 @@
 				</div>
 			</div>
 			<div class="d-flex mb-3">
-				<button type="reset" class="btn d-none btn-secondary me-3">
+				<button type="reset" class="btn d-nonie btn-secondary me-3">
 					Cancel
 				</button>
 				<button type="submit" class="btn btn-secondary">
@@ -211,7 +331,7 @@
 		</form>
 
 		<!-- Delete account -->
-		<h2 class="h5 text-primary pt-1 pt-lg-3 mt-4">Delete account</h2>
+		<h2 class="h5 text-primary pt-1 pt-lg-3 mt-4">Close account</h2>
 		<p>
 			When you delete your account, your public profile will be
 			deactivated immediately. If you change your mind before the 14 days
@@ -223,11 +343,27 @@
 				type="checkbox"
 				id="delete-account"
 				class="form-check-input"
+				v-model="permitDelete"
 			/>
 			<label for="delete-account" class="form-check-label fs-base"
 				>Yes, I want to delete my account</label
 			>
 		</div>
-		<button type="button" class="btn btn-danger">Delete</button>
+		<button
+			:class="!permitDelete || loading ? 'disabled' : ''"
+			@click="closeAccount()"
+			type="button"
+			class="btn btn-danger"
+		>
+			<span v-if="!loading"> Close </span>
+			<span v-else>
+				<span
+					class="spinner-grow spinner-grow-sm"
+					role="status"
+					aria-hidden="true"
+				></span>
+				Processing...
+			</span>
+		</button>
 	</div>
 </template>

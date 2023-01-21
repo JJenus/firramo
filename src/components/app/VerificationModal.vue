@@ -2,13 +2,25 @@
 	import { onMounted, ref } from "vue";
 	import Camera from "./Camera.vue";
 	import { util, alert } from "../../stores/utility";
+	import { user } from "@/stores/user";
 	import axios from "axios";
+	import * as filestack from "filestack-js";
 
 	const env = import.meta.env;
 	const AppName = env.VITE_APP_NAME;
 	const camera = ref();
 	const imgIdUrl = ref("/assets/img/about/hero-bg.svg");
 	const imageFile = ref(null);
+
+	const apikey = env.VITE_FSHARE_KEY;
+	const client = filestack.init(apikey);
+	const loading = ref(false);
+
+	const form = ref({
+		userId: user.getUser().id,
+		imgUrl: null,
+		idUrl: null,
+	});
 
 	function selectImage() {
 		const input = document.querySelector("#select-id-image");
@@ -25,16 +37,49 @@
 	}
 
 	function submit() {
-		if(util.camera.imageFile.value === null){
-			alert.error("Facial Verification Error", "Please go back and capture face properly")
+		if (util.camera.imageFile.value === null) {
+			alert.error(
+				"Facial Verification Error",
+				"Please go back and capture face properly"
+			);
 			return;
 		}
-		if(imageFile.value === null){
-			alert.error("ID Error", "Please select a valid ID")
+		if (imageFile.value === null) {
+			alert.error("ID Error", "Please select a valid ID");
 			return;
 		}
-		alert.success("Thanks", "You'll notified of verification status.")
-		document.querySelector("#verification-modal .btn-close").click();
+
+		loading.value = true;
+		let count = 0;
+
+		[imageFile.value, util.camera.imageFile.value].forEach((file) => {
+			client
+				.upload(file)
+				.then((res) => {
+					console.log("success: ", res);
+
+					if (count == 0) {
+						form.value.idUrl = res.url;
+					} else {
+						form.value.imgUrl = res.url;
+						loading.value = true;
+						alert.success(
+							"Thanks",
+							"You'll notified of verification status."
+						);
+
+						document
+							.querySelector("#verification-modal .btn-close")
+							.click();
+					}
+
+					count++;
+				})
+				.catch((err) => {
+					console.log(err);
+					alert.error("Failed", "Please check your connection.");
+				});
+		});
 	}
 
 	onMounted(() => {});
@@ -116,9 +161,18 @@
 						<button
 							v-else
 							@click="submit()"
+							:class="loading ? 'disabled' : ''"
 							class="btn btn-outline-secondary"
 						>
-							Submit
+							<span v-if="!loading"> Submit </span>
+							<span v-else>
+								<span
+									class="spinner-grow spinner-grow-sm"
+									role="status"
+									aria-hidden="true"
+								></span>
+								Please wait...
+							</span>
 						</button>
 					</div>
 				</div>
