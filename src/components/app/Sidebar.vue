@@ -125,7 +125,7 @@
 
 					<a
 						@click="signOut()"
-						href=""
+						href="#"
 						class="list-group-item list-group-item-action d-flex align-items-center"
 					>
 						<i class="bx bx-log-out fs-xl opacity-60 me-2"></i>

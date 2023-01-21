@@ -19,7 +19,7 @@ function notify(icon, title, message = "") {
 }
 
 export const alert = {
-	success(title, message = "") {
+	success(title = "Success", message = "") {
 		notify("success", title, message);
 	},
 	error(title, message = "") {
@@ -31,7 +31,8 @@ export const alert = {
 	verify() {
 		swal({
 			title: "Verify account",
-			content: "<p class='text-center'>Click on start verification or come back at your convinience</p>",
+			content:
+				"<p class='text-center'>Click on start verification or come back at your convinience</p>",
 			icon: "warning",
 			buttons: {
 				verification: {
@@ -93,5 +94,24 @@ export const util = {
 	camera: {
 		captured: ref(false),
 		imageFile: ref(null),
+	},
+};
+
+export const userIp = {
+	storageKey: "firr@m0@user-ip",
+	ipData: null,
+	getIp() {
+		const data = localStorage.getItem(this.storageKey);
+
+		if (data === null || data === undefined) {
+			return false;
+		}
+
+		this.ipData = JSON.parse(data);
+		return this.ipData.ip;
+	},
+	saveIp(data) {
+		this.ipData = data;
+		localStorage.setItem(this.storageKey, JSON.stringify(data));
 	},
 };

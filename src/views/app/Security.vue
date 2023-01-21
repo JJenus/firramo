@@ -10,16 +10,19 @@
 	const env = import.meta.env;
 	env.VITE_BE_API = util.backendApi;
 
-	console.log(util.backendApi);
-
 	const sessions = ref([]);
-	const userForm = ref(user.getUser());
+	const changePass = ref({
+		userId: user.getUser().id,
+		currentPassword: null,
+		newPassword: null,
+		confirmPassword: null,
+	});
 	const loading = ref(false);
 
-	function loadSessions() {
+	async function loadSessions() {
 		let config = {
 			method: "GET",
-			url: `${env.VITE_BE_API}/userForms/${userForm.id}/sessions`,
+			url: `${env.VITE_BE_API}/users/${user.getUser().id}/sessions`,
 		};
 
 		axios
@@ -30,6 +33,43 @@
 			})
 			.catch(function (error) {
 				console.log(error);
+			});
+	}
+
+	function submit($evt) {
+		if (!$evt.target.checkValidity()) {
+			return;
+		}
+
+		if (changePass.value.newPassword !== changePass.value.confirmPassword) {
+			alert.error("passwords don't match");
+			return;
+		}
+
+		loading.value = true;
+
+		let config = {
+			method: "POST",
+			url: `${env.VITE_BE_API}/auth/change-password`,
+			data: changePass.value,
+		};
+
+		axios
+			.request(config)
+			.then((response) => {
+				console.log(response.data);
+				const data = response.data;
+				if (data.error) {
+					alert.error(data.error);
+				} else {
+					alert.success();
+				}
+			})
+			.catch(function (error) {
+				console.log(error);
+			})
+			.finally(() => {
+				loading.value = false;
 			});
 	}
 
@@ -44,7 +84,11 @@
 
 		<!-- Password -->
 		<h2 class="h5 text-primary mb-4">Password</h2>
-		<form class="needs-validation border-bottom pb-3 pb-lg-4" novalidate>
+		<form
+			@submit.prevent="submit($event)"
+			class="needs-validation border-bottom pb-3 pb-lg-4"
+			novalidate
+		>
 			<div class="row">
 				<div class="col-sm-6 mb-4">
 					<label for="cp" class="form-label fs-base"
@@ -55,7 +99,7 @@
 							type="password"
 							id="cp"
 							class="form-control form-control-lg"
-							value="jonnyPass"
+							v-model="changePass.currentPassword"
 							required
 						/>
 						<label
@@ -76,7 +120,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="row pb-2">
+			<div class="row pb-2 my-3">
 				<div class="col-sm-6 mb-4">
 					<label for="np" class="form-label fs-base"
 						>New password</label
@@ -86,6 +130,7 @@
 							type="password"
 							id="np"
 							class="form-control form-control-lg"
+							v-model="changePass.newPassword"
 							required
 						/>
 						<label
@@ -114,6 +159,7 @@
 							type="password"
 							id="cnp"
 							class="form-control form-control-lg"
+							v-model="changePass.confirmPassword"
 							required
 						/>
 						<label
@@ -129,7 +175,7 @@
 						<div
 							class="invalid-tooltip position-absolute top-100 start-0"
 						>
-							Incorrect password!
+							Passwords don't match!
 						</div>
 					</div>
 				</div>
@@ -138,7 +184,11 @@
 				<button type="reset" class="btn btn-secondary me-3">
 					Cancel
 				</button>
-				<button type="submit" class="btn btn-primary">
+				<button
+					:class="loading ? 'disabled' : ''"
+					type="submit"
+					class="btn btn-primary"
+				>
 					<span v-if="!loading"> Save changes </span>
 					<span v-else>
 						<span

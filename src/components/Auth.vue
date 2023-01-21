@@ -2,7 +2,7 @@
 	import { ref } from "vue";
 	import axios from "axios";
 	import { user } from "@/stores/user";
-	import { util } from "@/stores/utility";
+	import { util, userIp } from "@/stores/utility";
 
 	const env = import.meta.env;
 	env.VITE_BE_API = util.backendApi;
@@ -10,6 +10,7 @@
 	console.log(env.VITE_BE_API);
 
 	const signIn = ref(true);
+
 	const loadingReg = ref(false);
 
 	const form = ref({
@@ -22,7 +23,41 @@
 	const regError = ref(null);
 	const loginError = ref(null);
 
-	function register() {
+	async function getIP() {
+		if (userIp.getIp()) {
+			return userIp.getIp();
+		}
+
+		const options = {
+			method: "GET",
+			url: "https://find-any-ip-address-or-domain-location-world-wide.p.rapidapi.com/iplocation",
+			params: { apikey: "873dbe322aea47f89dcf729dcc8f60e8" },
+			headers: {
+				"X-RapidAPI-Key":
+					"dd4fc99074mshb1fc2941eca8399p1db32ejsn1e3a321da137",
+				"X-RapidAPI-Host":
+					"find-any-ip-address-or-domain-location-world-wide.p.rapidapi.com",
+			},
+		};
+
+		let ip = null;
+
+		await axios
+			.request(options)
+			.then(function (response) {
+				console.log(response.data);
+				userIp.saveIp(response.data);
+				ip = response.data.ip;
+				console.log(ip);
+			})
+			.catch(function (error) {
+				console.error(error);
+			});
+
+		return ip;
+	}
+
+	async function register() {
 		regError.value = null;
 
 		if (loadingReg.value) {
@@ -50,6 +85,8 @@
 		const { name, email, password } = form.value;
 		console.log(email);
 
+		const ip = await getIP();
+
 		let config = {
 			method: "Post",
 			url: `${env.VITE_BE_API}/auth/register`,
@@ -57,6 +94,7 @@
 				name,
 				email,
 				password,
+				ip: ip,
 			},
 		};
 
@@ -79,7 +117,7 @@
 			});
 	}
 
-	function sumitLogin() {
+	async function sumitLogin() {
 		if (loadingReg.value) {
 			return;
 		}
@@ -95,12 +133,15 @@
 		const { email, password } = form.value;
 		console.log(email);
 
+		const ip = await getIP();
+
 		let config = {
 			method: "Post",
 			url: `${env.VITE_BE_API}/auth/login`,
 			data: {
 				email,
 				password,
+				ip: ip,
 			},
 		};
 
@@ -208,6 +249,14 @@
 									</label>
 								</div>
 							</div>
+
+							<div
+								v-if="loginError"
+								class="my-3 alert p-2 fs-sm alert-danger"
+							>
+								{{ loginError }}
+							</div>
+
 							<div
 								class="mb-3 d-flex flex-wrap justify-content-between"
 							>
@@ -227,6 +276,7 @@
 							</div>
 							<button
 								class="btn btn-primary d-block w-100"
+								:class="loadingReg ? 'disabled' : ''"
 								type="submit"
 							>
 								<span v-if="!loadingReg"> Sign in </span>
@@ -310,9 +360,18 @@
 									</label>
 								</div>
 							</div>
+
+							<div
+								v-if="loginError"
+								class="my-3 alert p-2 fs-sm alert-danger"
+							>
+								{{ loginError }}
+							</div>
+
 							<button
 								class="btn btn-primary d-block"
 								type="submit"
+								:class="loadingReg ? 'disabled' : ''"
 							>
 								<span v-if="!loadingReg"> Sign up </span>
 								<span v-else>

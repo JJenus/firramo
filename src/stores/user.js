@@ -1,3 +1,5 @@
+const env = import.meta.env;
+
 export const user = {
 	user: null,
 	authKey: "firr@m0@key-auth",
