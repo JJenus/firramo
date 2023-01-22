@@ -2,14 +2,41 @@
 	import Header from "@/components/product/Header.vue";
 	import Intro from "@/components/product/Intro.vue";
 	import Footer from "@/components/Footer.vue";
-	import { ref } from "vue";
+	import { ref, onMounted } from "vue";
+	import axios from "axios";
+
+	import Testimonial from "../../components/admin/testimonials/Testimonial.vue";
+
+	const env = import.meta.env;
 
 	const email = ref("support@firramo.com");
 	const AppName = import.meta.env.VITE_APP_NAME;
+	const testimonials = ref([]);
+
+	async function loadTestimonies() {
+		let config = {
+			method: "GET",
+			url: `${env.VITE_BE_API}/testimonials`,
+		};
+
+		axios
+			.request(config)
+			.then((response) => {
+				console.log(response.data);
+				testimonials.value = response.data;
+			})
+			.catch(function (error) {
+				console.log(error);
+			});
+	}
 
 	function signUp() {
 		document.getElementById("sign-up").click();
 	}
+
+	onMounted(() => {
+		loadTestimonies();
+	});
 </script>
 
 <template>
@@ -136,9 +163,7 @@
 					<h2 class="h1 pb-1 pb-lg-3 fs-5 mb-0">
 						Make Your Life a Lot Easier with {{ AppName }}
 					</h2>
-					<p class="pb-2 mb-4 mb-xl-5">
-						All in one.
-					</p>
+					<p class="pb-2 mb-4 mb-xl-5">All in one.</p>
 					<hr />
 					<div
 						class="d-flex flex-wrap flex-sm-nowrap justify-content-center justify-content-md-between pt-3 mb-md-5"
@@ -333,254 +358,13 @@
 					>
 						<div class="swiper-wrapper">
 							<!-- Item -->
-							<div class="swiper-slide h-auto pt-4">
-								<figure
-									class="d-flex flex-column h-100 px-2 px-sm-0 mb-0 mx-2"
-								>
-									<div
-										class="card h-100 position-relative border-0 shadow-sm pt-4"
-									>
-										<span
-											class="btn btn-icon btn-primary shadow-primary pe-none position-absolute top-0 start-0 translate-middle-y ms-4"
-										>
-											<i class="bx bxs-quote-left"></i>
-										</span>
-										<blockquote class="card-body pb-3 mb-0">
-											<p class="mb-0">
-												Id mollis consectetur congue
-												egestas egestas suspendisse
-												blandit justo. Tellus augue
-												commodo id quis tempus etiam
-												pulvinar at maecenas.
-											</p>
-										</blockquote>
-										<div
-											class="card-footer border-0 text-nowrap pt-0"
-										>
-											<i
-												class="bx bxs-star text-warning"
-											></i>
-											<i
-												class="bx bxs-star text-warning"
-											></i>
-											<i
-												class="bx bxs-star text-warning"
-											></i>
-											<i
-												class="bx bx-star text-muted opacity-75"
-											></i>
-											<i
-												class="bx bx-star text-muted opacity-75"
-											></i>
-										</div>
-									</div>
-									<figcaption
-										class="d-flex align-items-center ps-4 pt-4"
-									>
-										<img
-											src="/assets/img/avatar/40.jpg"
-											width="48"
-											class="rounded-circle"
-											alt="Robert Fox"
-										/>
-										<div class="ps-3">
-											<h6 class="fs-sm fw-semibold mb-0">
-												Robert Fox
-											</h6>
-											<span class="fs-xs text-muted"
-												>Founder of Lorem Company</span
-											>
-										</div>
-									</figcaption>
-								</figure>
-							</div>
-
-							<!-- Item -->
-							<div class="swiper-slide h-auto pt-4">
-								<figure
-									class="d-flex flex-column h-100 px-2 px-sm-0 mb-0 mx-2"
-								>
-									<div
-										class="card h-100 position-relative border-0 shadow-sm pt-4"
-									>
-										<span
-											class="btn btn-icon btn-primary shadow-primary pe-none position-absolute top-0 start-0 translate-middle-y ms-4"
-										>
-											<i class="bx bxs-quote-left"></i>
-										</span>
-										<blockquote class="card-body pb-3 mb-0">
-											<p class="mb-0">
-												Phasellus luctus nisi id orci
-												condimentum, at cursus nisl
-												vestibulum. Orci varius natoque
-												penatibus et magnis dis
-												parturient montes commodo.
-											</p>
-										</blockquote>
-										<div
-											class="card-footer border-0 text-nowrap pt-0"
-										>
-											<i
-												class="bx bxs-star text-warning"
-											></i>
-											<i
-												class="bx bxs-star text-warning"
-											></i>
-											<i
-												class="bx bxs-star text-warning"
-											></i>
-											<i
-												class="bx bxs-star text-warning"
-											></i>
-											<i
-												class="bx bxs-star text-warning"
-											></i>
-										</div>
-									</div>
-									<figcaption
-										class="d-flex align-items-center ps-4 pt-4"
-									>
-										<img
-											src="/assets/img/avatar/06.jpg"
-											width="48"
-											class="rounded-circle"
-											alt="Annette Black"
-										/>
-										<div class="ps-3">
-											<h6 class="fs-sm fw-semibold mb-0">
-												Annette Black
-											</h6>
-											<span class="fs-xs text-muted"
-												>CEO of Ipsum Company</span
-											>
-										</div>
-									</figcaption>
-								</figure>
-							</div>
-
-							<!-- Item -->
-							<div class="swiper-slide h-auto pt-4">
-								<figure
-									class="d-flex flex-column h-100 px-2 px-sm-0 mb-0 mx-2"
-								>
-									<div
-										class="card h-100 position-relative border-0 shadow-sm pt-4"
-									>
-										<span
-											class="btn btn-icon btn-primary shadow-primary pe-none position-absolute top-0 start-0 translate-middle-y ms-4"
-										>
-											<i class="bx bxs-quote-left"></i>
-										</span>
-										<blockquote class="card-body pb-3 mb-0">
-											<p class="mb-0">
-												Lorem ipsum dolor sit amet,
-												consectetur adipiscing elit.
-												Mauris ipsum odio, bibendum
-												ornare mi at, efficitur urna.
-											</p>
-										</blockquote>
-										<div
-											class="card-footer border-0 text-nowrap pt-0"
-										>
-											<i
-												class="bx bxs-star text-warning"
-											></i>
-											<i
-												class="bx bxs-star text-warning"
-											></i>
-											<i
-												class="bx bxs-star text-warning"
-											></i>
-											<i
-												class="bx bxs-star text-warning"
-											></i>
-											<i
-												class="bx bx-star text-muted opacity-75"
-											></i>
-										</div>
-									</div>
-									<figcaption
-										class="d-flex align-items-center ps-4 pt-4"
-									>
-										<img
-											src="/assets/img/avatar/41.jpg"
-											width="48"
-											class="rounded-circle"
-											alt="Jerome Bell"
-										/>
-										<div class="ps-3">
-											<h6 class="fs-sm fw-semibold mb-0">
-												Jerome Bell
-											</h6>
-											<span class="fs-xs text-muted"
-												>Founder of the Agency
-											</span>
-										</div>
-									</figcaption>
-								</figure>
-							</div>
-
-							<!-- Item -->
-							<div class="swiper-slide h-auto pt-4">
-								<figure
-									class="d-flex flex-column h-100 px-2 px-sm-0 mb-0 mx-2"
-								>
-									<div
-										class="card h-100 position-relative border-0 shadow-sm pt-4"
-									>
-										<span
-											class="btn btn-icon btn-primary shadow-primary pe-none position-absolute top-0 start-0 translate-middle-y ms-4"
-										>
-											<i class="bx bxs-quote-left"></i>
-										</span>
-										<blockquote class="card-body pb-3 mb-0">
-											<p class="mb-0">
-												Pellentesque finibus congue
-												egestas egestas suspendisse
-												blandit justo. Tellus augue
-												commodo id quis tempus etiam
-												pulvinar at maecenas.
-											</p>
-										</blockquote>
-										<div
-											class="card-footer border-0 text-nowrap pt-0"
-										>
-											<i
-												class="bx bxs-star text-warning"
-											></i>
-											<i
-												class="bx bxs-star text-warning"
-											></i>
-											<i
-												class="bx bxs-star text-warning"
-											></i>
-											<i
-												class="bx bxs-star text-warning"
-											></i>
-											<i
-												class="bx bxs-star text-warning"
-											></i>
-										</div>
-									</div>
-									<figcaption
-										class="d-flex align-items-center ps-4 pt-4"
-									>
-										<img
-											src="/assets/img/avatar/05.jpg"
-											width="48"
-											class="rounded-circle"
-											alt="Albert Flores"
-										/>
-										<div class="ps-3">
-											<h6 class="fs-sm fw-semibold mb-0">
-												Albert Flores
-											</h6>
-											<span class="fs-xs text-muted"
-												>CEO of Dolor Ltd.</span
-											>
-										</div>
-									</figcaption>
-								</figure>
+							<div
+								v-for="testimonial in testimonials"
+								class="swiper-slide h-auto pt-4"
+							>
+								<Testimonial
+									:testimonial="testimonial"
+								></Testimonial>
 							</div>
 						</div>
 					</div>

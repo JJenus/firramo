@@ -48,7 +48,7 @@
 			<form class="input-group mb-4">
 				<input
 					type="text"
-					placeholder="Search the blog..."
+					placeholder="Search users..."
 					class="form-control rounded pe-5"
 					@keyup="search()"
 					v-model="searchKey"

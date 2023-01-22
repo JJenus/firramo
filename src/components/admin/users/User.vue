@@ -105,6 +105,7 @@
 								<input
 									type="text"
 									class="form-control form-control-sm"
+									data-format='{"numeral": true}'
 								/>
 							</div>
 							<div>
