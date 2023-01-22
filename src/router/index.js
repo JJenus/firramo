@@ -12,8 +12,10 @@ import Security from "../views/app/Security.vue";
 import CardsVue from "../views/app/Cards.vue";
 import PaymentsVue from "../views/app/Payments.vue";
 
-import { user } from "@/stores/user";
+import Admin from "../views/Admin.vue";
+import Dashboard from "../views/admin/Dashboard.vue";
 
+import { user } from "@/stores/user";
 
 const router = createRouter({
 	history: createWebHistory(import.meta.env.BASE_URL),
@@ -24,7 +26,7 @@ const router = createRouter({
 			name: "app",
 			component: App,
 			beforeEnter: (to, from, next) => {
-				console.log(user.getUser())
+				console.log(user.getUser());
 				if (!user.getUser()) {
 					next({ name: "home" });
 				} else {
@@ -61,9 +63,56 @@ const router = createRouter({
 		},
 
 		{
+			path: "/admin",
+			redirect: "/admin/dashboard",
+			name: "admin",
+			component: Admin,
+			// beforeEnter: (to, from, next) => {
+			// 	console.log(user.getUser());
+			// 	if (!user.getUser()) {
+			// 		next({ name: "home" });
+			// 	} else {
+			// 		next();
+			// 	}
+			// },
+			children: [
+				{
+					path: "dashboard",
+					name: "dashboard",
+					component: Dashboard,
+				},
+				{
+					path: "users",
+					name: "users",
+					component: AccountDetails,
+				},
+				{
+					path: "security",
+					name: "adminSecurity",
+					component: Security,
+				},
+				{
+					path: "testimonials",
+					name: "testimonials",
+					component: CardsVue,
+				},
+				{
+					path: "settings",
+					name: "settings",
+					component: PaymentsVue,
+				},
+				{
+					path: "login",
+					name: "login",
+					component: PaymentsVue,
+				},
+			],
+		},
+
+		{
 			path: "/",
 			component: Product,
-      redirect: "/home",
+			redirect: "/home",
 			children: [
 				{
 					path: "home",
