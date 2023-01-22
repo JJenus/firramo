@@ -64,6 +64,7 @@ export const alert = {
 };
 
 export const util = {
+	avatar: "/assets/img/avatar/default-avatar.png",
 	format: function (number, decPlaces = 2, decSep = ".", thouSep = ",") {
 		(decPlaces = isNaN((decPlaces = Math.abs(decPlaces))) ? 2 : decPlaces),
 			(decSep = typeof decSep === "undefined" ? "." : decSep);
@@ -87,6 +88,17 @@ export const util = {
 						.slice(2)
 				: "")
 		);
+	},
+
+	search(area, input) {
+		const rjx = new RegExp(input, "i");
+		document.querySelectorAll(area).forEach((e) => {
+			if (rjx.test(e.innerText)) {
+				e.style.display = "block";
+			} else {
+				e.style.display = "none";
+			}
+		});
 	},
 
 	backendApi: import.meta.env.VITE_BE_API,
