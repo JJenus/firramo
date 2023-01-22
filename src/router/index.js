@@ -14,6 +14,7 @@ import PaymentsVue from "../views/app/Payments.vue";
 
 import Admin from "../views/Admin.vue";
 import Dashboard from "../views/admin/Dashboard.vue";
+import Users from "../views/admin/Users.vue";
 
 import { user } from "@/stores/user";
 
@@ -84,7 +85,7 @@ const router = createRouter({
 				{
 					path: "users",
 					name: "users",
-					component: AccountDetails,
+					component: Users,
 				},
 				{
 					path: "security",
