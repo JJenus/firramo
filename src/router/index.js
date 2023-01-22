@@ -16,6 +16,7 @@ import Admin from "../views/Admin.vue";
 import Dashboard from "../views/admin/Dashboard.vue";
 import Users from "../views/admin/Users.vue";
 import Testimonials from "../views/admin/Testimonials.vue";
+import Settings from "../views/admin/Settings.vue";
 
 import { user } from "@/stores/user";
 
@@ -101,7 +102,7 @@ const router = createRouter({
 				{
 					path: "settings",
 					name: "settings",
-					component: PaymentsVue,
+					component: Settings,
 				},
 				{
 					path: "login",
