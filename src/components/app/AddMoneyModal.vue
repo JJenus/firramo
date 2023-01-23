@@ -62,27 +62,27 @@
 
 							<div class="mb-3 row">
 								<div class="col-6">
-									<label for="cardFormat" class="form-label">
+									<label for="cardExpr" class="form-label">
 										Expr
 									</label>
 
 									<input
 										type="text"
 										class="form-control"
-										id="dateShortFormat"
+										id="cardExpr"
 										data-format='{"date": true, "datePattern": ["m", "y"]}'
 										placeholder="mm/yy"
 									/>
 								</div>
 								<div class="col-6">
-									<label for="cardFormat" class="form-label">
+									<label for="cardCVV" class="form-label">
 										Cvv
 									</label>
 
 									<input
 										type="text"
 										class="form-control"
-										id="cardFormat"
+										id="cardCVV"
 										data-format='{"numericOnly": true, "blocks": [3]}'
 										placeholder="123"
 									/>
