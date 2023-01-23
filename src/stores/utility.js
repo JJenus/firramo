@@ -107,6 +107,9 @@ export const util = {
 		captured: ref(false),
 		imageFile: ref(null),
 	},
+
+	settings: null,
+	loadSettings() {},
 };
 
 export const userIp = {

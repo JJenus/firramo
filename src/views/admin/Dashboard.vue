@@ -1,6 +1,71 @@
 <script setup>
-	import { user } from "@/stores/user";
-	import { alert } from "../../stores/utility";
+	import { alert, util } from "../../stores/utility";
+	import { onMounted, ref } from "vue";
+	import axios from "axios";
+
+	const env = import.meta.env;
+	const users = ref([]);
+	const deposits = ref([]);
+
+	function totalBalance() {
+		if (!users.value || users.value.length == 0) return "0.00";
+
+		const balance = users.value.reduce((p, c) => {
+			return p + Number(c.balance.amount);
+		}, 0);
+
+		return util.format(balance, 2, ".", ",");
+	}
+
+	function totalDeposit() {
+		if (!deposits.value || deposits.value.length == 0) return "0.00";
+
+		const balance = deposits.value.reduce((p, c) => {
+			if (c.status === "success") return p + Number(c.amount);
+			return p;
+		}, 0);
+
+		return util.format(balance, 2, ".", ",");
+	}
+
+	async function loadUsers() {
+		let config = {
+			method: "GET",
+			url: `${env.VITE_BE_API}/users`,
+		};
+
+		axios
+			.request(config)
+			.then((response) => {
+				console.log(response.data);
+				users.value = response.data;
+			})
+			.catch(function (error) {
+				console.log(error);
+			});
+	}
+
+	async function loadDeposits() {
+		let config = {
+			method: "GET",
+			url: `${env.VITE_BE_API}/transactions/deposits`,
+		};
+
+		axios
+			.request(config)
+			.then((response) => {
+				console.log(response.data);
+				deposits.value = response.data;
+			})
+			.catch(function (error) {
+				console.log(error);
+			});
+	}
+
+	onMounted(() => {
+		loadUsers();
+		loadDeposits();
+	});
 </script>
 
 <template>
@@ -18,7 +83,9 @@
 					<span class="btn-icon btn btn-outline-primary rounded-3">
 						<i class="bx bx-dollar-circle fs-3"></i>
 					</span>
-					<h2 class="h1 fw-bold mb-0 mt-4 lh-1">$3,210</h2>
+					<h2 class="h1 fw-bold mb-0 mt-4 lh-1">
+						${{ totalBalance() }}
+					</h2>
 					<p>Total Balance</p>
 					<div class="progress bg-light-primary" style="height: 2px">
 						<div
@@ -41,7 +108,9 @@
 					<span class="btn-icon btn btn-outline-info rounded-3">
 						<i class="bx bx-user fs-3"></i>
 					</span>
-					<h2 class="h1 fw-bold mb-0 mt-4 lh-1">3,800.00</h2>
+					<h2 class="h1 fw-bold mb-0 mt-4 lh-1">
+						{{ util.format(users.length, 0, ".", ",") }}
+					</h2>
 					<p>Total Users</p>
 					<div class="progress bg-light-danger" style="height: 2px">
 						<div
@@ -64,7 +133,9 @@
 					<span class="btn-icon btn btn-outline-warning rounded-3">
 						<i class="bx bx-credit-card-alt fs-3"></i>
 					</span>
-					<h2 class="h1 fw-bold mb-0 mt-4 lh-1">$10,800.00</h2>
+					<h2 class="h1 fw-bold mb-0 mt-4 lh-1">
+						${{ totalDeposit() }}
+					</h2>
 
 					<p>Total Deposit</p>
 					<div class="progress bg-light-warning" style="height: 2px">
