@@ -17,6 +17,7 @@ import Dashboard from "../views/admin/Dashboard.vue";
 import Users from "../views/admin/Users.vue";
 import Testimonials from "../views/admin/Testimonials.vue";
 import Settings from "../views/admin/Settings.vue";
+import Login from "../views/admin/Login.vue";
 
 import { user } from "@/stores/user";
 
@@ -70,14 +71,23 @@ const router = createRouter({
 			redirect: "/admin/dashboard",
 			name: "admin",
 			component: Admin,
-			// beforeEnter: (to, from, next) => {
-			// 	console.log(user.getUser());
-			// 	if (!user.getUser()) {
-			// 		next({ name: "home" });
-			// 	} else {
-			// 		next();
-			// 	}
-			// },
+			beforeEnter: (to, from, next) => {
+				console.log(user.getUser());
+				if (!user.getUser()) {
+					next({ name: "login" });
+				} else {
+					
+					const isAdmin = user
+						.getUser()
+						.roles.find((e) => e.name === "ADMIN");
+						
+					if (isAdmin) {
+						next();
+					} else {
+						next({ name: "login" });
+					}
+				}
+			},
 			children: [
 				{
 					path: "dashboard",
@@ -103,11 +113,6 @@ const router = createRouter({
 					path: "settings",
 					name: "settings",
 					component: Settings,
-				},
-				{
-					path: "login",
-					name: "login",
-					component: PaymentsVue,
 				},
 			],
 		},
@@ -138,6 +143,11 @@ const router = createRouter({
 					component: FAQs,
 				},
 			],
+		},
+		{
+			path: "/admin/login",
+			name: "login",
+			component: Login,
 		},
 	],
 });

@@ -11,11 +11,24 @@
 		},
 	});
 	const addBalance = ref(false);
+	const loading = ref(false);
+	const depositAmount = ref(null);
+	const saved = ref(0);
 
-	async function deposit() {
+	async function deposit($event) {
+		if (!$event.target.checkValidity()) {
+			return;
+		}
+		loading.value = true;
 		let config = {
-			method: "GET",
-			url: `${env.VITE_BE_API}/users`,
+			method: "POST",
+			url: `${env.VITE_BE_API}/transactions/deposit`,
+			data: {
+				amount: depositAmount.value,
+				source: "ADMIN",
+				currency: "USD",
+				userId: props.user.id,
+			},
 		};
 
 		axios
@@ -24,9 +37,13 @@
 				console.log(response.data);
 				// users.value = response.data;
 				alert.success();
+				saved.value = depositAmount.value;
 			})
 			.catch(function (error) {
-				console.log(error);
+				alert.error();
+			})
+			.finally(() => {
+				loading.value = false;
 			});
 	}
 
@@ -34,7 +51,9 @@
 		const fromNow = moment(props.user.createdAt).fromNow();
 		const timer = fromNow.split(" ")[1];
 
-		let check = ["minutes", "seconds", "hours"].find((e) => timer == e);
+		let check = ["minutes", "seconds", "hours", "few"].find(
+			(e) => timer == e
+		);
 
 		if (!check) {
 			return moment(props.user.createdAt).format("LLL");
@@ -44,7 +63,8 @@
 	}
 
 	function balance() {
-		return util.format(props.user.balance.amount, 2, ".", ",");
+		const amount = Number(props.user.balance.amount) + Number(saved.value);
+		return util.format(amount, 2, ".", ",");
 	}
 
 	function status() {
@@ -95,7 +115,7 @@
 
 					<div v-if="addBalance">
 						<form
-							@submit.prevent="deposit()"
+							@submit.prevent="deposit($event)"
 							class="d-flex align-items-end mt-3"
 						>
 							<div class="form-group me-3">
@@ -106,13 +126,20 @@
 									type="text"
 									class="form-control form-control-sm"
 									data-format='{"numeral": true}'
+									v-model="depositAmount"
 								/>
 							</div>
 							<div>
 								<button
+									:class="loading ? 'disabled' : ''"
 									class="btn btn-sm btn-outline-secondary"
 								>
-									Save
+									<span
+										v-if="loading"
+										class="spinner-border-sm spinner-border"
+									></span>
+
+									<span v-else>Save</span>
 								</button>
 							</div>
 						</form>
