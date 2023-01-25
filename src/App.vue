@@ -1,21 +1,36 @@
 <script setup>
 	import { RouterView } from "vue-router";
 	import PerfectScrollbar from "perfect-scrollbar";
-	import { onMounted } from "vue";
+	import { provide, ref, onMounted } from "vue";
+	import axios from "axios";
 
+	import { util } from "@/stores/utility";
+
+	const env = import.meta.env;
 	const body = document.querySelector("#body");
 	const ps = new PerfectScrollbar(body);
 
 	ps.update();
 
-	onMounted(() => {
-		const tooltipTriggerList = document.querySelectorAll(
-			'[data-bs-toggle="tooltip"]'
-		);
+	const settings = ref(util.settings());
+	provide("settings", settings);
 
-		const tooltipList = [...tooltipTriggerList].map(
-			(tooltipTriggerEl) => new bootstrap.Tooltip(tooltipTriggerEl)
-		);
+	async function loadSettings() {
+		let config = {
+			method: "GET",
+			url: `${env.VITE_BE_API}/settings`,
+		};
+
+		await axios
+			.request(config)
+			.then((response) => {
+				settings.value = response.data;
+			})
+			.catch(function (error) {});
+	}
+
+	onMounted(() => {
+		loadSettings();
 	});
 </script>
 

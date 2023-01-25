@@ -3,8 +3,8 @@
 
 	const props = defineProps({
 		user: {
-			required: false
-		}
+			required: false,
+		},
 	});
 </script>
 
@@ -24,16 +24,20 @@
 					alt="chip"
 				/>
 			</div>
-			<div class="number">0123 4567 8910 1112</div>
-			<div class="name">{{user}}</div>
-			<div class="from">12/22</div>
-			<div class="to">01/25</div>
+			<div class="number textshadow blurry-text">0123 4567 8910 1112</div>
+			<div class="name fw-bold">{{ user }}</div>
+			<div class="from fw-bold">{{ moment(user.createdAt).format("MM/YY") }}</div>
+			<div class="to fw-bold">01/25</div>
 			<div class="ring"></div>
 		</div>
 	</div>
 </template>
 
 <style scoped>
+	.blurry-text {
+		color: transparent !important;
+		text-shadow: 0 0 7px rgba(0, 0, 0, 0.8) !important;
+	}
 	/* Background circles start */
 	.circle {
 		position: absolute;

@@ -1,8 +1,10 @@
 <script setup>
-	import { onMounted, ref } from "vue";
+	import { onMounted, ref, inject } from "vue";
 	import moment from "moment";
 	import axios from "axios";
 	import { alert, util } from "@/stores/utility";
+	import currency from "currency.js";
+	import Settings from "../../../views/admin/Settings.vue";
 
 	const env = import.meta.env;
 	const props = defineProps({
@@ -14,6 +16,7 @@
 	const loading = ref(false);
 	const depositAmount = ref(null);
 	const saved = ref(0);
+	const settings = inject("settings");
 
 	async function deposit($event) {
 		if (!$event.target.checkValidity()) {
@@ -63,8 +66,11 @@
 	}
 
 	function balance() {
-		const amount = Number(props.user.balance.amount) + Number(saved.value);
-		return util.format(amount, 2, ".", ",");
+		const amount = currency(props.user.balance.amount, {
+			symbol: settings.value.currencySymbol,
+		}).add(saved.value);
+
+		return amount.format();
 	}
 
 	function status() {
@@ -97,8 +103,8 @@
 				</div>
 
 				<div class="border-bottom py-2 mt-4 fs-6">
-					<div class="d-flex justify-content-between">
-						<span>Balance</span>
+					<div class="d-flex fs-sm justify-content-between">
+						<span class="me-2 fs-sm">Balance</span>
 						<span class="text-success">
 							<button
 								@click="addBalance = !addBalance"
@@ -109,7 +115,7 @@
 									class="bx"
 								></i>
 							</button>
-							${{ balance() }}
+							{{ balance() }}
 						</span>
 					</div>
 
@@ -147,13 +153,13 @@
 				</div>
 
 				<div
-					class="d-flex justify-content-between border-bottom py-2 mt-2 fs-6"
+					class="d-flex fs-sm justify-content-between border-bottom py-2 mt-2 fs-6"
 				>
 					<span>Status</span>
 					<span class="text-success"> {{ status() }} </span>
 				</div>
 
-				<div class="d-flex justify-content-between pt-2 mt-2 fs-6">
+				<div class="d-flex fs-sm justify-content-between pt-2 mt-2 fs-6">
 					<span class="me-3">Registered</span>
 					<span class="text-dark"> {{ getTime() }}</span>
 				</div>

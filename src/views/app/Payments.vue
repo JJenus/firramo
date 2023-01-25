@@ -1,11 +1,11 @@
 <script setup>
 	import axios from "axios";
-	import { user } from "@/stores/user";
 	import { util } from "@/stores/utility";
-	import { onMounted, ref } from "vue";
+	import { onMounted, ref, inject } from "vue";
 
 	const env = import.meta.env;
 	env.VITE_BE_API = util.backendApi;
+	const user = inject("user");
 
 	const transactions = ref({
 		withdrawals: [],
@@ -16,7 +16,7 @@
 	function loadTransactions() {
 		let config = {
 			method: "GET",
-			url: `${env.VITE_BE_API}/users/${user.getUser().id}/transactions`,
+			url: `${env.VITE_BE_API}/users/${user.value.id}/transactions`,
 		};
 
 		axios

@@ -1,5 +1,5 @@
 <script setup>
-	import { ref, onMounted } from "vue";
+	import { ref, onMounted, onBeforeMount, provide } from "vue";
 	import axios from "axios";
 	import { RouterView } from "vue-router";
 
@@ -12,6 +12,9 @@
 
 	const env = import.meta.env;
 	const sessions = ref([]);
+	const appUser = ref(user.getUser());
+
+	provide("user", appUser);
 
 	function loadSessions() {
 		let config = {
@@ -38,8 +41,26 @@
 			});
 	}
 
+	async function loadUser() {
+		let config = {
+			method: "GET",
+			url: `${env.VITE_BE_API}/users/${user.getUser().id}`,
+		};
+
+		await axios
+			.request(config)
+			.then((response) => {
+				appUser.value = response.data;
+			})
+			.catch(function (error) {});
+	}
+
 	onMounted(() => {
 		loadSessions();
+	});
+
+	onBeforeMount(async () => {
+		await loadUser();
 	});
 </script>
 

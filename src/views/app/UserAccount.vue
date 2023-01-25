@@ -1,13 +1,13 @@
 <script setup>
-	import { user } from "@/stores/user";
-	import { ref } from "vue";
+	import { ref, inject } from "vue";
 	import * as filestack from "filestack-js";
 	import axios from "axios";
 	import { alert } from "../../stores/utility";
 
 	const env = import.meta.env;
 
-	const appUser = ref(user.getUser());
+	const user = inject("user");
+
 	const tempImg = ref("/assets/img/avatar/default-avatar.png");
 	const changed = ref(false);
 
@@ -26,7 +26,7 @@
 			.then((res) => {
 				console.log("success: ", res);
 
-				appUser.value.imgUrl = res.url;
+				user.value.imgUrl = res.url;
 				save();
 				savedImg.value = true;
 			})
@@ -39,7 +39,7 @@
 	function revert() {
 		changed.value = false;
 		savedImg.value = false;
-		appUser.value.imgUrl = user.getUser().imgUrl;
+		user.value.imgUrl = user.getUser().imgUrl;
 	}
 
 	function selectImage() {
@@ -52,7 +52,7 @@
 
 		if (input.files && input.files[0]) {
 			imgFile.value = input.files[0];
-			appUser.value.imgUrl = URL.createObjectURL(input.files[0]);
+			user.value.imgUrl = URL.createObjectURL(input.files[0]);
 			changed.value = true;
 		}
 	}
@@ -67,7 +67,7 @@
 		let config = {
 			method: "PUT",
 			url: `${env.VITE_BE_API}/users`,
-			data: appUser.value,
+			data: user.value,
 		};
 		axios
 			.request(config)
@@ -77,7 +77,7 @@
 				const old = user.getToken();
 				old.user = data;
 				user.login(old);
-				appUser.value = data;
+				user.value = data;
 
 				alert.success("Success");
 			})
@@ -93,11 +93,11 @@
 	function closeAccount() {
 		if (permitDelete.value) {
 			loading.value = true;
-			appUser.value.status = "deleted";
+			user.value.status = "deleted";
 			let config = {
 				method: "PUT",
 				url: `${env.VITE_BE_API}/users`,
-				data: appUser.value,
+				data: user.value,
 			};
 			axios
 				.request(config)
@@ -107,7 +107,7 @@
 					const old = user.getToken();
 					old.user = data;
 					user.login(old);
-					appUser.value = data;
+					user.value = data;
 
 					alert.success("Account closed");
 
@@ -136,13 +136,13 @@
 		>
 			<img
 				@click="selectImage()"
-				:src="appUser.imgUrl !== null ? appUser.imgUrl : tempImg"
+				:src="user.imgUrl !== null ? user.imgUrl : tempImg"
 				class="d-block rounded-circle mx-auto mb-2"
 				width="162"
-				:alt="appUser.name"
+				:alt="user.name"
 			/>
-			<h5 class="fw-medium fs-lg mb-1">{{ appUser.name }}</h5>
-			<p class="fs-sm mb-4">{{ appUser.email }}</p>
+			<h5 class="fw-medium fs-lg mb-1">{{ user.name }}</h5>
+			<p class="fs-sm mb-4">{{ user.email }}</p>
 
 			<div class="d-flex justify-content-center">
 				<input
@@ -202,7 +202,7 @@
 						type="text"
 						id="fn"
 						class="form-control form-control-lg"
-						v-model="appUser.name"
+						v-model="user.name"
 						name="name"
 						required
 					/>
@@ -218,7 +218,7 @@
 						type="email"
 						id="email"
 						class="form-control form-control-lg"
-						v-model="appUser.email"
+						v-model="user.email"
 						required
 					/>
 					<div class="invalid-feedback">
@@ -234,7 +234,7 @@
 						type="text"
 						id="phone"
 						class="form-control form-control-lg"
-						v-model="appUser.phone"
+						v-model="user.phone"
 						data-format='{"phone": true, "phoneRegionCode": "us"}'
 						placeholder="+1 ___ ___ __"
 					/>
@@ -274,7 +274,7 @@
 						type="text"
 						id="country"
 						class="form-control form-control-lg"
-						v-model="appUser.country"
+						v-model="user.country"
 						name="country"
 						required
 					/>
@@ -288,7 +288,7 @@
 						type="text"
 						id="country"
 						class="form-control form-control-lg"
-						v-model="appUser.city"
+						v-model="user.city"
 						name="country"
 						required
 					/>
@@ -300,7 +300,7 @@
 						type="text"
 						id="zip"
 						class="form-control form-control-lg"
-						v-model="appUser.zipcode"
+						v-model="user.zipcode"
 						name="zip"
 						required
 					/>
@@ -315,7 +315,7 @@
 					<input
 						id="address1"
 						class="form-control form-control-lg"
-						v-model="appUser.address"
+						v-model="user.address"
 						required
 					/>
 				</div>

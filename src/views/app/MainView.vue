@@ -1,34 +1,33 @@
 <script setup>
-	import { ref, onMounted } from "vue";
+	import { inject, computed, onMounted } from "vue";
 	import BankCardVue from "../../components/app/BankCard.vue";
-	import { user } from "@/stores/user";
 	import { util } from "@/stores/utility";
+	import currency from "currency.js";
 
-	const AppName = import.meta.env.VITE_APP_NAME;
-	const appUser = ref(user.getUser());
+	const user = inject("user");
+	const settings = inject("settings", util.settings);
 
-	function balance() {
-		return util.format(appUser.value.balance.currency, 2, ".", ",");
-	}
+	const balance = computed(() => {
+		const amount = currency(user.value.balance.amount, {
+			symbol: settings.value.currencySymbol,
+		}).format();
+		return amount;
+	});
 
 	function addMoney() {
-		console.log("Add money");
+		// console.log("Add money");
 	}
 
 	function withdraw() {
-		console.log("Withdraw");
+		// console.log("Withdraw");
 	}
 
-	onMounted(() => {
-		// document.querySelector("#btn-verify-modal").click();
-	});
+	onMounted(() => {});
 </script>
 
 <template>
 	<div class="d-flex mb-3 px-2 align-items-center justify-content-between">
-		<span class="fs-3 fw-bold text-dark"
-			>{{ appUser.balance.currency }} {{ balance() }}</span
-		>
+		<span class="fs-3 fw-bold text-dark ps-md-4">{{ balance }}</span>
 
 		<div class="d-flex">
 			<div
@@ -73,7 +72,7 @@
 	</div>
 
 	<div class="pe-md-5 px-md-5">
-		<BankCardVue :user="appUser.name"></BankCardVue>
+		<BankCardVue :user="user.name"></BankCardVue>
 	</div>
 
 	<div class="d-flex my-3 justify-content-center">

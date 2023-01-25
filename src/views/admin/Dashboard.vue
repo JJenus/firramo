@@ -1,8 +1,9 @@
 <script setup>
-	import { alert, util } from "../../stores/utility";
-	import { onMounted, ref } from "vue";
+	import { onMounted, ref, inject } from "vue";
 	import axios from "axios";
+	import currency from "currency.js";
 
+	const settings = inject("settings");
 	const env = import.meta.env;
 	const users = ref([]);
 	const deposits = ref([]);
@@ -10,22 +11,30 @@
 	function totalBalance() {
 		if (!users.value || users.value.length == 0) return "0.00";
 
-		const balance = users.value.reduce((p, c) => {
+		let balance = users.value.reduce((p, c) => {
 			return p + Number(c.balance.amount);
 		}, 0);
 
-		return util.format(balance, 2, ".", ",");
+		balance = currency(balance, {
+			symbol: settings.value.currencySymbol,
+		}).format();
+
+		return balance;
 	}
 
 	function totalDeposit() {
 		if (!deposits.value || deposits.value.length == 0) return "0.00";
 
-		const balance = deposits.value.reduce((p, c) => {
+		let balance = deposits.value.reduce((p, c) => {
 			if (c.status === "success") return p + Number(c.amount);
 			return p;
 		}, 0);
 
-		return util.format(balance, 2, ".", ",");
+		balance = currency(balance, {
+			symbol: settings.value.currencySymbol,
+		}).format();
+
+		return balance;
 	}
 
 	async function loadUsers() {
@@ -37,12 +46,18 @@
 		axios
 			.request(config)
 			.then((response) => {
-				console.log(response.data);
 				users.value = response.data;
 			})
-			.catch(function (error) {
-				console.log(error);
-			});
+			.catch(function (error) {});
+	}
+
+	function allUsers() {
+		const count = users.value.reduce((num, user) => {
+			if (user.roles[0].name === "ADMIN") return num;
+			return num + 1;
+		}, 0);
+
+		return currency(count, { symbol: "" }).format().split(".")[0];
 	}
 
 	async function loadDeposits() {
@@ -54,7 +69,6 @@
 		axios
 			.request(config)
 			.then((response) => {
-				console.log(response.data);
 				deposits.value = response.data;
 			})
 			.catch(function (error) {
@@ -84,7 +98,7 @@
 						<i class="bx bx-dollar-circle fs-3"></i>
 					</span>
 					<h2 class="h1 fw-bold mb-0 mt-4 lh-1">
-						${{ totalBalance() }}
+						{{ totalBalance() }}
 					</h2>
 					<p>Total Balance</p>
 					<div class="progress bg-light-primary" style="height: 2px">
@@ -109,7 +123,7 @@
 						<i class="bx bx-user fs-3"></i>
 					</span>
 					<h2 class="h1 fw-bold mb-0 mt-4 lh-1">
-						{{ util.format(users.length, 0, ".", ",") }}
+						{{ allUsers() }}
 					</h2>
 					<p>Total Users</p>
 					<div class="progress bg-light-danger" style="height: 2px">
@@ -134,7 +148,7 @@
 						<i class="bx bx-credit-card-alt fs-3"></i>
 					</span>
 					<h2 class="h1 fw-bold mb-0 mt-4 lh-1">
-						${{ totalDeposit() }}
+						{{ totalDeposit() }}
 					</h2>
 
 					<p>Total Deposit</p>

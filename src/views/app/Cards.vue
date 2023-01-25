@@ -1,9 +1,11 @@
 <script setup>
-	import { user } from "@/stores/user";
+	import { inject } from "vue";
 	import { alert } from "../../stores/utility";
 
+	const user = inject("user");
+
 	function addCard() {
-		if (user.status === "pending") {
+		if (user.value.status === "pending") {
 			alert.info(
 				"Pending Verification",
 				"Please contact support for any inconvinience"

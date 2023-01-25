@@ -1,5 +1,3 @@
-const env = import.meta.env;
-
 export const user = {
 	user: null,
 	authKey: "firr@m0@key-auth",
@@ -12,6 +10,7 @@ export const user = {
 		}
 
 		this.user = JSON.parse(userStr);
+
 		return this.user.user;
 	},
 

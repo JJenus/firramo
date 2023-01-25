@@ -4,7 +4,6 @@
 
 	import UserVue from "@/components/admin/users/User.vue";
 
-	import { user } from "@/stores/user";
 	import { util } from "../../stores/utility";
 
 	const env = import.meta.env;
@@ -21,7 +20,10 @@
 			.request(config)
 			.then((response) => {
 				console.log(response.data);
-				users.value = response.data;
+				users.value = response.data.reduce((prev, user) => {
+					if (user.roles[0].name === "ADMIN") return prev;
+					return [...prev, user];
+				}, []);
 			})
 			.catch(function (error) {
 				console.log(error);

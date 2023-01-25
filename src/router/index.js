@@ -72,15 +72,13 @@ const router = createRouter({
 			name: "admin",
 			component: Admin,
 			beforeEnter: (to, from, next) => {
-				console.log(user.getUser());
 				if (!user.getUser()) {
 					next({ name: "login" });
 				} else {
-					
 					const isAdmin = user
 						.getUser()
 						.roles.find((e) => e.name === "ADMIN");
-						
+
 					if (isAdmin) {
 						next();
 					} else {
