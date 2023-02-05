@@ -22,7 +22,6 @@
 		axios
 			.request(config)
 			.then((response) => {
-				console.log(response.data);
 				testimonials.value = response.data;
 			})
 			.catch(function (error) {
