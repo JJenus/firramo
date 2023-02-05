@@ -93,6 +93,11 @@ export const util = {
 	},
 
 	loadSettings() {},
+
+	resizeImg(uri, width = 100) {
+		let uArr = uri.split(".com/");
+		return uArr.join(`.com/resize=width:${width}/`);
+	},
 };
 
 export const userIp = {

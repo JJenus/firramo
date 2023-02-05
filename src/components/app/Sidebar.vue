@@ -55,6 +55,7 @@
 					<img
 						:src="user.getUser().imgUrl || tempImg"
 						class="rounded-circle"
+						style="max-height: 42px; max-width: 42px; min-height: 42px; min-width: 42px;"
 						alt="profile"
 					/>
 				</button>

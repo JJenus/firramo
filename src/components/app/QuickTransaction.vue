@@ -4,6 +4,8 @@
 	import { util } from "@/stores/utility";
 	import { onMounted, ref } from "vue";
 	import Beneficiary from "@/components/app/main/Beneficiary.vue";
+	import moment from "moment";
+	import Recent from "./quick/Recent.vue";
 
 	const env = import.meta.env;
 	env.VITE_BE_API = util.backendApi;
@@ -14,6 +16,8 @@
 		transfers: [],
 	});
 
+	const recent = ref([]);
+
 	function loadTransactions() {
 		let config = {
 			method: "GET",
@@ -23,8 +27,45 @@
 		axios
 			.request(config)
 			.then((response) => {
-				// console.log(response.data);
 				transactions.value = response.data;
+				transactions.value.deposits.length = 5;
+
+				if (transactions.value.transfers.length > 5) {
+					transactions.value.transfers.length = 5;
+				}
+
+				if (transactions.value.deposits.length > 5) {
+					transactions.value.deposits.length = 5;
+				}
+
+				// transactions.value.transfers.push({
+				// 	amount: 3000,
+				// 	userId: 5,
+				// 	toUserId: 8,
+				// 	createdAt: "2023-02-06T22:00:18"
+				// });
+
+				transactions.value.deposits.map((e) => {
+					e.type = "deposit";
+					return e;
+				});
+				transactions.value.transfers.map((e) => {
+					e.type = "transfer";
+					return e;
+				});
+
+				transactions.value.deposits.push(
+					...transactions.value.transfers
+				);
+
+				const trans = transactions.value.deposits;
+
+				recent.value = trans.sort((a, b) => {
+					if (moment(a.createdAt).isAfter(b.createdAt)) {
+						return -1;
+					}
+					return 1;
+				});
 			})
 			.catch(function (error) {
 				console.log(error);
@@ -80,42 +121,21 @@
 			class="h6 mb-0 mt-3 d-flex align-items-center justify-content-between"
 		>
 			<span> Recent activity </span>
-			<a href="transactions" class="btn btn-sm btn-outline-secondary p-2 py-1">
+			<a
+				href="transactions"
+				class="btn btn-sm btn-outline-secondary p-2 py-1"
+			>
 				show all
 			</a>
 		</h3>
 		<small class="fw-bold fs-xs mb-3 d-none">Today</small>
 		<!-- Pricing list view (List group) -->
-		<ul v-if="!checkTransactions()" class="list-group list-group-flush">
+		<ul
+			v-if="!checkTransactions()"
+			class="d-nonie list-group list-group-flush"
+		>
 			<!-- Pricing plan -->
-			<li
-				class="list-group-item mb-n2 border-0 d-flex flex-sm-row align-items-center justify-content-between p-3"
-			>
-				<div class="d-flex align-items-center">
-					<button class="btn p-1 py-0 btn-outline-secondary me-2">
-						<i class="bx bx-upload fs-5"></i>
-					</button>
-					<h4 class="fs-base fs-sm fw-semibold text-nowrap ps-1 mb-0">
-						<span class="text-muted">To</span> Alexander
-					</h4>
-				</div>
-				<div class="fw-bold fs-sm">- 120 EUR</div>
-			</li>
-
-			<!-- Pricing plan -->
-			<li
-				class="list-group-item d-flex flex-sm-row align-items-center justify-content-between p-3"
-			>
-				<div class="d-flex align-items-center">
-					<button class="btn p-1 py-0 btn-outline-secondary me-2">
-						<i class="bx bx-transfer fs-5"></i>
-					</button>
-					<h4 class="fs-base fs-sm fw-semibold text-nowrap ps-1 mb-0">
-						<span class="text-muted">From</span> King
-					</h4>
-				</div>
-				<div class="fw-bold fs-sm">+ 120 EUR</div>
-			</li>
+			<Recent v-for="trans in recent" :transaction="trans"></Recent>
 		</ul>
 		<p v-else class="text-center pt-5 text-muted">No transactions</p>
 	</div>

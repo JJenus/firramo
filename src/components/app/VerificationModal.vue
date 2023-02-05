@@ -22,6 +22,11 @@
 		idUrl: null,
 	});
 
+	function stopCamera() {
+		// console.log(camera.value);
+		// camera.value.stop();
+	}
+
 	function selectImage() {
 		const input = document.querySelector("#select-id-image");
 		input.click();
@@ -113,6 +118,7 @@
 						class="btn-close"
 						data-bs-dismiss="modal"
 						aria-label="Close"
+						@click="stopCamera()"
 					></button>
 				</div>
 				<div class="modal-body h-100">

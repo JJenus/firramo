@@ -314,6 +314,7 @@
 
 					<!-- Slider controls (Prev / next buttons) -->
 					<div
+						v-if="testimonials.length > 0"
 						class="d-flex justify-content-center justify-content-md-start pb-4 mb-2 pt-2 pt-md-4 mt-md-5"
 					>
 						<button
@@ -336,25 +337,21 @@
 					<div
 						class="swiper mx-n2"
 						data-swiper-options='{
-              "slidesPerView": 1,
-              "spaceBetween": 8,
-              "loop": true,
-              "navigation": {
-                "prevEl": "#prev-testimonial",
-                "nextEl": "#next-testimonial"
-              },
-              "breakpoints": {
-                "500": {
-                  "slidesPerView": 2
-                },
-                "1000": {
-                  "slidesPerView": 2
-                },
-                "1200": {
-                  "slidesPerView": 3
-                }
-              }
-            }'
+							"slidesPerView": 1,
+							"spaceBetween": 8,
+							"navigation": {
+								"prevEl": "#prev-testimonial",
+								"nextEl": "#next-testimonial"
+							},
+							"breakpoints": {
+								"500": {
+								"slidesPerView": 2
+								},
+								"1200": {
+								"slidesPerView": 3
+								}
+							}
+							}'
 					>
 						<div class="swiper-wrapper">
 							<!-- Item -->

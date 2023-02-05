@@ -2,7 +2,7 @@
 	import { ref, inject } from "vue";
 	import * as filestack from "filestack-js";
 	import axios from "axios";
-	import { alert } from "../../stores/utility";
+	import { alert, util } from "../../stores/utility";
 
 	const env = import.meta.env;
 
@@ -134,13 +134,19 @@
 		<div
 			class="card card-body mb-4 card-hover bg-light border-0 text-center"
 		>
-			<img
-				@click="selectImage()"
-				:src="user.imgUrl !== null ? user.imgUrl : tempImg"
-				class="d-block rounded-circle mx-auto mb-2"
-				width="162"
-				:alt="user.name"
-			/>
+			<div class="d-flex justify-content-center mb-2">
+				<img
+					@click="selectImage()"
+					:src="
+						user.imgUrl !== null
+							? util.resizeImg(user.imgUrl, 200)
+							: tempImg
+					"
+					class="rounded-circle"
+					style="max-height: 100px; max-width: 100px; min-height: 100px; min-width: 100px;"
+					:alt="user.name"
+				/>
+			</div>
 			<h5 class="fw-medium fs-lg mb-1">{{ user.name }}</h5>
 			<p class="fs-sm mb-4">{{ user.email }}</p>
 

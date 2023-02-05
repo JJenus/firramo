@@ -5,7 +5,7 @@
 	import currency from "currency.js";
 
 	const user = inject("user");
-	const settings = inject("settings", util.settings);
+	const settings = inject("settings", util.settings());
 
 	const balance = computed(() => {
 		const amount = currency(user.value.balance.amount, {
@@ -20,6 +20,10 @@
 
 	function withdraw() {
 		// console.log("Withdraw");
+	}
+
+	function appCurrency() {
+		return settings.value.currency;
 	}
 
 	onMounted(() => {});
@@ -106,7 +110,7 @@
 				<i class="fs-1 bx bx-circle me-2"> </i>
 				<div class="d-flex flex-column fs-xs">
 					<span class="fw-bold">Credit limit</span>
-					<span>0/4000 USD</span>
+					<span>0/4000 {{ appCurrency() }}</span>
 				</div>
 			</div>
 
@@ -118,7 +122,7 @@
 				<i class="fs-1 bx bx-circle me-2"> </i>
 				<div class="d-flex flex-column fs-xs">
 					<span class="fw-bold">Online limit</span>
-					<span>0/4000 USD</span>
+					<span>0/4000 {{ appCurrency() }}</span>
 				</div>
 			</div>
 
