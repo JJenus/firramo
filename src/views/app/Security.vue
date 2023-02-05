@@ -28,7 +28,6 @@
 		axios
 			.request(config)
 			.then((response) => {
-				console.log(response.data);
 				sessions.value = response.data;
 			})
 			.catch(function (error) {
@@ -57,7 +56,6 @@
 		axios
 			.request(config)
 			.then((response) => {
-				console.log(response.data);
 				const data = response.data;
 				if (data.error) {
 					alert.error(data.error);

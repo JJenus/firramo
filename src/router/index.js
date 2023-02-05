@@ -30,7 +30,6 @@ const router = createRouter({
 			name: "app",
 			component: App,
 			beforeEnter: (to, from, next) => {
-				console.log(user.getUser());
 				if (!user.getUser()) {
 					next({ name: "home" });
 				} else {
