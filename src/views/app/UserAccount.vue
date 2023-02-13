@@ -73,10 +73,6 @@
 			.request(config)
 			.then((res) => {
 				const data = res.data;
-				console.log(data);
-				const old = user.getToken();
-				old.user = data;
-				user.login(old);
 				user.value = data;
 
 				alert.success("Success");

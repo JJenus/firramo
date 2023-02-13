@@ -28,7 +28,6 @@
 			.request(config)
 			.then((response) => {
 				transactions.value = response.data;
-				transactions.value.deposits.length = 5;
 
 				if (transactions.value.transfers.length > 5) {
 					transactions.value.transfers.length = 5;
