@@ -51,7 +51,7 @@
 							</div>
 							<div class="mb-3">
 								<h5 class="mb-2 fs-6">Send to</h5>
-								<div class="d-flex">
+								<div class="d-flex flex-wrap">
 									<button
 										@click="method = AppName"
 										:class="
@@ -59,7 +59,7 @@
 												? 'btn-outline-primary'
 												: 'btn-outline-secondary'
 										"
-										class="btn me-2 btn-icon rounded-circle"
+										class="btn me-3 mb-2 btn-icon rounded-circle"
 										data-bs-toggle="tooltip"
 										data-bs-placement="left"
 										data-bs-custom-class="custom-tooltip"
@@ -75,7 +75,7 @@
 												? 'btn-outline-primary'
 												: 'btn-outline-secondary'
 										"
-										class="btn me-2 btn-icon"
+										class="btn me-3 mb-2 btn-icon"
 										data-bs-toggle="tooltip"
 										data-bs-placement="top"
 										data-bs-custom-class="custom-tooltip"
@@ -90,7 +90,7 @@
 												? 'btn-outline-primary'
 												: 'btn-outline-secondary'
 										"
-										class="btn me-2 btn-icon"
+										class="btn me-3 mb-2 btn-icon"
 										data-bs-toggle="tooltip"
 										data-bs-placement="bottom"
 										data-bs-custom-class="custom-tooltip"
@@ -106,14 +106,85 @@
 												? 'btn-outline-primary'
 												: 'btn-outline-secondary'
 										"
-										class="btn me-2 btn-icon"
+										class="btn me-3 mb-2 btn-icon"
 										data-bs-toggle="tooltip"
-										data-bs-placement="right"
+										data-bs-placement="top"
 										data-bs-custom-class="custom-tooltip"
 										data-bs-title="card"
 									>
 										<i class="bx bx-credit-card-alt"></i>
 									</button>
+
+									<button
+										@click="method = 'skrill'"
+										:class="
+											method === 'skrill'
+												? 'btn-outline-primary'
+												: 'btn-outline-secondary'
+										"
+										class="btn me-3 mb-2 btn-icon"
+										data-bs-toggle="tooltip"
+										data-bs-placement="bottom"
+										data-bs-custom-class="custom-tooltip"
+										data-bs-title="Skrill"
+									>
+										<i class="bx bxl-stripe"></i>
+									</button>
+
+									<button
+										@click="method = 'revolut'"
+										:class="
+											method === 'revolut'
+												? 'btn-outline-primary'
+												: 'btn-outline-secondary'
+										"
+										class="btn me-3 mb-2 btn-icon"
+										data-bs-toggle="tooltip"
+										data-bs-placement="top"
+										data-bs-custom-class="custom-tooltip"
+										data-bs-title="Revolut"
+									>
+										<i class="">
+											<img width="16" src="/assets/img/logos/revolut.png" alt="" srcset="">
+										</i>
+									</button>
+
+									<button
+										@click="method = 'wise'"
+										:class="
+											method === 'wise'
+												? 'btn-outline-primary'
+												: 'btn-outline-secondary'
+										"
+										class="btn me-3 mb-2 btn-icon"
+										data-bs-toggle="tooltip"
+										data-bs-placement="bottom"
+										data-bs-custom-class="custom-tooltip"
+										data-bs-title="Wise"
+									>
+										<i class="">
+											<img width="16" src="/assets/img/logos/wise.png" alt="" srcset="">
+										</i>
+									</button>
+
+									<button
+										@click="method = 'mbway'"
+										:class="
+											method === 'mbway'
+												? 'btn-outline-primary'
+												: 'btn-outline-secondary'
+										"
+										class="btn me-3 mb-2 btn-icon"
+										data-bs-toggle="tooltip"
+										data-bs-placement="right"
+										data-bs-custom-class="custom-tooltip"
+										data-bs-title="MbWay"
+									>
+										<i class="">
+											<img width="22" src="/assets/img/logos/mbway.png" alt="" srcset="">
+										</i>
+									</button>
+
 								</div>
 							</div>
 							<button
