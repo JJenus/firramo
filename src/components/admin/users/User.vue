@@ -77,6 +77,14 @@
 		return props.user.status || "New";
 	}
 
+	function statColor() {
+		return props.user.status == "verified"
+			? "success"
+			: props.user.status == "new"
+			? "primary"
+			: "danger";
+	}
+
 	onMounted(() => {
 		// loadUsers();
 	});
@@ -156,10 +164,18 @@
 					class="d-flex fs-sm justify-content-between border-bottom py-2 mt-2 fs-6"
 				>
 					<span>Status</span>
-					<span class="text-success"> {{ status() }} </span>
+					<span :class="'text-' + statColor()"> {{ status() }} </span>
+					<button
+						v-if="status() === 'new'"
+						class="btn p-1 fs-xs btn-sm btn-success"
+					>
+						verify
+					</button>
 				</div>
 
-				<div class="d-flex fs-sm justify-content-between pt-2 mt-2 fs-6">
+				<div
+					class="d-flex fs-sm justify-content-between pt-2 mt-2 fs-6"
+				>
 					<span class="me-3">Registered</span>
 					<span class="text-dark"> {{ getTime() }}</span>
 				</div>

@@ -8,20 +8,23 @@
 		testimonial: {
 			required: true,
 		},
+		admin: {
+			required: false,
+		},
 	});
 
 	async function del() {
 		let config = {
-			method: "GET",
-			url: `${env.VITE_BE_API}/users`,
+			method: "DELETE",
+			url: `${env.VITE_BE_API}/testimonials/${props.testimonial.id}`,
 		};
 
 		axios
 			.request(config)
 			.then((response) => {
 				console.log(response.data);
-				// users.value = response.data;
 				alert.success();
+				window.location.reload();
 			})
 			.catch(function (error) {
 				console.log(error);
@@ -39,6 +42,13 @@
 			>
 				<i class="bx bxs-quote-left"></i>
 			</span>
+			<button
+				v-if="admin"
+				@click="del()"
+				class="btn btn-icon btn-sm btn-outline-danger shadow-primary position-absolute top-0 end-0 translate-middle-y ms-4"
+			>
+				<i class="bx bxs-trash-alt"></i>
+			</button>
 			<blockquote class="card-body pb-3 mb-0">
 				<p class="mb-0">
 					{{ testimonial.testimony }}

@@ -21,6 +21,7 @@
 		if (!$event.target.checkValidity()) {
 			return;
 		}
+
 		loading.value = true;
 		let config = {
 			method: "POST",
@@ -34,7 +35,10 @@
 				console.log(response.data);
 				loadTestimonies();
 				alert.success();
-				$event.target[0].reset();
+				$event.target.reset();
+				form.value.rating = null;
+				form.value.userName = null;
+				form.value.testimony = null;
 			})
 			.catch(function (error) {
 				console.log(error);
@@ -63,7 +67,7 @@
 	}
 
 	function search() {
-        console.log(searchKey.value)
+		console.log(searchKey.value);
 		util.search(".testimony", searchKey.value);
 	}
 
@@ -174,11 +178,12 @@
 	<div class="row">
 		<div
 			v-for="testimonial in testimonials"
-			class="col-12 col-md-6 col-lg-4 mb-3 testimony"
+			class="col-12 col-md-6 col-lg-4 testimony mb-5"
 		>
-			<Testimonial :testimonial="testimonial"></Testimonial>
+			<Testimonial :testimonial="testimonial" :key="testimonial.id" :admin="true"></Testimonial>
 		</div>
 	</div>
+
 	<div v-if="testimonials.length < 1" class="text-center text-muted">
 		<small>No testimonies found</small>
 	</div>

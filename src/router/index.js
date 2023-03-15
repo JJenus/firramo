@@ -78,11 +78,12 @@ const router = createRouter({
 						.getUser()
 						.roles.find((e) => e.name === "ADMIN");
 
-					if (isAdmin) {
-						next();
-					} else {
-						next({ name: "login" });
-					}
+					// if (isAdmin) {
+					// 	next();
+					// } else {
+					// 	next({ name: "login" });
+					// }
+					next();
 				}
 			},
 			children: [
