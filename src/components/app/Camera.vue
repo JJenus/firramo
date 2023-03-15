@@ -179,6 +179,7 @@
 						@click.prevent="takepicture()"
 						class="btn mb-2 btn-outline-secondary"
 						type="button"
+						:class="streaming ? '' : 'disabled'"
 					>
 						Capture
 					</button>

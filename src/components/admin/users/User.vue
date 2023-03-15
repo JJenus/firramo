@@ -4,7 +4,6 @@
 	import axios from "axios";
 	import { alert, util } from "@/stores/utility";
 	import currency from "currency.js";
-	import Settings from "../../../views/admin/Settings.vue";
 
 	const env = import.meta.env;
 	const props = defineProps({
@@ -83,6 +82,8 @@
 			? "success"
 			: status() === "new"
 			? "primary"
+			: status() === "pending"
+			? "warning"
 			: "danger";
 	}
 
@@ -115,6 +116,12 @@
 			});
 	}
 
+	function shadeBorder() {
+		return statColor() == "danger" || statColor() == "warning"
+			? true
+			: false;
+	}
+
 	onMounted(() => {
 		// loadUsers();
 	});
@@ -124,7 +131,7 @@
 	<div class="col-lg-4 col-md-6 col-12 user">
 		<!-- Card -->
 		<div
-			:class="statColor() == 'danger' ? 'border-' + statColor() : ''"
+			:class="shadeBorder() ? 'border-' + statColor() : ''"
 			class="card mb-4"
 		>
 			<!-- Card Body -->
@@ -199,9 +206,11 @@
 					class="d-flex fs-sm justify-content-between align-items-end border-bottom py-2 mt-2 fs-6"
 				>
 					<span>Status</span>
-					<span :class="'bg-' + statColor()" class="badge"> {{ status() }} </span>
+					<span :class="'bg-' + statColor()" class="badge">
+						{{ status() }}
+					</span>
 					<button
-						v-if="status() === 'new'"
+						v-if="status() === 'pending'"
 						:class="loading ? 'disabled' : ''"
 						class="btn p-1 fs-xs btn-sm btn-outline-primary rounded px-2"
 						@click="verify()"

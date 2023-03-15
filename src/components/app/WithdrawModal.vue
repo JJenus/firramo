@@ -1,16 +1,46 @@
 <script setup>
-	import { onMounted, ref } from "vue";
+	import { inject, onMounted, ref } from "vue";
 	import { alert } from "../../stores/utility";
+	import Firramo from "./transfer/Firramo.vue";
 
 	const env = import.meta.env;
 	const AppName = env.VITE_APP_NAME;
 	const method = ref(null);
+	const user = inject("user");
+	const makePayment = ref(null);
+
+	const form = ref({
+		amount: "0.00",
+		email: null,
+	});
 
 	function next() {
 		if (method.value === null) {
 			alert.error("Payment method", "Select preferred method");
-		} else {
+			return;
+		} else if (
+			form.amount <= 0 ||
+			form.value.amount > user.value.balance.amount
+		) {
+			alert.error(
+				"Invalid amount",
+				`Amount must be greater than 0 and not be more than current balance (${user.value.balance.amount})`
+			);
+			return;
+		}
+
+		if (method.value === AppName) {
+			console.log("do nothing");
+			makePayment.value = true;
+		} else if (user.value.status === "pending") {
+			alert.info(
+				"Pending verification",
+				"Your verification is being processed. Please contact support if it's more than 48 hours."
+			);
+		} else if (user.value.status !== "verified") {
 			alert.verify();
+		} else {
+			makePayment.value = true;
 		}
 	}
 
@@ -37,7 +67,21 @@
 				</div>
 				<div class="modal-body">
 					<div class="d-flex justify-content-center">
-						<form @submit.prevent="">
+						<div v-show="makePayment">
+							<h5 class="text-capitalize">
+								<a
+									class="btn-link"
+									href="#"
+									@click="makePayment = false"
+								>
+									<i class="bx bx-left-arrow-alt me-2"></i>
+								</a>
+								{{ method }}
+							</h5>
+							<Firramo></Firramo>
+						</div>
+
+						<div v-show="!makePayment">
 							<div class="mb-3">
 								<label class="form-label" for="email1"
 									>Amount</label
@@ -46,7 +90,7 @@
 									class="form-control text-dark text-center fw-bold form-control-lg"
 									data-format='{"numeral": true}'
 									type="text"
-									value="0.0"
+									v-model="form.amount"
 								/>
 							</div>
 							<div class="mb-3">
@@ -60,6 +104,7 @@
 												: 'btn-outline-secondary'
 										"
 										class="btn me-3 mb-2 btn-icon rounded-circle"
+										type="button"
 										data-bs-toggle="tooltip"
 										data-bs-placement="left"
 										data-bs-custom-class="custom-tooltip"
@@ -76,6 +121,7 @@
 												: 'btn-outline-secondary'
 										"
 										class="btn me-3 mb-2 btn-icon"
+										type="button"
 										data-bs-toggle="tooltip"
 										data-bs-placement="top"
 										data-bs-custom-class="custom-tooltip"
@@ -91,6 +137,7 @@
 												: 'btn-outline-secondary'
 										"
 										class="btn me-3 mb-2 btn-icon"
+										type="button"
 										data-bs-toggle="tooltip"
 										data-bs-placement="bottom"
 										data-bs-custom-class="custom-tooltip"
@@ -107,6 +154,7 @@
 												: 'btn-outline-secondary'
 										"
 										class="btn me-3 mb-2 btn-icon"
+										type="button"
 										data-bs-toggle="tooltip"
 										data-bs-placement="top"
 										data-bs-custom-class="custom-tooltip"
@@ -123,6 +171,7 @@
 												: 'btn-outline-secondary'
 										"
 										class="btn me-3 mb-2 btn-icon"
+										type="button"
 										data-bs-toggle="tooltip"
 										data-bs-placement="bottom"
 										data-bs-custom-class="custom-tooltip"
@@ -139,13 +188,19 @@
 												: 'btn-outline-secondary'
 										"
 										class="btn me-3 mb-2 btn-icon"
+										type="button"
 										data-bs-toggle="tooltip"
 										data-bs-placement="top"
 										data-bs-custom-class="custom-tooltip"
 										data-bs-title="Revolut"
 									>
 										<i class="">
-											<img width="16" src="/assets/img/logos/revolut.png" alt="" srcset="">
+											<img
+												width="16"
+												src="/assets/img/logos/revolut.png"
+												alt=""
+												srcset=""
+											/>
 										</i>
 									</button>
 
@@ -157,13 +212,19 @@
 												: 'btn-outline-secondary'
 										"
 										class="btn me-3 mb-2 btn-icon"
+										type="button"
 										data-bs-toggle="tooltip"
 										data-bs-placement="bottom"
 										data-bs-custom-class="custom-tooltip"
 										data-bs-title="Wise"
 									>
 										<i class="">
-											<img width="16" src="/assets/img/logos/wise.png" alt="" srcset="">
+											<img
+												width="16"
+												src="/assets/img/logos/wise.png"
+												alt=""
+												srcset=""
+											/>
 										</i>
 									</button>
 
@@ -175,26 +236,39 @@
 												: 'btn-outline-secondary'
 										"
 										class="btn me-3 mb-2 btn-icon"
+										type="button"
 										data-bs-toggle="tooltip"
 										data-bs-placement="right"
 										data-bs-custom-class="custom-tooltip"
 										data-bs-title="MbWay"
 									>
 										<i class="">
-											<img width="22" src="/assets/img/logos/mbway.png" alt="" srcset="">
+											<img
+												width="22"
+												src="/assets/img/logos/mbway.png"
+												alt=""
+												srcset=""
+											/>
 										</i>
 									</button>
-
 								</div>
 							</div>
 							<button
 								class="btn btn-secondary d-block w-100"
 								type="submit"
-								@click="next"
+								@click="next()"
 							>
-								Next
+								<span>
+									Send
+									<span v-if="method"
+										>to
+										<span class="text-capitalize">
+											{{ method }}
+										</span>
+									</span>
+								</span>
 							</button>
-						</form>
+						</div>
 					</div>
 				</div>
 			</div>

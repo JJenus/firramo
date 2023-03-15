@@ -1,5 +1,5 @@
 <script setup>
-	import { onMounted, ref } from "vue";
+	import { inject, onMounted, ref } from "vue";
 	import Camera from "./Camera.vue";
 	import { util, alert } from "../../stores/utility";
 	import { user } from "@/stores/user";
@@ -7,7 +7,6 @@
 	import * as filestack from "filestack-js";
 
 	const env = import.meta.env;
-	const AppName = env.VITE_APP_NAME;
 	const camera = ref();
 	const imgIdUrl = ref("/assets/img/about/hero-bg.svg");
 	const imageFile = ref(null);
@@ -15,11 +14,12 @@
 	const apikey = env.VITE_FSHARE_KEY;
 	const client = filestack.init(apikey);
 	const loading = ref(false);
+	const appUser = inject("user");
 
 	const form = ref({
 		userId: user.getUser().id,
 		imgUrl: null,
-		idUrl: null,
+		IDCardUrl: null,
 	});
 
 	function stopCamera() {
@@ -64,18 +64,11 @@
 					console.log("success: ", res);
 
 					if (count == 0) {
-						form.value.idUrl = res.url;
+						form.value.IDCardUrl = res.url;
 					} else {
 						form.value.imgUrl = res.url;
 						loading.value = true;
-						alert.success(
-							"Thanks",
-							"You'll notified of verification status."
-						);
-
-						document
-							.querySelector("#verification-modal .btn-close")
-							.click();
+						requestVerification();
 					}
 
 					count++;
@@ -85,6 +78,41 @@
 					alert.error("Failed", "Please check your connection.");
 				});
 		});
+	}
+
+	function requestVerification() {
+		let config = {
+			method: "POST",
+			url: `${env.VITE_BE_API}/users/verify`,
+			data: form.value,
+		};
+		axios
+			.request(config)
+			.then((res) => {
+				const data = res.data;
+				console.log("Verification: ", data);
+				try {
+					appUser.value.status = "pending";
+				} catch (error) {
+					console.log("error");
+				}
+
+				alert.success(
+					"Thank you",
+					"You'll be notified of your verification status."
+				);
+
+				document
+					.querySelector("#verification-modal .btn-close")
+					.click();
+			})
+			.catch((err) => {
+				alert.error("Failed");
+				console.log(err);
+			})
+			.finally(() => {
+				loading.value = false;
+			});
 	}
 
 	onMounted(() => {});

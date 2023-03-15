@@ -19,6 +19,10 @@
 	const imgFile = ref(null);
 	const savedImg = ref(false);
 
+	// setTimeout(() => {
+	// 	user.value.status = "new";
+	// }, 3000);
+
 	function saveImage() {
 		changed.value = false;
 		client
@@ -128,8 +132,21 @@
 	<div class="ps-md-3 ps-lg-0 mt-md-2 py-md-4">
 		<!-- Team Style 2: Vertical -->
 		<div
-			class="card card-body mb-4 card-hover bg-light border-0 text-center"
+			class="card card-body mb-4 card-hover bg-light border-0 text-center position-relative"
 		>
+			<small
+				v-if="user.status === 'verified'"
+				class="position-absolute top-0 end-0 m-3"
+			>
+				<span class="badge bg-success rounded-pill ms-2">verified</span>
+			</small>
+			<small
+				v-if="user.status === 'pending'"
+				class="position-absolute top-0 end-0 m-3"
+			>
+				<span class="badge bg-warning rounded-pill ms-2">pending</span>
+			</small>
+
 			<div class="d-flex justify-content-center mb-2">
 				<img
 					@click="selectImage()"
@@ -139,11 +156,26 @@
 							: tempImg
 					"
 					class="rounded-circle"
-					style="max-height: 100px; max-width: 100px; min-height: 100px; min-width: 100px;"
+					style="
+						max-height: 100px;
+						max-width: 100px;
+						min-height: 100px;
+						min-width: 100px;
+					"
 					:alt="user.name"
 				/>
 			</div>
-			<h5 class="fw-medium fs-lg mb-1">{{ user.name }}</h5>
+			<h5 class="fw-medium fs-lg mb-1">
+				{{ user.name }}
+			</h5>
+			<div v-if="user.status === 'new'">
+				<button
+					@click="alert.verify()"
+					class="btn btn-outline-primary btn-sm rounded-pill"
+				>
+					Verify account
+				</button>
+			</div>
 			<p class="fs-sm mb-4">{{ user.email }}</p>
 
 			<div class="d-flex justify-content-center">
@@ -166,7 +198,7 @@
 					@click="selectImage()"
 					class="btn btn-outline-secondary mx-2 btn-sm rounded-pill"
 				>
-					change
+					Upload image
 				</button>
 
 				<button
@@ -188,7 +220,11 @@
 			</div>
 		</div>
 
-		<h1 class="h2 pt-xl-1 pb-3">Account Details</h1>
+		<h1
+			class="h2 pt-xl-1 pb-3 d-flex justify-content-between align-items-end btn-rounded"
+		>
+			<span>Account Details</span>
+		</h1>
 
 		<!-- Basic info -->
 		<h2 class="h5 text-primary mb-4">Basic info</h2>
