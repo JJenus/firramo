@@ -19,9 +19,10 @@
 			alert.error("Payment method", "Select preferred method");
 			return;
 		} else if (
-			form.amount <= 0 ||
-			form.value.amount > user.value.balance.amount
+			Number(form.value.amount) <= 0 ||
+			Number(form.value.amount) > user.value.balance.amount
 		) {
+			console.log(form.value.amount);
 			alert.error(
 				"Invalid amount",
 				`Amount must be greater than 0 and not be more than current balance (${user.value.balance.amount})`
@@ -48,7 +49,13 @@
 </script>
 
 <template>
-	<div class="modal fade" id="withraw-modal" tabindex="-1" role="dialog">
+	<div
+		class="modal fade"
+		id="withraw-modal"
+		data-backdrop="static"
+		tabindex="-1"
+		role="dialog"
+	>
 		<div class="modal-dialog modal-dialog-centered" role="document">
 			<div class="modal-content border-dark border th-rounded">
 				<div class="modal-header">
@@ -78,7 +85,7 @@
 								</a>
 								{{ method }}
 							</h5>
-							<Firramo></Firramo>
+							<Firramo :data="form"></Firramo>
 						</div>
 
 						<div v-show="!makePayment">
