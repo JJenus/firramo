@@ -19,7 +19,7 @@
 		axios
 			.request(config)
 			.then((response) => {
-				console.log(response.data);
+				// console.log(response.data);
 				users.value = response.data.reduce((prev, user) => {
 					if (user.roles[0].name === "ADMIN") return prev;
 					return [...prev, user];
@@ -44,7 +44,9 @@
 		class="ps-md-3 d-flex justify-content-between align-items-end ps-lg-0 mt-md-2 pt-md-4 pb-md-2"
 	>
 		<div class="me-5">
-			<h1 class="h2 pt-xl-1 mb-3 pb-2 pb-lg-3">Users</h1>
+			<h1 class="h2 pt-xl-1 mb-3 pb-2 pb-lg-3">
+				Users ({{ users.length }})
+			</h1>
 		</div>
 		<div>
 			<form class="input-group mb-4">

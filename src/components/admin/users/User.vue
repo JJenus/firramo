@@ -17,6 +17,7 @@
 	const depositAmount = ref(null);
 	const saved = ref(0);
 	const settings = inject("settings");
+	const appUser = ref(props.user);
 
 	async function deposit($event) {
 		if (!$event.target.checkValidity()) {
@@ -30,7 +31,7 @@
 				amount: depositAmount.value,
 				source: "ADMIN",
 				currency: "USD",
-				userId: props.user.id,
+				userId: appUser.value.id,
 			},
 		};
 
@@ -51,7 +52,7 @@
 	}
 
 	function getTime() {
-		const fromNow = moment(props.user.createdAt).fromNow();
+		const fromNow = moment(appUser.createdAt).fromNow();
 		const timer = fromNow.split(" ")[1];
 
 		let check = ["minutes", "seconds", "hours", "few"].find(
@@ -59,14 +60,14 @@
 		);
 
 		if (!check) {
-			return moment(props.user.createdAt).format("LLL");
+			return moment(appUser.value.createdAt).format("LLL");
 		}
 
 		return fromNow;
 	}
 
 	function balance() {
-		const amount = currency(props.user.balance.amount, {
+		const amount = currency(appUser.value.balance.amount, {
 			symbol: settings.value.currencySymbol,
 		}).add(saved.value);
 
@@ -74,15 +75,44 @@
 	}
 
 	function status() {
-		return props.user.status || "New";
+		return appUser.value.status || "new";
 	}
 
 	function statColor() {
-		return props.user.status == "verified"
+		return status() === "verified"
 			? "success"
-			: props.user.status == "new"
+			: status() === "new"
 			? "primary"
 			: "danger";
+	}
+
+	function verify() {
+		loading.value = true;
+
+		const nUser = { ...appUser.value };
+		nUser.status = "verified";
+
+		let config = {
+			method: "PUT",
+			url: `${env.VITE_BE_API}/users`,
+			data: nUser,
+		};
+
+		axios
+			.request(config)
+			.then((response) => {
+				console.log(response.data);
+				// users.value = response.data;
+				alert.success();
+				appUser.value = response.data;
+			})
+			.catch((error) => {
+				alert.error();
+				appUser.value.status = props.user.status;
+			})
+			.finally(() => {
+				loading.value = false;
+			});
 	}
 
 	onMounted(() => {
@@ -93,20 +123,25 @@
 <template>
 	<div class="col-lg-4 col-md-6 col-12 user">
 		<!-- Card -->
-		<div class="card mb-4">
+		<div
+			:class="statColor() == 'danger' ? 'border-' + statColor() : ''"
+			class="card mb-4"
+		>
 			<!-- Card Body -->
 			<div class="card-body">
 				<div class="text-center">
 					<img
-						:src="user.imgUrl || util.avatar"
+						:src="appUser.imgUrl || util.avatar"
 						class="rounded-circle avatar-xl mb-3"
 						width="80"
 						alt="img"
 					/>
-					<h4 class="mb-1">{{ user.name }}</h4>
+					<h4 class="mb-1">
+						{{ appUser.name }}
+					</h4>
 					<p class="mb-0 fs-6">
 						<i class="fe fe-map-pin me-1"></i>
-						{{ user.country }}
+						{{ appUser.country }}
 					</p>
 				</div>
 
@@ -161,15 +196,22 @@
 				</div>
 
 				<div
-					class="d-flex fs-sm justify-content-between border-bottom py-2 mt-2 fs-6"
+					class="d-flex fs-sm justify-content-between align-items-end border-bottom py-2 mt-2 fs-6"
 				>
 					<span>Status</span>
-					<span :class="'text-' + statColor()"> {{ status() }} </span>
+					<span :class="'bg-' + statColor()" class="badge"> {{ status() }} </span>
 					<button
 						v-if="status() === 'new'"
-						class="btn p-1 fs-xs btn-sm btn-success"
+						:class="loading ? 'disabled' : ''"
+						class="btn p-1 fs-xs btn-sm btn-outline-primary rounded px-2"
+						@click="verify()"
 					>
-						verify
+						<span
+							v-if="loading"
+							class="spinner-border-sm spinner-border"
+						></span>
+
+						<span v-else>Verify</span>
 					</button>
 				</div>
 
