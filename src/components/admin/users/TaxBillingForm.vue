@@ -29,7 +29,7 @@
 			.request(config)
 			.then((response) => {
 				// console.log(response.data);
-				tax = response.data;
+				tax.value = response.data;
 				alert.success();
 			})
 			.catch(function (error) {
