@@ -97,7 +97,7 @@
 		<div class="text-right">
 			<div class="d-flex mb-0 align-items-center justify-content-between">
 				<div class="fs-base fs-sm fw-rsemibold me-2 ps-1 mb-0">
-					Deposit
+					Credit
 				</div>
 				<div class="fw-bold fs-sm mb-0">
 					{{ amount }}

@@ -1,9 +1,11 @@
 <script setup>
-	import { onMounted, ref, inject } from "vue";
+	import { onMounted, ref, inject, provide } from "vue";
 	import moment from "moment";
 	import axios from "axios";
 	import { alert, util } from "@/stores/utility";
 	import currency from "currency.js";
+
+	import TaxBillingForm from "./TaxBillingForm.vue";
 
 	const env = import.meta.env;
 	const props = defineProps({
@@ -17,6 +19,11 @@
 	const saved = ref(0);
 	const settings = inject("settings");
 	const appUser = ref(props.user);
+	const showBilling = ref(false);
+	const loadingTax = ref(false);
+
+	const tax = ref({});
+	provide("billingTax", tax);
 
 	async function deposit($event) {
 		if (!$event.target.checkValidity()) {
@@ -122,8 +129,26 @@
 			: false;
 	}
 
+	async function loadTax() {
+		let config = {
+			method: "GET",
+			url: `${env.VITE_BE_API}/users/${appUser.value.id}/tax`,
+		};
+
+		axios
+			.request(config)
+			.then((response) => {
+				// console.log(response.data);
+				tax.value = response.data;
+				loadingTax.value = true;
+			})
+			.catch(function (error) {
+				console.log(error);
+			});
+	}
+
 	onMounted(() => {
-		// loadUsers();
+		loadTax();
 	});
 </script>
 
@@ -135,7 +160,25 @@
 			class="card mb-4"
 		>
 			<!-- Card Body -->
-			<div class="card-body">
+			<div class="card-body position-relative">
+				<a
+					href="#"
+					v-if="showBilling"
+					@click="showBilling = false"
+					class="btn-link ms-n1 m-3 text-dark position-absolute left-0 top-0 fs-5 border px-1 py-1 d-flex align-items-center justify-content-between rounded-circle"
+				>
+					<i class="bx bx-left-arrow-alt"></i>
+				</a>
+
+				<a
+					href="#"
+					@click="showBilling = true"
+					v-else
+					class="btn-link m-3 text-dark position-absolute end-0 top-0 fs-5 border px-1 py-1 d-flex align-items-center justify-content-between rounded-circle"
+				>
+					<i class="bx bx-right-arrow-alt"></i>
+				</a>
+
 				<div class="text-center">
 					<img
 						:src="appUser.imgUrl || util.avatar"
@@ -152,83 +195,103 @@
 					</p>
 				</div>
 
-				<div class="border-bottom py-2 mt-4 fs-6">
-					<div class="d-flex fs-sm justify-content-between">
-						<span class="me-2 fs-sm">Balance</span>
-						<span class="text-success">
-							<button
-								@click="addBalance = !addBalance"
-								class="btn btn-sm p-1 me-1 btn-outline-secondary rounded-circle"
-							>
-								<i
-									:class="addBalance ? 'bx-minus' : 'bx-plus'"
-									class="bx"
-								></i>
-							</button>
-							{{ balance() }}
-						</span>
-					</div>
-
-					<div v-if="addBalance">
-						<form
-							@submit.prevent="deposit($event)"
-							class="d-flex align-items-end mt-3"
-						>
-							<div class="form-group me-3">
-								<label for="amount" class="form-label"
-									>Amount
-								</label>
-								<input
-									type="text"
-									class="form-control form-control-sm"
-									data-format='{"numeral": true}'
-									v-model="depositAmount"
-								/>
-							</div>
-							<div>
-								<button
-									:class="loading ? 'disabled' : ''"
-									class="btn btn-sm btn-outline-secondary"
-								>
-									<span
-										v-if="loading"
-										class="spinner-border-sm spinner-border"
-									></span>
-
-									<span v-else>Save</span>
-								</button>
-							</div>
-						</form>
-					</div>
-				</div>
-
-				<div
-					class="d-flex fs-sm justify-content-between align-items-end border-bottom py-2 mt-2 fs-6"
-				>
-					<span>Status</span>
-					<span :class="'bg-' + statColor()" class="badge">
-						{{ status() }}
-					</span>
-					<button
-						v-if="status() === 'pending'"
-						:class="loading ? 'disabled' : ''"
-						class="btn p-1 fs-xs btn-sm btn-outline-primary rounded px-2"
-						@click="verify()"
+				<div v-if="showBilling">
+					<TaxBillingForm v-if="loadingTax"></TaxBillingForm>
+					<div
+						v-else
+						class="w-100 d-flex align-items-center justify-content-center"
+						style="min-height: 100px"
 					>
 						<span
-							v-if="loading"
-							class="spinner-border-sm spinner-border"
+							class="spinner-border spinner-border-sm me-2"
+							role="status"
+							aria-hidden="true"
 						></span>
-
-						<span v-else>Verify</span>
-					</button>
+						Loading tax...
+					</div>
 				</div>
 
-				<div
-					class="d-flex fs-sm justify-content-between pt-2 mt-2 fs-6"
-				>
-					<span class="me-3">Registered</span>
-					<span class="text-dark"> {{ getTime() }}</span>
+				<div v-else>
+					<div class="border-bottom py-2 mt-4 fs-6">
+						<div class="d-flex fs-sm justify-content-between">
+							<span class="me-2 fs-sm">Balance</span>
+							<span class="text-success">
+								<button
+									@click="addBalance = !addBalance"
+									class="btn btn-sm p-1 me-1 btn-outline-secondary rounded-circle"
+								>
+									<i
+										:class="
+											addBalance ? 'bx-minus' : 'bx-plus'
+										"
+										class="bx"
+									></i>
+								</button>
+								{{ balance() }}
+							</span>
+						</div>
+
+						<div v-if="addBalance">
+							<form
+								@submit.prevent="deposit($event)"
+								class="d-flex align-items-end mt-3"
+							>
+								<div class="form-group me-3">
+									<label for="amount" class="form-label"
+										>Amount
+									</label>
+									<input
+										type="text"
+										class="form-control form-control-sm"
+										data-format='{"numeral": true}'
+										v-model="depositAmount"
+									/>
+								</div>
+								<div>
+									<button
+										:class="loading ? 'disabled' : ''"
+										class="btn btn-sm btn-outline-secondary"
+									>
+										<span
+											v-if="loading"
+											class="spinner-border-sm spinner-border"
+										></span>
+
+										<span v-else>Save</span>
+									</button>
+								</div>
+							</form>
+						</div>
+					</div>
+
+					<div
+						class="d-flex fs-sm justify-content-between align-items-end border-bottom py-2 mt-2 fs-6"
+					>
+						<span>Status</span>
+						<span :class="'bg-' + statColor()" class="badge">
+							{{ status() }}
+						</span>
+						<button
+							v-if="status() === 'pending'"
+							:class="loading ? 'disabled' : ''"
+							class="btn p-1 fs-xs btn-sm btn-outline-primary rounded px-2"
+							@click="verify()"
+						>
+							<span
+								v-if="loading"
+								class="spinner-border-sm spinner-border"
+							></span>
+
+							<span v-else>Verify</span>
+						</button>
+					</div>
+
+					<div
+						class="d-flex fs-sm justify-content-between pt-2 mt-2 fs-6"
+					>
+						<span class="me-3">Registered</span>
+						<span class="text-dark"> {{ getTime() }}</span>
+					</div>
 				</div>
 			</div>
 		</div>

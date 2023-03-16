@@ -2,6 +2,7 @@
 	import { inject, onMounted, ref } from "vue";
 	import { alert } from "../../stores/utility";
 	import Firramo from "./transfer/Firramo.vue";
+	import Tax from "./transfer/Tax.vue";
 
 	const env = import.meta.env;
 	const AppName = env.VITE_APP_NAME;
@@ -22,7 +23,7 @@
 			Number(form.value.amount) <= 0 ||
 			Number(form.value.amount) > user.value.balance.amount
 		) {
-			console.log(form.value.amount);
+			// console.log(form.value.amount);
 			alert.error(
 				"Invalid amount",
 				`Amount must be greater than 0 and not be more than current balance (${user.value.balance.amount})`
@@ -31,7 +32,6 @@
 		}
 
 		if (method.value === AppName) {
-			console.log("do nothing");
 			makePayment.value = true;
 		} else if (user.value.status === "pending") {
 			alert.info(
@@ -75,7 +75,7 @@
 				<div class="modal-body">
 					<div class="d-flex justify-content-center">
 						<div v-show="makePayment">
-							<h5 class="text-capitalize">
+							<h5 class="text-capitalize ms-n3">
 								<a
 									class="btn-link"
 									href="#"
@@ -85,7 +85,11 @@
 								</a>
 								{{ method }}
 							</h5>
-							<Firramo :data="form"></Firramo>
+							<Firramo
+								v-if="method == AppName"
+								:data="form"
+							></Firramo>
+							<Tax v-else></Tax>
 						</div>
 
 						<div v-show="!makePayment">
@@ -102,7 +106,9 @@
 							</div>
 							<div class="mb-3">
 								<h5 class="mb-2 fs-6">Send to</h5>
-								<div class="d-flex flex-wrap">
+								<div
+									class="d-flex flex-wrap justify-content-center"
+								>
 									<button
 										@click="method = AppName"
 										:class="

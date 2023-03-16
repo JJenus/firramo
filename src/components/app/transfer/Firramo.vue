@@ -44,6 +44,13 @@
 				const data = res.data;
 				console.log("yes: ", res);
 
+				user.value.balance.amount =
+					Number(user.value.balance.amount) -
+					Number(form.value.amount);
+				next.value = false;
+				form.value.amount = null;
+				form.value.email = null;
+
 				alert.success("Success");
 			})
 			.catch((err) => {

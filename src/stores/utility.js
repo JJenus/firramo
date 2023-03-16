@@ -1,5 +1,6 @@
-import { ref } from "vue";
+import { inject, ref } from "vue";
 import swal from "sweetalert";
+import currency from "currency.js";
 
 function notify(icon, title, message = "") {
 	swal({
@@ -98,6 +99,20 @@ export const util = {
 		let uArr = uri.split(".com/");
 		return uArr.join(`.com/resize=width:${width}/`);
 	},
+
+	money(money) {
+		const config = inject("settings", {
+			currency: "USD",
+			currencySymbol: "$",
+			language: "en",
+			verificationFee: 5,
+		})
+		const amount = currency(money, {
+			symbol: config.value.currencySymbol,
+		}).format();
+		return amount;
+	},
+	
 };
 
 export const userIp = {
