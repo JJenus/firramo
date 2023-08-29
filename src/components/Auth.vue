@@ -7,8 +7,6 @@
 	const env = import.meta.env;
 	env.VITE_BE_API = util.backendApi;
 
-	console.log(env.VITE_BE_API);
-
 	const signIn = ref(true);
 
 	const loadingReg = ref(false);
