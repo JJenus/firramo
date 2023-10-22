@@ -38,9 +38,11 @@
 				"Pending verification",
 				"Your verification is being processed. Please contact support if it's more than 48 hours."
 			);
-		} else if (user.value.status !== "verified") {
-			alert.verify();
-		} else {
+		} 
+		// else if (user.value.status !== "verified") {
+		// 	alert.verify();
+		// } 
+		else {
 			makePayment.value = true;
 		}
 	}
