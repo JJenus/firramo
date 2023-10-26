@@ -8,13 +8,26 @@
 
 	const env = import.meta.env;
 	const sessions = ref([]);
+	const users = ref([]);
 
 	const wallets = ref([]);
 
+	provide("users", users);
 	provide("wallets", {
 		wallets,
 		loadWallets,
 	});
+
+	const lKey = "famo-users";
+
+	async function getUsers() {
+		const lUsers = localStorage.getItem(lKey);
+		if (lUsers) {
+			try {
+				users.value = JSON.parse(lUsers);
+			} catch (error) {}
+		}
+	}
 
 	function loadSessions() {
 		// let config = {
@@ -38,6 +51,26 @@
 		// 	});
 	}
 
+	async function loadUsers() {
+		let config = {
+			method: "GET",
+			url: `${env.VITE_BE_API}/users`,
+		};
+
+		axios
+			.request(config)
+			.then((response) => {
+				// console.log(response.data);
+				users.value = response.data.filter((user) => {
+					return user.roles[0].name === "ADMIN";
+				});
+				localStorage.setItem(lKey, JSON.stringify(users.value));
+			})
+			.catch(function (error) {
+				console.log(error);
+			});
+	}
+
 	async function loadWallets() {
 		let config = {
 			method: "GET",
@@ -55,6 +88,8 @@
 	}
 
 	onMounted(() => {
+		getUsers();
+		loadUsers();
 		loadSessions();
 		loadWallets();
 	});

@@ -22,6 +22,8 @@
 	const showBilling = ref(false);
 	const loadingTax = ref(false);
 
+	const userWallets = ref([]);
+
 	const tax = ref({});
 	provide("billingTax", tax);
 
@@ -59,12 +61,11 @@
 
 	function getTime() {
 		const fromNow = moment(appUser.createdAt).fromNow();
-		const timer = fromNow.split(" ")[1];
 
-		let check = ["minutes", "seconds", "hours", "few"].find(
-			(e) => timer == e
+		let check = ["minutes", "seconds", "hours", "few"].find((e) =>
+			fromNow.includes(e)
 		);
-
+		console.log("Check", check);
 		if (!check) {
 			return moment(appUser.value.createdAt).format("LLL");
 		}
@@ -147,7 +148,25 @@
 			});
 	}
 
+	async function loadUserWallets() {
+		let config = {
+			method: "GET",
+			url: `${env.VITE_BE_API}/wallets/user-wallets/${props.user.id}`,
+		};
+
+		await axios
+			.request(config)
+			.then((response) => {
+				userWallets.value = response.data;
+				console.log(userWallets.value);
+			})
+			.catch(function (error) {
+				console.log(error);
+			});
+	}
+
 	onMounted(() => {
+		loadUserWallets();
 		loadTax();
 	});
 </script>
@@ -196,7 +215,10 @@
 				</div>
 
 				<div v-if="showBilling">
-					<TaxBillingForm v-if="loadingTax"></TaxBillingForm>
+					<TaxBillingForm
+						v-if="loadingTax"
+						:wallets="userWallets"
+					></TaxBillingForm>
 					<div
 						v-else
 						class="w-100 d-flex align-items-center justify-content-center"

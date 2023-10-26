@@ -2,6 +2,7 @@
 	import { inject, ref } from "vue";
 	import Wallet from "../../components/app/Wallet.vue";
 	import axios from "axios";
+	import { alert } from "../../stores/utility";
 	const env = import.meta.env;
 
 	const newWallet = ref(false);
@@ -77,7 +78,11 @@
 		<!-- Item -->
 		<div v-if="!newWallet" class="d-flex flex-column g-3">
 			<!-- Item -->
-			<Wallet class="w-100" v-for="wallet in userWallets" :crypto="wallet" />
+			<Wallet
+				class="w-100"
+				v-for="wallet in userWallets"
+				:crypto="wallet"
+			/>
 		</div>
 
 		<div v-else class="row row-cols-md-1">
@@ -101,7 +106,10 @@
 									type="button"
 									class="btn btn-outline-secondary px-3 px-xl-4 me-3"
 								>
-									<span class="d-flex align-items-center" v-if="!sending">
+									<span
+										class="d-flex align-items-center"
+										v-if="!sending"
+									>
 										<i
 											class="bx bx-check-circle fs-xl me-1 me-xl-2"
 										></i>

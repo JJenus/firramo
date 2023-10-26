@@ -1,42 +1,17 @@
 <script setup>
-	import { onMounted, ref } from "vue";
-	import axios from "axios";
-
+	import { inject, onMounted, ref } from "vue";
 	import UserVue from "@/components/admin/users/User.vue";
-
 	import { util } from "../../stores/utility";
 
 	const env = import.meta.env;
-	const users = ref([]);
+	const users = inject("users");
 	const searchKey = ref(null);
-
-	async function loadUsers() {
-		let config = {
-			method: "GET",
-			url: `${env.VITE_BE_API}/users`,
-		};
-
-		axios
-			.request(config)
-			.then((response) => {
-				// console.log(response.data);
-				users.value = response.data.reduce((prev, user) => {
-					if (user.roles[0].name === "ADMIN") return prev;
-					return [...prev, user];
-				}, []);
-			})
-			.catch(function (error) {
-				console.log(error);
-			});
-	}
 
 	function search() {
 		util.search(".user", searchKey.value);
 	}
 
-	onMounted(() => {
-		loadUsers();
-	});
+	onMounted(() => {});
 </script>
 
 <template>

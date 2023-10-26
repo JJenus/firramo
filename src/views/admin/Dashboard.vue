@@ -5,7 +5,7 @@
 
 	const settings = inject("settings");
 	const env = import.meta.env;
-	const users = ref([]);
+	const users = inject("users");
 	const deposits = ref([]);
 
 	function totalBalance() {
@@ -37,27 +37,8 @@
 		return balance;
 	}
 
-	async function loadUsers() {
-		let config = {
-			method: "GET",
-			url: `${env.VITE_BE_API}/users`,
-		};
-
-		axios
-			.request(config)
-			.then((response) => {
-				users.value = response.data;
-			})
-			.catch(function (error) {});
-	}
-
 	function allUsers() {
-		const count = users.value.reduce((num, user) => {
-			if (user.roles[0].name === "ADMIN") return num;
-			return num + 1;
-		}, 0);
-
-		return currency(count, { symbol: "" }).format().split(".")[0];
+		return users.value.length;
 	}
 
 	async function loadDeposits() {
@@ -77,7 +58,6 @@
 	}
 
 	onMounted(() => {
-		loadUsers();
 		loadDeposits();
 	});
 </script>

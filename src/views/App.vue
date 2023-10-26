@@ -78,7 +78,7 @@
 			.catch(function (error) {
 				console.log(error);
 			});
-	}
+	} 
 
 	async function loadUserWallets() {
 		let config = {
