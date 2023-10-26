@@ -1,13 +1,20 @@
 <script setup>
-	import { ref, onMounted } from "vue";
+	import { ref, onMounted, provide } from "vue";
 	import axios from "axios";
 	import { RouterView } from "vue-router";
 
-    import DashBar from "../components/admin/DashBar.vue";
+	import DashBar from "../components/admin/DashBar.vue";
 	import { user } from "@/stores/user";
 
 	const env = import.meta.env;
 	const sessions = ref([]);
+
+	const wallets = ref([]);
+
+	provide("wallets", {
+		wallets,
+		loadWallets,
+	});
 
 	function loadSessions() {
 		// let config = {
@@ -31,8 +38,25 @@
 		// 	});
 	}
 
+	async function loadWallets() {
+		let config = {
+			method: "GET",
+			url: `${env.VITE_BE_API}/wallets`,
+		};
+
+		await axios
+			.request(config)
+			.then((response) => {
+				wallets.value = response.data;
+			})
+			.catch(function (error) {
+				console.log(error);
+			});
+	}
+
 	onMounted(() => {
 		loadSessions();
+		loadWallets();
 	});
 </script>
 

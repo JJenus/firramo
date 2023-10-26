@@ -55,7 +55,12 @@
 					<img
 						:src="user.getUser().imgUrl || tempImg"
 						class="rounded-circle"
-						style="max-height: 42px; max-width: 42px; min-height: 42px; min-width: 42px;"
+						style="
+							max-height: 42px;
+							max-width: 42px;
+							min-height: 42px;
+							min-width: 42px;
+						"
 						alt="profile"
 					/>
 				</button>
@@ -102,6 +107,15 @@
 					>
 						<i class="bx bx-transfer fs-xl opacity-60 me-2"></i>
 						Transactions
+					</a>
+
+					<a
+						href="wallets"
+						:class="path === 'wallets' ? 'bg-faded-primary' : ''"
+						class="list-group-item list-group-item-action d-flex align-items-center"
+					>
+						<i class="bx bx-wallet fs-xl opacity-60 me-2"></i>
+						Wallets
 					</a>
 
 					<a

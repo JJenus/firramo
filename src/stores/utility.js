@@ -112,7 +112,13 @@ export const util = {
 		}).format();
 		return amount;
 	},
-	
+	crypto(money) {
+		const amount = currency(money, {
+			symbol: '',
+			precision: 8
+		}).format();
+		return amount;
+	},
 };
 
 export const userIp = {

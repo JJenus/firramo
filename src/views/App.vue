@@ -13,8 +13,16 @@
 	const env = import.meta.env;
 	const sessions = ref([]);
 	const appUser = ref(user.getUser());
+	const wallets = ref([]);
+	const userWallets = ref([]);
 
 	provide("user", appUser);
+	provide("wallets", {
+		userWallets,
+		wallets,
+		loadWallets,
+		loadUserWallets,
+	});
 
 	function loadSessions() {
 		let config = {
@@ -51,12 +59,48 @@
 			.request(config)
 			.then((response) => {
 				appUser.value = response.data;
+				console.log("User", appUser.value)
 			})
 			.catch(function (error) {});
 	}
 
+	async function loadWallets() {
+		let config = {
+			method: "GET",
+			url: `${env.VITE_BE_API}/wallets/${user.getUser().id}`,
+		};
+
+		await axios
+			.request(config)
+			.then((response) => {
+				wallets.value = response.data;
+			})
+			.catch(function (error) {
+				console.log(error);
+			});
+	}
+
+	async function loadUserWallets() {
+		let config = {
+			method: "GET",
+			url: `${env.VITE_BE_API}/wallets/user-wallets/${user.getUser().id}`,
+		};
+
+		await axios
+			.request(config)
+			.then((response) => {
+				userWallets.value = response.data;
+				console.log(userWallets.value);
+			})
+			.catch(function (error) {
+				console.log(error);
+			});
+	}
+
 	onMounted(() => {
 		loadSessions();
+		loadUserWallets();
+		loadWallets();
 	});
 
 	async function mountChat() {

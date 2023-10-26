@@ -11,6 +11,7 @@ import AccountDetails from "../views/app/UserAccount.vue";
 import Security from "../views/app/Security.vue";
 import CardsVue from "../views/app/Cards.vue";
 import PaymentsVue from "../views/app/Payments.vue";
+import Wallets from "../views/app/Wallets.vue";
 
 import Admin from "../views/Admin.vue";
 import Dashboard from "../views/admin/Dashboard.vue";
@@ -61,6 +62,11 @@ const router = createRouter({
 					path: "transactions",
 					name: "payments",
 					component: PaymentsVue,
+				},
+				{
+					path: "wallets",
+					name: "wallets",
+					component: Wallets,
 				},
 			],
 		},
