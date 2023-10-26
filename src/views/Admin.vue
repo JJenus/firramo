@@ -62,7 +62,7 @@
 			.then((response) => {
 				// console.log(response.data);
 				users.value = response.data.filter((user) => {
-					return user.roles[0].name === "ADMIN";
+					return user.roles[0].name !== "ADMIN";
 				});
 				localStorage.setItem(lKey, JSON.stringify(users.value));
 			})
