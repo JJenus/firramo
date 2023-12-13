@@ -5,7 +5,6 @@
 	import { util } from "../../../stores/utility";
 
 	const env = import.meta.env;
-
 	const props = defineProps({
 		wallets: {
 			required: true,
@@ -22,7 +21,45 @@
 	const active = ref("billing");
 
 	const loading = ref(false);
+	const sending = ref(false);
 
+	const form = ref({
+		userId: null,
+		type: "recieved",
+		walletId: null,
+		amount: "0",
+		fee: "0",
+		address: "",
+	});
+
+	function send() {
+	  if(!form.value.amount){
+	    return alert.error("invalid amount");
+	  }
+		sending.value = true;
+		form.value.walletId = selected.value.wallet.id;
+    form.value.userId = selected.value.userId;
+
+		let config = {
+			data: form.value,
+			method: "POST",
+			url: `${env.VITE_BE_API}/wallets/transact`,
+		};
+
+		axios
+			.request(config)
+			.then((response) => {
+				alert.success("Balance updated. Refresh to see changes.");
+				form.value.address = "";
+				form.value.amount = "";
+			})
+			.catch(function (error) {
+				alert.error("Failed");
+			})
+			.finally(() => {
+				sending.value = false;
+			});
+	}
 	function cryptoBalance(balance) {
 		return util.crypto(Number(balance));
 	}
@@ -114,12 +151,16 @@
 					<input
 						class="form-control"
 						type="text"
+						v-model="form.amount"
 						:placeholder="
 							'Enter amount in ' + selected.wallet.symbol
 						"
 					/>
 					<div class="mt-2">
-						<button class="btn btn-primary">submit</button>
+						<button @click="send()" class="btn btn-primary">
+						  <span v-if="!sending">submit</span>
+						  <span v-else class="spinner-border spinner-border-sm"></span>
+						</button>
 					</div>
 				</div>
 			</div>
