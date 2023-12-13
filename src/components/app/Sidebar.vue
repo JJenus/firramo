@@ -5,7 +5,7 @@
 
 	const env = import.meta.env;
 	const AppName = import.meta.env.VITE_APP_NAME;
-	const tempImg = ref("/assets/img/avatar/default-avatar.png");
+	const tempImg = ref("/assets/img/avatars/blank.svg");
 
 	const router = useRouter();
 	const route = useRoute();
@@ -50,7 +50,7 @@
 
 				<button
 					type="button"
-					class="btn btn-outline-secondary p-0 ms-2 rounded-circle btn-icon mt-3 mb-3 position-relative"
+					class="btn btn-outline-secondary shadow-smi p-0 ms-2 rounded-circle btn-icon mt-3 mb-3 position-relative"
 				>
 					<img
 						:src="user.getUser().imgUrl || tempImg"

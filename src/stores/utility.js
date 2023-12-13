@@ -65,7 +65,7 @@ export const alert = {
 };
 
 export const util = {
-	avatar: "/assets/img/avatar/default-avatar.png",
+	avatar: "/assets/img/avatars/blank.svg",
 	settings: () => {
 		return {
 			currency: "USD",

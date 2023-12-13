@@ -8,7 +8,7 @@
 
 	const user = inject("user");
 
-	const tempImg = ref("/assets/img/avatar/default-avatar.png");
+	const tempImg = ref("/assets/img/avatars/blank.svg");
 	const changed = ref(false);
 
 	const apikey = env.VITE_FSHARE_KEY;
