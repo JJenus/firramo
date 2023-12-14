@@ -1,4 +1,16 @@
 <script setup>
+	import { ref } from "vue";
+	import "animate.css";
+
+	const disappear = ref("");
+
+	setTimeout(() => {
+		disappear.value = "";
+		setTimeout(() => {
+			// disappear.value = "d-none";
+		}, 1000);
+	}, 5000);
+
 	const openChat = () => {
 		const telegramLink = "https://t.me/Firramosupport";
 		window.open(telegramLink, "_blank");
@@ -6,9 +18,14 @@
 </script>
 <template>
 	<div
-		class="position-fixed bottom-0 end-0 d-flex justify-content-center align-items-center"
+		style="z-index: 8"
+		class="position-fixed bottom-0 end-0 d-flex justify-content-end align-items-center"
 	>
-		<button @click="openChat()" class="btn btn btn-secondary shadow-info rounded">
+		<button
+			@click="openChat()"
+			:class="disappear"
+			class="btn btn btn-secondary shadow-info rounded animate__lightSpeedOutRight animate__animated animate__delay-5s"
+		>
 			<span
 				>Chat with us
 				<img
@@ -16,20 +33,14 @@
 					height="20"
 					src="https://cdnjs.cloudflare.com/ajax/libs/twemoji/12.1.1/72x72/1f44b.png"
 					alt="👋"
-					class="emoji shake"
+					class="emoji animate__tada animate__infinite animate__animated"
 			/></span>
 		</button>
 		<button
-			style="min-height: 60px; min-width: 60px"
-			class="m-3 custom-button btn btn-secondary shadow-info btn-icon rounded-circle"
+			style="min-height: 60px; min-width: 60px; z-index: 4"
+			class="m-3 custom-button btn btn-secondary shadow-info btn-icon rounded-circle animate__heartBeat animate__animated animate__delay-3s"
 			@click="openChat()"
-		>
-			<!-- <img
-				class="w-75"
-				src="/assets/img/telegram_Logo.svg.png"
-				alt="chat"
-			/> -->
-		</button>
+		></button>
 	</div>
 </template>
 
@@ -42,30 +53,5 @@
 		/* padding: 15px 20px; */
 		/* color: #fff; Text color */
 		cursor: pointer; /* Shows pointer cursor on hover */
-	}
-	@keyframes shake {
-		0% {
-			transform: translateX(0);
-		}
-		20% {
-			transform: translateX(-5px) rotate(-5deg);
-		}
-		40% {
-			transform: translateX(5px) rotate(5deg);
-		}
-		60% {
-			transform: translateX(-5px) rotate(-5deg);
-		}
-		80% {
-			transform: translateX(5px) rotate(5deg);
-		}
-		100% {
-			transform: translateX(0) rotate(0);
-		}
-	}
-
-	/* Apply animation to the second span on button hover */
-	button:hover img.shake {
-		animation: shake 0.9s ease-in-out infinite;
 	}
 </style>
