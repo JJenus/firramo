@@ -2,12 +2,14 @@
 	import { ref } from "vue";
 	import axios from "axios";
 	import { user } from "@/stores/user";
-	import { util, userIp } from "@/stores/utility";
+	import { util, userIp, alert } from "@/stores/utility";
 
 	const env = import.meta.env;
 	env.VITE_BE_API = util.backendApi;
 
 	const signIn = ref(true);
+	const showReset = ref(false);
+	const loadingReset = ref(false);
 
 	const loadingReg = ref(false);
 
@@ -53,6 +55,44 @@
 			});
 
 		return ip;
+	}
+
+	function toggleReset() {
+		showReset.value = !showReset.value;
+	}
+
+	async function sendReset() {
+		if (!form.value.email) {
+			alert.error("Enter a valid email");
+			return;
+		}
+
+		loadingReset.value = true;
+
+		const { email } = form.value;
+		console.log(email);
+
+		let config = {
+			method: "Post",
+			url: `${env.VITE_BE_API}/auth/reset-password`,
+			data: {
+				email,
+			},
+		};
+
+		axios
+			.request(config)
+			.then((response) => {
+				console.log(response.data);
+				console.log("success");
+				alert.success("Email sent!", "Please check your inbox.");
+			})
+			.catch(function (error) {
+				console.log(error);
+			})
+			.finally(() => {
+				loadingReset.value = false;
+			});
 	}
 
 	async function register() {
@@ -115,7 +155,7 @@
 			});
 	}
 
-	async function sumitLogin() {
+	async function submitLogin() {
 		if (loadingReg.value) {
 			return;
 		}
@@ -165,8 +205,15 @@
 
 <template>
 	<!-- Modal with tabs and forms -->
-	<div class="modal" id="auth-modal" tabindex="-1" role="dialog">
-		<div class="modal-dialog modal-fullscreen-sm-downi" role="document">
+	<div
+		class="modal"
+		id="auth-modal"
+		data-bs-backdrop="static"
+		data-bs-keyboard="false"
+		tabindex="-1"
+		role="dialog"
+	>
+		<div class="modal-dialog modal-fullscreen-sm-down" role="document">
 			<div class="modal-content">
 				<!-- Modal header with nav tabs -->
 				<div class="modal-header">
@@ -210,84 +257,138 @@
 				<div class="modal-body py-4">
 					<div class="tab-content">
 						<!-- Sign in form -->
-						<form
-							class="tab-pane fade show active"
-							autocomplete="off"
-							id="signin"
-							@submit.prevent="sumitLogin()"
-						>
-							<div class="mb-3">
-								<label class="form-label" for="email1"
-									>Email address</label
-								>
-								<input
-									class="form-control"
-									type="email"
-									id="email1"
-									placeholder="johndoe@example.com"
-									v-model="form.email"
-								/>
-							</div>
-							<div class="mb-3">
-								<label class="form-label" for="login-pass"
-									>Password</label
-								>
-								<div class="password-toggle">
+
+						<div class="tab-pane fade show active" id="signin">
+							<form
+								v-if="showReset"
+								@submit.prevent="sendReset()"
+							>
+								<div class="mb-3">
+									<h3>Forgot Password?</h3>
+								</div>
+								<div class="mb-3">
+									<label class="form-label" for="email1"
+										>Email address</label
+									>
 									<input
 										class="form-control"
-										type="password"
-										id="login-pass"
-										v-model="form.password"
+										type="email"
+										id="email1"
+										placeholder="johndoe@example.com"
+										v-model="form.email"
 									/>
-									<label class="password-toggle-btn">
-										<input
-											class="password-toggle-check"
-											type="checkbox"
-										/>
-									</label>
 								</div>
-							</div>
+								<div class="d-flex">
+									<button
+										class="btn btn-secondary me-2"
+										type="button"
+										@click="toggleReset()"
+									>
+										Back
+									</button>
+									<button
+										class="btn btn-primary d-block w-100"
+										:class="loadingReset ? 'disabled' : ''"
+										type="submit"
+									>
+										<span v-if="!loadingReset">
+											Reset password
+										</span>
+										<span v-else>
+											<span
+												class="spinner-border spinner-border-sm"
+												role="status"
+												aria-hidden="true"
+											></span>
+											Loading...
+										</span>
+									</button>
+								</div>
+							</form>
 
-							<div
-								v-if="loginError"
-								class="my-3 alert p-2 fs-sm alert-danger"
+							<form
+								v-else
+								autocomplete="off"
+								@submit.prevent="submitLogin()"
 							>
-								{{ loginError }}
-							</div>
-
-							<div
-								class="mb-3 d-flex flex-wrap justify-content-between"
-							>
-								<div class="form-check mb-2">
+								<div class="mb-3">
+									<label class="form-label" for="email1"
+										>Email address</label
+									>
 									<input
-										class="form-check-input"
-										type="checkbox"
-										id="remember"
+										class="form-control"
+										type="email"
+										id="email1"
+										placeholder="johndoe@example.com"
+										v-model="form.email"
 									/>
-									<label
-										class="form-check-label"
-										for="remember"
-										>Remember me</label
+								</div>
+								<div class="mb-3">
+									<label class="form-label" for="login-pass"
+										>Password</label
+									>
+									<div class="password-toggle">
+										<input
+											class="form-control"
+											type="password"
+											id="login-pass"
+											v-model="form.password"
+										/>
+										<label class="password-toggle-btn">
+											<input
+												class="password-toggle-check"
+												type="checkbox"
+											/>
+										</label>
+									</div>
+								</div>
+
+								<div
+									v-if="loginError"
+									class="my-3 alert p-2 fs-sm alert-danger"
+								>
+									{{ loginError }}
+								</div>
+
+								<div
+									class="mb-3 d-flex flex-wrap justify-content-between"
+								>
+									<div class="form-check mb-2">
+										<input
+											class="form-check-input"
+											type="checkbox"
+											id="remember"
+										/>
+										<label
+											class="form-check-label"
+											for="remember"
+											>Remember me</label
+										>
+									</div>
+									<a
+										href="#"
+										class="fs-sm btn-link"
+										@click="toggleReset()"
+										>Forgot password?</a
 									>
 								</div>
-								<a class="fs-sm" href="#">Forgot password?</a>
-							</div>
-							<button
-								class="btn btn-primary d-block w-100"
-								:class="loadingReg ? 'disabled' : ''"
-								type="submit"
-							>
-								<span v-if="!loadingReg"> Sign in </span>
-								<span v-else>
-									<span
-										class="spinner-grow spinner-grow-sm"
-										role="status"
-										aria-hidden="true"
-									></span>
-									Loading...
-								</span>
-							</button>
-						</form>
+								<button
+									class="btn btn-primary d-block w-100"
+									:class="loadingReg ? 'disabled' : ''"
+									type="submit"
+								>
+									<span v-if="!loadingReg"> Sign in </span>
+									<span v-else>
+										<span
+											class="spinner-grow spinner-grow-sm"
+											role="status"
+											aria-hidden="true"
+										></span>
+										Loading...
+									</span>
+								</button>
+							</form>
+						</div>
 
 						<!-- Sign up form -->
 						<form

@@ -4,6 +4,7 @@ import About from "@/views/product/About.vue";
 import Contact from "@/views/product/ContactUs.vue";
 import FAQs from "@/views/product/FAQs.vue";
 import Product from "@/views/Product.vue";
+import ResetPassword from "@/views/product/ResetPassword.vue";
 
 import App from "../views/App.vue";
 import MainView from "../views/app/MainView.vue";
@@ -145,6 +146,11 @@ const router = createRouter({
 					path: "/faqs",
 					name: "faqs",
 					component: FAQs,
+				},
+				{
+					path: "/reset-password",
+					name: "resetPassword",
+					component: ResetPassword,
 				},
 			],
 		},
