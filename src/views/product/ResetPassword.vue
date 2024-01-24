@@ -35,7 +35,6 @@
 		loadingReset.value = true;
 
 		const { password, token } = form.value;
-		console.log(password);
 
 		let config = {
 			method: "Post",

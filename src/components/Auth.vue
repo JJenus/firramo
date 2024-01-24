@@ -89,6 +89,7 @@
 			})
 			.catch(function (error) {
 				console.log(error);
+				alert.success("Sent!",  "You'll receive an email if it's registered.")
 			})
 			.finally(() => {
 				loadingReset.value = false;
