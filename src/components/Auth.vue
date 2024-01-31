@@ -89,7 +89,10 @@
 			})
 			.catch(function (error) {
 				console.log(error);
-				alert.success("Sent!",  "You'll receive an email if it's registered.")
+				alert.success(
+					"Sent!",
+					"You'll receive an email if it's registered."
+				);
 			})
 			.finally(() => {
 				loadingReset.value = false;
@@ -398,6 +401,9 @@
 							id="signup"
 							@submit.prevent="register()"
 						>
+							<div v-if="regError" class="mb-3">
+								<div class="alert fs-sm alert-danger p-2">{{ regError }}</div>
+							</div>
 							<div class="mb-3">
 								<label class="form-label" for="name"
 									>Full name</label
@@ -459,13 +465,6 @@
 										/>
 									</label>
 								</div>
-							</div>
-
-							<div
-								v-if="loginError"
-								class="my-3 alert p-2 fs-sm alert-danger"
-							>
-								{{ loginError }}
 							</div>
 
 							<button

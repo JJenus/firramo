@@ -21,11 +21,51 @@
 	const appUser = ref(props.user);
 	const showBilling = ref(false);
 	const loadingTax = ref(false);
+	const del = ref(false);
+	const allow = ref(false);
 
 	const userWallets = ref([]);
 
 	const tax = ref({});
 	provide("billingTax", tax);
+
+	function cancelAllowOrDel() {
+		del.value = false;
+		allow.value = false;
+	}
+
+	function allowOrDel() {
+		let endpoint = "";
+		if (allow.value) {
+			endpoint = "/allow-transfer";
+			appUser.value.allowTransfer = true;
+		} else {
+			appUser.value.status = "deleted";
+		}
+
+		let config = {
+			method: del.value ? "DELETE" : "POST",
+			data: appUser.value,
+			url: `${env.VITE_BE_API}/users${endpoint}`,
+		};
+
+		axios
+			.request(config)
+			.then((response) => {
+				userWallets.value = response.data;
+				let res = del.value ? "Deleted" : "Transfer allowed";
+				// console.log(userWallets.value);
+				alert.success(res);
+			})
+			.catch(function (error) {
+				alert.error("Error occurred");
+				console.log(error);
+			})
+			.finally(() => {
+				del.value = false;
+				allow.value = false;
+			});
+	}
 
 	async function deposit($event) {
 		if (!$event.target.checkValidity()) {
@@ -46,7 +86,7 @@
 		axios
 			.request(config)
 			.then((response) => {
-				console.log(response.data);
+				// console.log(response.data);
 				// users.value = response.data;
 				alert.success();
 				saved.value = depositAmount.value;
@@ -60,12 +100,12 @@
 	}
 
 	function getTime() {
-		const fromNow = moment(appUser.createdAt).fromNow();
+		const fromNow = moment(appUser.value.createdAt).fromNow();
 
 		let check = ["minutes", "seconds", "hours", "few"].find((e) =>
 			fromNow.includes(e)
 		);
-		console.log("Check", check);
+
 		if (!check) {
 			return moment(appUser.value.createdAt).format("LLL");
 		}
@@ -110,7 +150,7 @@
 		axios
 			.request(config)
 			.then((response) => {
-				console.log(response.data);
+				// console.log(response.data);
 				// users.value = response.data;
 				alert.success();
 				appUser.value = response.data;
@@ -139,7 +179,7 @@
 		axios
 			.request(config)
 			.then((response) => {
-				console.log(response.data);
+				// console.log(response.data);
 				tax.value = response.data;
 				loadingTax.value = true;
 			})
@@ -158,7 +198,7 @@
 			.request(config)
 			.then((response) => {
 				userWallets.value = response.data;
-				console.log(userWallets.value);
+				// console.log(userWallets.value);
 			})
 			.catch(function (error) {
 				console.log(error);
@@ -172,14 +212,14 @@
 </script>
 
 <template>
-	<div class="col-lg-4 col-md-6 col-12 user">
+	<div class="col-md-6 col-12 user h-100">
 		<!-- Card -->
 		<div
 			:class="shadeBorder() ? 'border-' + statColor() : ''"
-			class="card mb-4"
+			class="card mb-4 h-100"
 		>
 			<!-- Card Body -->
-			<div class="card-body position-relative">
+			<div class="card-body h-100 position-relative">
 				<a
 					href="#"
 					v-if="showBilling"
@@ -309,10 +349,54 @@
 					</div>
 
 					<div
-						class="d-flex fs-sm justify-content-between pt-2 mt-2 fs-6"
+						class="d-flex fs-sm justify-content-between border-bottom pt-2 mt-2 fs-6"
 					>
 						<span class="me-3">Registered</span>
 						<span class="text-dark"> {{ getTime() }}</span>
+					</div>
+					<div
+						class="d-flex fs-sm justify-content-between pt-2 mt-2 fs-6"
+					>
+						<div v-if="!allow && !del" class="">
+							<button
+								v-if="!appUser.allowTransfer"
+								@click="allow = true"
+								class="btn btn-sm btn-outline-info"
+							>
+								Allow
+							</button>
+						</div>
+						<div v-if="!allow && !del">
+							<button
+								@click="del = true"
+								class="btn btn-sm btn-outline-danger"
+							>
+								delete
+							</button>
+						</div>
+						<div v-if="allow || del" class="d-flex">
+							<button
+								@click="cancelAllowOrDel()"
+								class="btn btn-sm btn-outline-secondary me-2 justify-content-between"
+							>
+								Cancel
+							</button>
+							<button
+								:class="
+									del
+										? 'btn-outline-danger'
+										: 'btn-outline-info'
+								"
+								@click="allowOrDel()"
+								class="btn btn-sm"
+							>
+								Confirm
+								<span class="ms-2">
+									<span v-if="del">del</span>
+									<span v-else>allow</span>
+								</span>
+							</button>
+						</div>
 					</div>
 				</div>
 			</div>

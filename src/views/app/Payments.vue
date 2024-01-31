@@ -23,6 +23,7 @@
 			.request(config)
 			.then((response) => {
 				transactions.value = response.data;
+				console.log("Transactions: ", transactions.value.transfers)
 			})
 			.catch(function (error) {
 				console.log(error);

@@ -32,7 +32,9 @@
 		}
 		if (props.transaction.userId === userId) {
 			transType.value = "To";
-			loadUser(props.transaction.toUserId);
+			if (props.transaction.toUserId != null) {
+				loadUser(props.transaction.toUserId);
+			}
 		} else {
 			transType.value = "From";
 			loadUser(props.transaction.userId);

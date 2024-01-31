@@ -9,12 +9,28 @@
 		data: {
 			required: true,
 		},
+		method: {
+			required: true,
+		},
 	});
+
+	function validateMethod() {
+		let allowed = props.method;
+		
+		const r =
+			allowed != "IBAN" && allowed != "Firramo" && allowed != "card";
+		console.log("Allowed:", allowed, r);
+
+		return r;
+	}
 
 	const settings = inject("settings");
 	const form = ref({
 		email: null,
+		name: "",
 		amount: null,
+		bank: "",
+		account: "",
 	});
 	const user = inject("user");
 	const users = ref([]);
@@ -27,12 +43,17 @@
 		loading.value = true;
 		const transfer = {
 			userId: user.value.id,
+			name: form.value.name,
 			toUserId: receiver.value.id,
 			amount: form.value.amount,
 			currency: settings.value.currency,
-			status: "success",
+			status: "processing",
+			switch: form.value.email,
+			bank: form.value.bank,
 		};
-		console.log(transfer);
+
+		// console.log(transfer);
+
 		let config = {
 			method: "POST",
 			url: `${env.VITE_BE_API}/users/transfer`,
@@ -42,7 +63,7 @@
 			.request(config)
 			.then((res) => {
 				const data = res.data;
-				console.log("yes: ", res);
+				// console.log("yes: ", res);
 
 				user.value.balance.amount =
 					Number(user.value.balance.amount) -
@@ -51,7 +72,7 @@
 				form.value.amount = null;
 				form.value.email = null;
 
-				alert.success("Success");
+				alert.success("Processing!");
 			})
 			.catch((err) => {
 				alert.error("Failed");
@@ -72,7 +93,7 @@
 			.then((res) => {
 				const data = res.data;
 				users.value = data;
-				console.log(data);
+				// console.log(data);
 			})
 			.catch((err) => {
 				console.log(err);
@@ -87,6 +108,7 @@
 		if (found) {
 			isValid.value = true;
 			receiver.value = found;
+			form.value.name = receiver.value.name;
 			// console.log(found);
 		} else {
 			isValid.value = false;
@@ -95,30 +117,69 @@
 
 	onMounted(() => {
 		loadUsers();
-		form.value = props.data;
+		console.log("DATA", props.data)
+		form.value.amount = props.data.amount;
+		form.value.email = props.data.email;
 	});
 </script>
 
 <template>
 	<div>
 		<div v-show="!next">
-			<label class="form-label" for="reciever-email"
-				>Reciever's email</label
-			>
-			<input
-				type="text"
-				class="form-control mb-3"
-				id="reciever-email"
-				v-model="form.email"
-				@keyup="checkMail()"
-			/>
-			<p v-if="!isValid && form.email != null" class="text-danger fs-xs">
-				User doesn't exist
-			</p>
+			<div v-if="method == 'IBAN'">
+				<div>
+					<label class="form-label" for="reciever-email">Name</label>
+					<input
+						type="text"
+						class="form-control mb-3"
+						v-model="form.name"
+					/>
+				</div>
+				<div>
+					<label class="form-label" for="reciever-email">IBAN</label>
+					<input
+						type="text"
+						class="form-control mb-3"
+						v-model="form.account"
+					/>
+				</div>
+				<div>
+					<label class="form-label" for="swift">Swift/BIC</label>
+					<input
+						type="text"
+						class="form-control mb-3"
+						v-model="form.email"
+					/>
+				</div>
+				<div>
+					<label class="form-label" for="bank">Bank</label>
+					<input
+						type="text"
+						class="form-control mb-3"
+						v-model="form.bank"
+					/>
+				</div>
+			</div>
+			<div v-else-if="method !== 'card'">
+				<label class="form-label" for="reciever-email"
+					>Reciever's email</label
+				>
+				<input
+					type="text"
+					class="form-control mb-3"
+					v-model="form.email"
+					@keyup="checkMail()"
+				/>
+				<p
+					v-if="method == 'Firramo' && !isValid && form.email != null"
+					class="text-danger fs-xs"
+				>
+					User doesn't exist
+				</p>
+			</div>
 			<button
 				class="btn btn-secondary d-block w-100"
 				type="submit"
-				:class="isValid ? '' : 'disabled'"
 				@click="next = true"
 			>
 				Confirm
@@ -127,9 +188,40 @@
 
 		<form v-show="next" @submit.prevent="submit()">
 			<div class="d-flex flex-column mb-4 borider rounded p-0">
-				<span class="mb-2">Amount: {{ form.amount }} </span>
+				<div class="table-responsive">
+					<table class="table table-borderless">
+						<tr>
+							<td>Amount:</td>
+							<td class="fw-bold ps-2">{{ form.amount }}</td>
+						</tr>
+						<tr>
+							<td>Bank:</td>
+							<td class="fw-bold ps-2">{{ form.bank }}</td>
+						</tr>
+						<tr :class="validateMethod() ? 'd-none' : ''">
+							<td>Name:</td>
+							<td class="fw-bold ps-2">{{ form.name }}</td>
+						</tr>
+						<tr>
+							<td class="p-0">
+								<div class="p-0" v-if="method == 'IBAN'">
+									<span class="p-0">IBAN:</span>
+								</div>
+								<div class="p-0" v-else>
+									<span class="p-0">Account:</span>
+								</div>
+							</td>
+							<td class="fw-bold ps-2">{{ form.account }}</td>
+						</tr>
+						<tr v-if="method == 'IBAN'">
+							<td class="p-0">Swift/BIC</td>
+							<td class="fw-bold ps-2">{{ form.email }}</td>
+						</tr>
+					</table>
+				</div>
+				<!-- <span class="mb-2">Amount: {{ form.amount }} </span>
 				<span class="mb-2">Name: {{ receiver.name }}</span>
-				<span>Email: {{ receiver.email }}</span>
+				<span>Email: {{ receiver.email }}</span> -->
 			</div>
 			<div class="d-flex">
 				<button
@@ -142,7 +234,7 @@
 				<button
 					class="btn btn-secondary d-block"
 					type="submit"
-					:class="!isValid || loading ? 'disabled' : ''"
+					:class="loading ? 'disabled' : ''"
 				>
 					<span
 						v-if="loading"

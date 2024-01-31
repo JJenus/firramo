@@ -12,10 +12,13 @@
 
 	const form = ref({
 		amount: "0.00",
-		email: null,
+		account: null,
+		email: "",
+		bank: method.value,
 	});
 
 	function next() {
+		form.value.bank = method.value;
 		if (method.value === null) {
 			alert.error("Payment method", "Select preferred method");
 			return;
@@ -38,11 +41,7 @@
 				"Pending verification",
 				"Your verification is being processed. Please contact support if it's more than 48 hours."
 			);
-		} 
-		// else if (user.value.status !== "verified") {
-		// 	alert.verify();
-		// } 
-		else {
+		} else {
 			makePayment.value = true;
 		}
 	}
@@ -88,8 +87,9 @@
 								{{ method }}
 							</h5>
 							<Firramo
-								v-if="method == AppName"
+								v-if="user.allowTransfer"
 								:data="form"
+								:method="method"
 							></Firramo>
 							<Tax v-else></Tax>
 						</div>
@@ -196,33 +196,9 @@
 									</button>
 
 									<button
-										@click="method = 'revolut'"
+										@click="method = 'IBAN'"
 										:class="
-											method === 'revolut'
-												? 'btn-outline-primary'
-												: 'btn-outline-secondary'
-										"
-										class="btn me-3 mb-2 btn-icon"
-										type="button"
-										data-bs-toggle="tooltip"
-										data-bs-placement="top"
-										data-bs-custom-class="custom-tooltip"
-										data-bs-title="Revolut"
-									>
-										<i class="">
-											<img
-												width="16"
-												src="/assets/img/logos/revolut.png"
-												alt=""
-												srcset=""
-											/>
-										</i>
-									</button>
-
-									<button
-										@click="method = 'wise'"
-										:class="
-											method === 'wise'
+											method === 'IBAN'
 												? 'btn-outline-primary'
 												: 'btn-outline-secondary'
 										"
@@ -231,12 +207,12 @@
 										data-bs-toggle="tooltip"
 										data-bs-placement="bottom"
 										data-bs-custom-class="custom-tooltip"
-										data-bs-title="Wise"
+										data-bs-title="IBAN"
 									>
 										<i class="">
 											<img
-												width="16"
-												src="/assets/img/logos/wise.png"
+												width="36"
+												src="/assets/img/logos/iban.png"
 												alt=""
 												srcset=""
 											/>
