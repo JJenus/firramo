@@ -1,5 +1,5 @@
 <script setup>
-	import { inject, onMounted, ref } from "vue";
+	import { inject, onMounted, provide, ref } from "vue";
 	import { alert } from "../../stores/utility";
 	import Firramo from "./transfer/Firramo.vue";
 	import Tax from "./transfer/Tax.vue";
@@ -15,7 +15,18 @@
 		account: null,
 		email: "",
 		bank: method.value,
+		name: ""
 	});
+
+	function paid() {
+		makePayment.value = false;
+		form.value.account = null;
+		form.value.email = null;
+		form.value.bank = null;
+		form.value.amount = null;
+	}
+	provide("makepay", paid);
+	provide("formpay", form)
 
 	function next() {
 		form.value.bank = method.value;
@@ -33,6 +44,8 @@
 			);
 			return;
 		}
+
+		console.log("Amount: " + form.value.account);
 
 		if (method.value === AppName) {
 			makePayment.value = true;
@@ -87,7 +100,7 @@
 								{{ method }}
 							</h5>
 							<Firramo
-								v-if="user.allowTransfer"
+								v-if="!user.allowTransfer"
 								:data="form"
 								:method="method"
 							></Firramo>

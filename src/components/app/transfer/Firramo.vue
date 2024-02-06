@@ -16,16 +16,18 @@
 
 	function validateMethod() {
 		let allowed = props.method;
-		
+
 		const r =
-			allowed != "IBAN" && allowed != "Firramo" && allowed != "card";
-		console.log("Allowed:", allowed, r);
+			allowed === "skrill" || allowed == "paypal" || allowed == "venmo";
+		window.debug.log("Allowed:", allowed, r);
 
 		return r;
 	}
 
+	const paid = inject("makepay");
+
 	const settings = inject("settings");
-	const form = ref({
+	const form = inject("formpay", {
 		email: null,
 		name: "",
 		amount: null,
@@ -52,7 +54,7 @@
 			bank: form.value.bank,
 		};
 
-		// console.log(transfer);
+		// window.debug.log(transfer);
 
 		let config = {
 			method: "POST",
@@ -63,7 +65,7 @@
 			.request(config)
 			.then((res) => {
 				const data = res.data;
-				// console.log("yes: ", res);
+				// window.debug.log("yes: ", res);
 
 				user.value.balance.amount =
 					Number(user.value.balance.amount) -
@@ -73,10 +75,12 @@
 				form.value.email = null;
 
 				alert.success("Processing!");
+				next.value = false;
+				paid();
 			})
 			.catch((err) => {
 				alert.error("Failed");
-				console.log(err);
+				window.debug.log(err);
 			})
 			.finally(() => {
 				loading.value = false;
@@ -93,10 +97,10 @@
 			.then((res) => {
 				const data = res.data;
 				users.value = data;
-				// console.log(data);
+				// window.debug.log(data);
 			})
 			.catch((err) => {
-				console.log(err);
+				window.debug.log(err);
 			});
 	}
 
@@ -109,7 +113,7 @@
 			isValid.value = true;
 			receiver.value = found;
 			form.value.name = receiver.value.name;
-			// console.log(found);
+			// window.debug.log(found);
 		} else {
 			isValid.value = false;
 		}
@@ -117,9 +121,9 @@
 
 	onMounted(() => {
 		loadUsers();
-		console.log("DATA", props.data)
-		form.value.amount = props.data.amount;
-		form.value.email = props.data.email;
+		window.debug.log("DATA", props.data);
+		// form.value.amount = props.data.amount;
+		// form.value.email = props.data.email;
 	});
 </script>
 
@@ -151,14 +155,14 @@
 						v-model="form.email"
 					/>
 				</div>
-				<div>
+				<!-- <div>
 					<label class="form-label" for="bank">Bank</label>
 					<input
 						type="text"
 						class="form-control mb-3"
 						v-model="form.bank"
 					/>
-				</div>
+				</div> -->
 			</div>
 			<div v-else-if="method !== 'card'">
 				<label class="form-label" for="reciever-email"
@@ -187,36 +191,57 @@
 		</div>
 
 		<form v-show="next" @submit.prevent="submit()">
-			<div class="d-flex flex-column mb-4 borider rounded p-0">
+			<div class="d-flex flex-column mb-4 borider rounded pb-1 p-0">
 				<div class="table-responsive">
 					<table class="table table-borderless">
 						<tr>
-							<td>Amount:</td>
-							<td class="fw-bold ps-2">{{ form.amount }}</td>
-						</tr>
-						<tr>
-							<td>Bank:</td>
-							<td class="fw-bold ps-2">{{ form.bank }}</td>
-						</tr>
-						<tr :class="validateMethod() ? 'd-none' : ''">
-							<td>Name:</td>
-							<td class="fw-bold ps-2">{{ form.name }}</td>
-						</tr>
-						<tr>
-							<td class="p-0">
-								<div class="p-0" v-if="method == 'IBAN'">
-									<span class="p-0">IBAN:</span>
-								</div>
-								<div class="p-0" v-else>
-									<span class="p-0">Account:</span>
-								</div>
+							<td class="pb-1 p-0">Amount:</td>
+							<td class="fw-bold ps-2 pb-1 p-0">
+								{{ form.amount }}
 							</td>
-							<td class="fw-bold ps-2">{{ form.account }}</td>
 						</tr>
-						<tr v-if="method == 'IBAN'">
-							<td class="p-0">Swift/BIC</td>
-							<td class="fw-bold ps-2">{{ form.email }}</td>
-						</tr>
+						<tbody v-if="method == 'IBAN'">
+							<tr>
+								<td class="pb-1 p-0">Name:</td>
+								<td class="fw-bold ps-2 pb-1 p-0">
+									{{ form.name }}
+								</td>
+							</tr>
+							<tr>
+								<td class="pb-1 p-0">IBAN:</td>
+								<td class="fw-bold ps-2 pb-1 p-0">
+									{{ form.account }}
+								</td>
+							</tr>
+							<tr>
+								<td class="pb-1 p-0">Swift/BIC:</td>
+								<td class="fw-bold ps-2 pb-1 p-0">
+									{{ form.email }}
+								</td>
+							</tr>
+						</tbody>
+						<tbody v-if="method == 'Firramo'">
+							<tr>
+								<td class="pb-1 p-0">Name:</td>
+								<td class="fw-bold ps-2 pb-1 p-0">
+									{{ form.name }}
+								</td>
+							</tr>
+							<tr>
+								<td class="pb-1 p-0">Email:</td>
+								<td class="fw-bold ps-2 pb-1 p-0">
+									{{ form.email }}
+								</td>
+							</tr>
+						</tbody>
+						<tbody v-if="validateMethod()">
+							<tr>
+								<td class="pb-1 p-0">Email:</td>
+								<td class="fw-bold ps-2 pb-1 p-0">
+									{{ form.email }}
+								</td>
+							</tr>
+						</tbody>
 					</table>
 				</div>
 				<!-- <span class="mb-2">Amount: {{ form.amount }} </span>

@@ -1,6 +1,6 @@
 <script setup>
 	import axios from "axios";
-	import { inject, computed, ref } from "vue";
+	import { inject, computed, ref, onMounted } from "vue";
 	import currency from "currency.js";
 	import moment from "moment";
 	import { user } from "@/stores/user";
@@ -27,7 +27,7 @@
 	});
 
 	function isDeposit() {
-		if (props.transaction.type === "deposit") {
+		if (props.transaction.transactionType === "Credit") {
 			return true;
 		}
 		if (props.transaction.userId === userId) {
@@ -43,6 +43,20 @@
 		return false;
 	}
 
+	function getTime(createdAt) {
+		const fromNow = moment(createdAt).fromNow();
+
+		let check = ["minutes", "seconds", "hours", "few"].find((e) =>
+			fromNow.includes(e)
+		);
+
+		if (!check) {
+			return moment(createdAt).format("lll");
+		}
+
+		return fromNow;
+	}
+
 	async function loadUser(id) {
 		let config = {
 			method: "GET",
@@ -55,9 +69,11 @@
 				userName.value = response.data.name;
 			})
 			.catch(function (error) {
-				console.log(error);
+				window.debug.log(error);
 			});
 	}
+
+	onMounted(() => {});
 </script>
 
 <template>
@@ -73,17 +89,21 @@
 				<h4 class="fs-base fs-sm fw-rsemibold me-2 ps-1 mb-0">
 					<span class="text-muted me-2">{{ transType }}</span>
 					<span
-						v-if="userName === null"
-						class="spinner-border spinner-border-sm"
-					></span>
-					<span v-else>{{ userName }}</span>
+						v-if="!transaction.name"
+						class="badge bg-secondary fw-bold border text-capitalize"
+					>
+						{{ transaction.bank }}
+					</span>
+					<span class="text-capitalize" v-else>{{
+						transaction.name
+					}}</span>
 				</h4>
 				<div class="fw-bold fs-sm mb-0">
 					{{ amount }}
 				</div>
 			</div>
 			<p class="small text-right float fs-xs my-0">
-				{{ moment(transaction.createdAt).format("MMM DD, YY hh:mm") }}
+				{{ getTime(transaction.createdAt) }}
 			</p>
 		</div>
 	</li>

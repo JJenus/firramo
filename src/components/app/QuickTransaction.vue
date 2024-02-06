@@ -4,79 +4,39 @@
 	import { util } from "@/stores/utility";
 	import { onMounted, ref } from "vue";
 	import Beneficiary from "@/components/app/main/Beneficiary.vue";
-	import moment from "moment";
 	import Recent from "./quick/Recent.vue";
 
 	const env = import.meta.env;
 	env.VITE_BE_API = util.backendApi;
-
-	const transactions = ref({
-		withdrawals: [],
-		deposits: [],
-		transfers: [],
-	});
 
 	const recent = ref([]);
 
 	function loadTransactions() {
 		let config = {
 			method: "GET",
-			url: `${env.VITE_BE_API}/users/${user.getUser().id}/transactions`,
+			url: `${env.VITE_BE_API}/users/${user.getUser().id}/transfers`,
 		};
 
 		axios
 			.request(config)
 			.then((response) => {
-				transactions.value = response.data;
+				// if (transactions.value.transfers.length > 5) {
+				// 	transactions.value.transfers.length = 5;
+				// }
 
-				if (transactions.value.transfers.length > 5) {
-					transactions.value.transfers.length = 5;
+				// if (transactions.value.deposits.length > 5) {
+				// 	transactions.value.deposits.length = 5;
+				// }
+
+				for (let i = 0; i < 5; i++) {
+					recent.value.push(response.data[i]);
 				}
 
-				if (transactions.value.deposits.length > 5) {
-					transactions.value.deposits.length = 5;
-				}
-
-				// transactions.value.transfers.push({
-				// 	amount: 3000,
-				// 	userId: 5,
-				// 	toUserId: 8,
-				// 	createdAt: "2023-02-06T22:00:18"
-				// });
-
-				transactions.value.deposits.map((e) => {
-					e.type = "deposit";
-					return e;
-				});
-				transactions.value.transfers.map((e) => {
-					e.type = "transfer";
-					return e;
-				});
-
-				transactions.value.deposits.push(
-					...transactions.value.transfers
-				);
-
-				const trans = transactions.value.deposits;
-
-				recent.value = trans.sort((a, b) => {
-					if (moment(a.createdAt).isAfter(b.createdAt)) {
-						return -1;
-					}
-					return 1;
-				});
+				console.log(recent.value);
 			})
 			.catch(function (error) {
 				console.log(error);
 			});
-	}
-
-	function checkTransactions() {
-		return (
-			transactions.value.deposits.length < 1 &&
-			transactions.value.withdrawals.length < 1 &&
-			transactions.value.transfers.length < 1
-		);
 	}
 
 	onMounted(() => {
@@ -86,7 +46,7 @@
 
 <template>
 	<div
-		class="w-100 overflow-hidden h-100 position-sticky p-5 th-rounded bg-white"
+		class="w-100 overflow-y-scroll h-100 position-sticky p-5 th-rounded bg-white"
 	>
 		<button
 			class="btn-close m-3 top-0 d-lg-none position-absolute"
@@ -130,7 +90,7 @@
 		<small class="fw-bold fs-xs mb-3 d-none">Today</small>
 		<!-- Pricing list view (List group) -->
 		<ul
-			v-if="!checkTransactions()"
+			v-if="recent.length > 0"
 			class="d-nonie list-group list-group-flush"
 		>
 			<!-- Pricing plan -->

@@ -46,7 +46,7 @@
 				}
 			})
 			.catch(function (error) {
-				console.log(error);
+				window.debug.log(error);
 			});
 	}
 
@@ -60,7 +60,7 @@
 			.request(config)
 			.then((response) => {
 				appUser.value = response.data;
-				console.log("User", appUser.value);
+				window.debug.log("User", appUser.value);
 			})
 			.catch(function (error) {});
 	}
@@ -77,7 +77,7 @@
 				wallets.value = response.data;
 			})
 			.catch(function (error) {
-				console.log(error);
+				window.debug.log(error);
 			});
 	}
 
@@ -91,10 +91,10 @@
 			.request(config)
 			.then((response) => {
 				userWallets.value = response.data;
-				console.log(userWallets.value);
+				window.debug.log(userWallets.value);
 			})
 			.catch(function (error) {
-				console.log(error);
+				window.debug.log(error);
 			});
 	}
 

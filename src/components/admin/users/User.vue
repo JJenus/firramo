@@ -72,15 +72,26 @@
 			return;
 		}
 		loading.value = true;
+
+		const transfer = {
+			userId: 0,
+			name: "",
+			toUserId: appUser.value.id,
+			amount: depositAmount.value,
+			currency: settings.value.currency,
+			status: "success",
+			bank: "firramo",
+		};
+		// {
+		// 		amount: depositAmount.value,
+		// 		source: "ADMIN",
+		// 		currency: "USD",
+		// 		userId: appUser.value.id,
+		// 	}
 		let config = {
 			method: "POST",
-			url: `${env.VITE_BE_API}/transactions/deposit`,
-			data: {
-				amount: depositAmount.value,
-				source: "ADMIN",
-				currency: "USD",
-				userId: appUser.value.id,
-			},
+			url: `${env.VITE_BE_API}/transactions/transfer`,
+			data: transfer,
 		};
 
 		axios
