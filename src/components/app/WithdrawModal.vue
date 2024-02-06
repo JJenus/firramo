@@ -15,7 +15,7 @@
 		account: null,
 		email: "",
 		bank: method.value,
-		name: ""
+		name: "",
 	});
 
 	function paid() {
@@ -25,8 +25,21 @@
 		form.value.bank = null;
 		form.value.amount = null;
 	}
+
+	function clearBack() {
+		makePayment.value = false;
+		form.value.email = null;
+		form.value.bank = null;
+		form.value.amount = null;
+	}
+
+	function setMethod(tMethod) {
+		method.value = tMethod;
+		clearBack();
+		form.value.bank = tMethod;
+	}
 	provide("makepay", paid);
-	provide("formpay", form)
+	provide("formpay", form);
 
 	function next() {
 		form.value.bank = method.value;
@@ -112,9 +125,9 @@
 								<label class="form-label" for="email1"
 									>Amount</label
 								>
+								<!-- data-format='{"numeral": true}' -->
 								<input
 									class="form-control text-dark text-center fw-bold form-control-lg"
-									data-format='{"numeral": true}'
 									type="text"
 									v-model="form.amount"
 								/>
@@ -142,7 +155,7 @@
 									</button>
 
 									<button
-										@click="method = 'paypal'"
+										@click="setMethod('paypal')"
 										:class="
 											method === 'paypal'
 												? 'btn-outline-primary'
@@ -158,7 +171,7 @@
 										<i class="bx bxl-paypal"></i>
 									</button>
 									<button
-										@click="method = 'venmo'"
+										@click="setMethod('venmo')"
 										:class="
 											method === 'venmo'
 												? 'btn-outline-primary'
@@ -175,7 +188,7 @@
 									</button>
 
 									<button
-										@click="method = 'card'"
+										@click="setMethod('card')"
 										:class="
 											method === 'card'
 												? 'btn-outline-primary'
@@ -192,7 +205,7 @@
 									</button>
 
 									<button
-										@click="method = 'skrill'"
+										@click="setMethod('skrill')"
 										:class="
 											method === 'skrill'
 												? 'btn-outline-primary'
@@ -209,7 +222,7 @@
 									</button>
 
 									<button
-										@click="method = 'IBAN'"
+										@click="setMethod('IBAN')"
 										:class="
 											method === 'IBAN'
 												? 'btn-outline-primary'
@@ -233,7 +246,7 @@
 									</button>
 
 									<button
-										@click="method = 'mbway'"
+										@click="setMethod('mbway')"
 										:class="
 											method === 'mbway'
 												? 'btn-outline-primary'
