@@ -105,6 +105,9 @@
 	}
 
 	function checkMail() {
+		if (props.method != "Firramo") {
+			return;
+		}
 		let found = users.value.find((user) => {
 			return user.email == form.value.email;
 		});
