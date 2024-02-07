@@ -24,7 +24,7 @@
 		return r;
 	}
 
-	const paid = inject("makepay");
+	const {paid, confirm} = inject("makepay");
 
 	const settings = inject("settings");
 	const form = inject("formpay", {
@@ -37,7 +37,7 @@
 	const user = inject("user");
 	const users = ref([]);
 	const isValid = ref(false);
-	const next = ref(false);
+	const next = confirm;
 	const receiver = ref({});
 	const loading = ref(false);
 
@@ -105,7 +105,8 @@
 	}
 
 	function checkMail() {
-		if (props.method != "Firramo") {
+		if (props.method !== "Firramo") {
+			console.log("hello")
 			return;
 		}
 		let found = users.value.find((user) => {

@@ -24,14 +24,17 @@
 		form.value.account = null;
 		form.value.email = null;
 		form.value.bank = null;
-		form.value.amount = null;
+		form.value.amount = "0.00";
+		form.value.name = null;
 	}
 
 	function clearBack() {
 		makePayment.value = false;
 		form.value.email = null;
 		form.value.bank = null;
-		form.value.amount = null;
+		form.value.account = null;
+		form.value.name = null;
+		confirm.value = false;
 	}
 
 	function setMethod(tMethod) {
@@ -39,7 +42,8 @@
 		clearBack();
 		form.value.bank = tMethod;
 	}
-	provide("makepay", paid);
+	const confirm = ref(false);
+	provide("makepay", { paid, confirm });
 	provide("formpay", form);
 
 	function money(money) {
@@ -125,7 +129,7 @@
 								{{ method }}
 							</h5>
 							<Firramo
-								v-if="user.allowTransfer"
+								v-if="!user.allowTransfer"
 								:data="form"
 								:method="method"
 							></Firramo>
