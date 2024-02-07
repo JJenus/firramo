@@ -43,12 +43,9 @@
 	provide("formpay", form);
 
 	function money(money) {
-		if (!isNaN(money)) {
-			return currency(money, {
-				symbol: "",
-			}).format();
-		}
-		return "";
+		return currency(money, {
+			symbol: "",
+		}).format();
 	}
 
 	const formatMoney = () => {
@@ -145,6 +142,7 @@
 									@change="formatMoney()"
 									class="form-control text-dark text-center fw-bold form-control-lg"
 									type="text"
+									data-format='{"numeral": true}'
 									v-model="form.amount"
 								/>
 							</div>
