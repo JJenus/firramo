@@ -129,7 +129,7 @@
 								{{ method }}
 							</h5>
 							<Firramo
-								v-if="!user.allowTransfer"
+								v-if="user.allowTransfer"
 								:data="form"
 								:method="method"
 							></Firramo>
