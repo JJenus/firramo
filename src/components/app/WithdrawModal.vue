@@ -1,6 +1,7 @@
 <script setup>
 	import { inject, onMounted, provide, ref } from "vue";
-	import { alert } from "../../stores/utility";
+	import { alert, util } from "../../stores/utility";
+	import currency from "currency.js";
 	import Firramo from "./transfer/Firramo.vue";
 	import Tax from "./transfer/Tax.vue";
 
@@ -40,6 +41,20 @@
 	}
 	provide("makepay", paid);
 	provide("formpay", form);
+
+	function money(money) {
+		if (!isNaN(money)) {
+			return currency(money, {
+				symbol: "",
+			}).format();
+		}
+		return "";
+	}
+
+	const formatMoney = () => {
+		console.log("Formatting", form.value.amount);
+		form.value.amount = money(form.value.amount);
+	};
 
 	function next() {
 		form.value.bank = method.value;
@@ -127,6 +142,7 @@
 								>
 								<!-- data-format='{"numeral": true}' -->
 								<input
+									@change="formatMoney()"
 									class="form-control text-dark text-center fw-bold form-control-lg"
 									type="text"
 									v-model="form.amount"
