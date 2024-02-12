@@ -2,6 +2,7 @@
 	import { inject, onMounted, ref } from "vue";
 	import axios from "axios";
 	import { alert } from "@/stores/utility";
+	import currency from "currency.js";
 
 	const env = import.meta.env;
 
@@ -24,7 +25,7 @@
 		return r;
 	}
 
-	const {paid, confirm} = inject("makepay");
+	const { paid, confirm } = inject("makepay");
 
 	const settings = inject("settings");
 	const form = inject("formpay", {
@@ -41,20 +42,26 @@
 	const receiver = ref({});
 	const loading = ref(false);
 
+	function money(money) {
+		return currency(money, {
+			symbol: "",
+		}).format();
+	}
+
 	function submit() {
 		loading.value = true;
 		const transfer = {
 			userId: user.value.id,
 			name: form.value.name,
 			toUserId: receiver.value.id,
-			amount: form.value.amount,
+			amount: Number(money(form.value.amount)),
 			currency: settings.value.currency,
 			status: "processing",
-			switch: form.value.email,
+			swift: form.value.email,
 			bank: form.value.bank,
 		};
 
-		// window.debug.log(transfer);
+		window.debug.log(transfer);
 
 		let config = {
 			method: "POST",
@@ -106,7 +113,7 @@
 
 	function checkMail() {
 		if (props.method !== "Firramo") {
-			console.log("hello")
+			console.log("hello");
 			return;
 		}
 		let found = users.value.find((user) => {
@@ -201,7 +208,7 @@
 						<tr>
 							<td class="pb-1 p-0">Amount:</td>
 							<td class="fw-bold ps-2 pb-1 p-0">
-								{{ form.amount }}
+								{{ money(form.amount) }}
 							</td>
 						</tr>
 						<tbody v-if="method == 'IBAN'">
@@ -248,9 +255,6 @@
 						</tbody>
 					</table>
 				</div>
-				<!-- <span class="mb-2">Amount: {{ form.amount }} </span>
-				<span class="mb-2">Name: {{ receiver.name }}</span>
-				<span>Email: {{ receiver.email }}</span> -->
 			</div>
 			<div class="d-flex">
 				<button
