@@ -20,7 +20,7 @@
 
 		const r =
 			allowed === "skrill" || allowed == "paypal" || allowed == "venmo";
-		window.debug.log("Allowed:", allowed, r);
+		// window.debug.log("Allowed:", allowed, r);
 
 		return r;
 	}
@@ -50,18 +50,21 @@
 
 	function submit() {
 		loading.value = true;
+		window.debug.log("Form amount: " + form.value.amount);
+		const fAmount = Number(currency(form.value.amount).value);
+
 		const transfer = {
 			userId: user.value.id,
 			name: form.value.name,
 			toUserId: receiver.value.id,
-			amount: Number(money(form.value.amount)),
+			amount: fAmount,
 			currency: settings.value.currency,
 			status: "processing",
 			swift: form.value.email,
 			bank: form.value.bank,
 		};
 
-		window.debug.log(transfer);
+		window.debug.log("Transfer", transfer);
 
 		let config = {
 			method: "POST",
@@ -74,9 +77,10 @@
 				const data = res.data;
 				// window.debug.log("yes: ", res);
 
-				user.value.balance.amount =
-					Number(user.value.balance.amount) -
-					Number(form.value.amount);
+				user.value.balance.amount = currency(
+					user.value.balance.amount
+				).subtract(form.value.amount);
+
 				next.value = false;
 				form.value.amount = null;
 				form.value.email = null;

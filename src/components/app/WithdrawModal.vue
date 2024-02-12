@@ -63,8 +63,9 @@
 			alert.error("Payment method", "Select preferred method");
 			return;
 		} else if (
-			Number(form.value.amount) <= 0 ||
-			Number(form.value.amount) > user.value.balance.amount
+			currency(form.value.amount).value <= 0 ||
+			currency(form.value.amount).value >
+				currency(user.value.balance.amount).value
 		) {
 			// console.log(form.value.amount);
 			alert.error(
@@ -212,7 +213,7 @@
 												? 'btn-outline-primary'
 												: 'btn-outline-secondary'
 										"
-										class="btn me-3 mb-2 btn-icon"
+										class="d-none btn me-3 mb-2 btn-icon"
 										type="button"
 										data-bs-toggle="tooltip"
 										data-bs-placement="top"
