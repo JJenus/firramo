@@ -38,7 +38,7 @@
 			<div class="d-flex">
 				<button
 					type="button"
-					class="btn btn-outline-secondary border-0 btn-icon d-lg-none mt-3 mb-3 position-relative"
+					class="btn btn-outline-secondary border-0 btn-icon d-lg-none mt-3 mb-3 position-relative d-none"
 					data-bs-toggle="collapse"
 					data-bs-target="#quick-trans"
 				>
@@ -47,6 +47,16 @@
 						class="bx bx-transfer-alt position-absolute top-0 fs-sm mt-3 me-1"
 					></i>
 				</button>
+
+				<div class="d-flex align-items-center me-2">
+					<button
+						class="btn btn-outline-secondary border-0i btn-sm rounded-5"
+						data-bs-toggle="collapse"
+						data-bs-target="#quick-trans"
+					>
+						History
+					</button>
+				</div>
 
 				<button
 					type="button"

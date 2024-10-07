@@ -110,7 +110,7 @@
 				<i class="fs-1 bx bx-circle me-2"> </i>
 				<div class="d-flex flex-column fs-xs">
 					<span class="fw-bold">Credit limit</span>
-					<span>0/4000 {{ appCurrency() }}</span>
+					<span>Unlimited {{ appCurrency() }}</span>
 				</div>
 			</div>
 
@@ -122,7 +122,7 @@
 				<i class="fs-1 bx bx-circle me-2"> </i>
 				<div class="d-flex flex-column fs-xs">
 					<span class="fw-bold">Online limit</span>
-					<span>0/4000 {{ appCurrency() }}</span>
+					<span>Unlimited {{ appCurrency() }}</span>
 				</div>
 			</div>
 

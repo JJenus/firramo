@@ -25,9 +25,14 @@
 				/>
 			</div>
 			<div class="number textshadow blurry-text">0123 4567 8910 1112</div>
-			<div class="name fw-bold">{{ user }}</div>
-			<div class="from fw-bold">{{ moment(user.createdAt).format("MM/YY") }}</div>
-			<div class="to fw-bold">01/25</div>
+			<div class="d-flex gap-2">
+				<div class="name fw-bold">{{ user }}</div>
+				<div>
+					<span class="to fw-bold me-2">{{
+						moment(user.createdAt).add(1, "year").format("MM/YY")
+					}}</span>
+				</div>
+			</div>
 			<div class="ring"></div>
 		</div>
 	</div>
@@ -84,9 +89,9 @@
 		position: relative;
 		height: 200px;
 		border-radius: 25px;
-		background: rgba(201, 153, 207, 0.2);
+		background: #cfd8f6;
 		backdrop-filter: blur(10px);
-		border: 2px solid rgba(255, 255, 255, 0.1);
+		border: 2px solid #cfd8f6;
 		box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 		overflow: hidden;
 	}

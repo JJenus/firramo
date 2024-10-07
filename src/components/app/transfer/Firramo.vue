@@ -147,15 +147,16 @@
 		<div v-show="!next">
 			<div v-if="method == 'IBAN'">
 				<div>
-					<label class="form-label" for="reciever-email">Name</label>
+					<label class="form-label">Name</label>
 					<input
 						type="text"
+						name="name"
 						class="form-control mb-3"
 						v-model="form.name"
 					/>
 				</div>
 				<div>
-					<label class="form-label" for="reciever-email">IBAN</label>
+					<label class="form-label">IBAN</label>
 					<input
 						type="text"
 						class="form-control mb-3"
@@ -180,9 +181,10 @@
 				</div> -->
 			</div>
 			<div v-else-if="method !== 'card'">
-				<label class="form-label" for="reciever-email"
-					>Reciever's email</label
+				<label v-if="method === 'mbway'" class="form-label"
+					>Receiver's number</label
 				>
+				<label v-else class="form-label">Receiver's email</label>
 				<input
 					type="text"
 					class="form-control mb-3"
