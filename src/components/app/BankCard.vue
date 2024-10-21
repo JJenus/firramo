@@ -27,7 +27,7 @@
 			<div class="number textshadow blurry-text">0123 4567 8910 1112</div>
 			<div class="d-flex gap-2">
 				<div class="name fw-bold">{{ user }}</div>
-				<div>
+				<div class="d-none">
 					<span class="to fw-bold me-2">{{
 						moment(user.createdAt).add(1, "year").format("MM/YY")
 					}}</span>

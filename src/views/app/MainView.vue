@@ -33,43 +33,29 @@
 	<div class="d-flex mb-3 px-2 align-items-center justify-content-between">
 		<span class="fs-3 fw-bold text-dark ps-md-4">{{ balance }}</span>
 
-		<div class="d-flex">
+		<div class="d-flex gap-2">
 			<div
-				class="fw-bold me-3"
+				class=""
 				@click="withdraw()"
 				data-bs-toggle="modal"
 				data-bs-target="#withraw-modal"
 			>
-				<a
-					style="text-decoration: none"
-					href="#"
-					class="d-none text-dark d-md-inline"
+				<button
+					class="btn btn-outline-secondary ms-2 p-1 px-2 rounded-pill"
 				>
 					Send
-				</a>
-				<button
-					class="btn btn-outline-secondary ms-2 fw-bold p-2 p-md-1"
-				>
-					<i class="bx bx-transfer-alt"></i>
 				</button>
 			</div>
 			<div
-				class="fw-bold"
+				class=""
 				@click="addMoney()"
 				data-bs-toggle="modal"
 				data-bs-target="#add-money-modal"
 			>
-				<a
-					style="text-decoration: none"
-					href="#"
-					class="d-none text-dark d-md-inline"
-				>
-					Add
-				</a>
 				<button
-					class="btn btn-outline-secondary ms-2 fw-bold p-2 p-md-1"
+					class="btn btn-outline-secondary p-1 px-2 rounded-pill"
 				>
-					<i class="bx bx-plus"></i>
+					Add money
 				</button>
 			</div>
 		</div>
