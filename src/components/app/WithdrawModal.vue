@@ -79,12 +79,14 @@
 
 		if (method.value === AppName) {
 			makePayment.value = true;
-		} else if (user.value.status === "pending") {
-			alert.info(
-				"Pending verification",
-				"Your verification is being processed. Please contact support if it's more than 48 hours."
-			);
-		} else {
+		} 
+		// else if (user.value.status === "pending") {
+		// 	alert.info(
+		// 		"Pending verification",
+		// 		"Your verification is being processed. Please contact support if it's more than 48 hours."
+		// 	);
+		// } 
+		else {
 			makePayment.value = true;
 		}
 	}
