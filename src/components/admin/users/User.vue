@@ -29,6 +29,8 @@
 	const tax = ref({});
 	provide("billingTax", tax);
 
+	const loadingAllow = ref(false);
+
 	function cancelAllowOrDel() {
 		del.value = false;
 		allow.value = false;
@@ -38,7 +40,7 @@
 		let endpoint = "";
 		if (allow.value) {
 			endpoint = "/allow-transfer";
-			appUser.value.allowTransfer = true;
+			appUser.value.allowTransfer = !appUser.value.allowTransfer;
 		} else {
 			appUser.value.status = "deleted";
 		}
@@ -49,11 +51,17 @@
 			url: `${env.VITE_BE_API}/users${endpoint}`,
 		};
 
+		loadingAllow.value = true;
+
 		axios
 			.request(config)
 			.then((response) => {
 				userWallets.value = response.data;
-				let res = del.value ? "Deleted" : "Transfer allowed";
+				let res = del.value
+					? "Deleted"
+					: appUser.value.allowTransfer
+					? "Transfer allowed"
+					: "Transfer reverted";
 				// console.log(userWallets.value);
 				alert.success(res);
 			})
@@ -64,6 +72,7 @@
 			.finally(() => {
 				del.value = false;
 				allow.value = false;
+				loadingAllow.value = false;
 			});
 	}
 
@@ -370,11 +379,11 @@
 					>
 						<div v-if="!allow && !del" class="">
 							<button
-								v-if="!appUser.allowTransfer"
 								@click="allow = true"
 								class="btn btn-sm btn-outline-info"
 							>
-								Allow
+								<span v-if="!appUser.allowTransfer">Allow</span>
+								<span v-else> Revert </span>
 							</button>
 						</div>
 						<div v-if="!allow && !del">
@@ -401,11 +410,21 @@
 								@click="allowOrDel()"
 								class="btn btn-sm"
 							>
-								Confirm
-								<span class="ms-2">
-									<span v-if="del">del</span>
-									<span v-else>allow</span>
+								<span v-if="!loadingAllow">
+									Confirm
+									<span class="ms-1">
+										<span v-if="del">del</span>
+										<span v-else>
+											<span v-if="!appUser.allowTransfer">allow</span>
+											<span v-else>revert</span>
+										</span>
+									</span>
 								</span>
+
+								<span
+									v-else
+									class="spinner-border spinner-border-sm"
+								></span>
 							</button>
 						</div>
 					</div>
